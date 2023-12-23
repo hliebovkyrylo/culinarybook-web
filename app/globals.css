@@ -2,26 +2,39 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
-}
-
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  background-color: #141414;
+  height: 100vh;
+}
+
+.main-container {
+  @apply flex min-h-screen flex-1 flex-col items-center p-5 2xl:p-0
+}
+
+.recipe-card {
+  @apply flex flex-col w-width-230 h-height-300 bg-bg-c
+}
+
+.head-text {
+  @apply text-neutral-50 font-semibold text-2xl
+}
+
+.topbar {
+  @apply w-full h-12 bg-bg-c-2 flex items-center justify-end pr-16 fixed
+}
+
+.leftsidebar {
+  @apply sticky pt-12 top-0 bottom-0 left-0 flex flex-col w-width-300 h-screen bg-bg-c-2 max-lg:hidden
+}
+
+.link-button {
+  @apply flex pl-14 items-center w-full h-12 hover:bg-bg-c-3
+}
+
+.bottombar {
+  @apply fixed bottom-0 px-5 py-3 bg-bg-c-2 flex justify-between w-full lg:hidden
+}
+
+.bottombar__link {
+  @apply flex flex-col items-center
 }
