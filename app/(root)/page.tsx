@@ -1,8 +1,8 @@
 "use client"
 
-import Recipecard  from "@/components/cards/RecipeCard";
-import CreatorCard from "@/components/cards/CreatorCard";
-import Link        from "next/link";
+import Recipecard   from "@/components/cards/RecipeCard";
+import CreatorCard  from "@/components/cards/CreatorCard";
+import Link         from "next/link";
 import { useTheme } from "next-themes";
 
 const Home = () => {

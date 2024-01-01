@@ -1,12 +1,18 @@
 "use client"
 
 import { useTheme } from "next-themes";
+import { Cookies } from "react-cookie";
 
 const DropMenu = () => {
   const { theme, setTheme } = useTheme();
+  const cookies = new Cookies();
 
   const handleChangeTheme = () => {
     setTheme(theme === "dark" ? "light" : "dark")
+  };
+
+  const onClickSignOut = () => {
+    cookies.remove('accessToken');
   };
   
   return (
@@ -41,7 +47,7 @@ const DropMenu = () => {
         </svg>
         Report a problem
       </button>
-      <button className="dropmenu__button pl-6">
+      <button onClick={onClickSignOut} className="dropmenu__button pl-6">
         Logout
       </button>
     </div>

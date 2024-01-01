@@ -1,10 +1,12 @@
 import type { Config } from 'tailwindcss'
+import { nextui }      from "@nextui-org/react";
 
 const config: Config = {
   content: [
     './pages/**/*.{js,ts,jsx,tsx,mdx}',
     './components/**/*.{js,ts,jsx,tsx,mdx}',
     './app/**/*.{js,ts,jsx,tsx,mdx}',
+    './node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}',
   ],
   darkMode: "class",
   theme: {
@@ -23,15 +25,16 @@ const config: Config = {
         "height-leftbar": "calc(100vh - 48px)"
       },
       backgroundColor: {
-        "bg-c"  : "#141414",
-        "bg-c-2": "#222222",
-        "bg-c-3": "#2D2D2D",
-        "bg-c-4": "#292929",
-        "bg-c-5": "#363636",
-        "bg-c-6": "#FFF1DB",
-        "bg-c-7": "#F5F5EB",
-        "bg-c-8": "#ECECEC",
-        "bg-c-9": "#DADADA"
+        "bg-c"   : "#141414",
+        "bg-c-2" : "#222222",
+        "bg-c-3" : "#2D2D2D",
+        "bg-c-4" : "#292929",
+        "bg-c-5" : "#363636",
+        "bg-c-6" : "#FFF1DB",
+        "bg-c-7" : "#F5F5EB",
+        "bg-c-8" : "#ECECEC",
+        "bg-c-9" : "#DADADA",
+        "bg-c-10": "#DDDF72",
       },
       colors: {
         "color-custom-yellow": "#DDDF72",
@@ -43,6 +46,6 @@ const config: Config = {
       }
     },
   },
-  plugins: [],
+  plugins: [nextui()],
 }
 export default config

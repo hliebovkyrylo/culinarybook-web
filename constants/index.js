@@ -17,7 +17,7 @@ export const sidebarLinks = [
     darkImageUrl: "/assets/icons/panels/dark/plus.svg",
     lightImageUrl: "/assets/icons/panels/light/plus-light.svg",
     activeImage: "/assets/icons/panels/active/glass-active.svg",
-    route   : "/create",
+    route   : "/create-recipe",
     label   : "Create recipe",
   },
   {
