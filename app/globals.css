@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 body {
-  @apply bg-bg-c-7 dark:bg-bg-c h-screen
+  @apply bg-bg-c-7 dark:bg-bg-c h-full
 }
 
 .main-container {
@@ -23,11 +23,11 @@ body {
 }
 
 .topbar {
-  @apply w-full h-12 flex items-center justify-end px-16 fixed dark:bg-bg-c-2 bg-white max-lg:px-5
+  @apply w-full h-12 z-50 flex items-center justify-end px-16 fixed dark:bg-bg-c-2 bg-white max-lg:px-5
 }
 
 .leftsidebar {
-  @apply sticky pt-12 top-0 bottom-0 left-0 flex flex-col w-width-300 h-screen dark:bg-bg-c-2 bg-white max-2xl:hidden
+  @apply sticky top-0 pt-12 flex flex-col w-width-300 h-screen dark:bg-bg-c-2 bg-white max-2xl:hidden
 }
 
 .leftsidebar__text {
@@ -64,4 +64,8 @@ body {
 
 .card__name {
   @apply text-black dark:text-neutral-50 font-medium
+}
+
+.custom-textarea {
+  @apply bg-bg-c-2 w-[300px] py-2 px-3 rounded-xl
 }
