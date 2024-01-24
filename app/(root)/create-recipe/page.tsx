@@ -1,14 +1,15 @@
 "use client"
 
 import { useRef, useState } from "react";
-import Image from "next/image";
-import RecipeInput from "@/components/create-recipe/RecipeInput/RecipeInput";
-import RecipeButton from "@/components/create-recipe/RecipeButton/RecipeButton";
-import RecipeTextarea from "@/components/create-recipe/RecipeTextarea/RecipeTextarea";
-import RecipeCreateButton from "@/components/create-recipe/RecipeCreateButton/RecipeCreateButton";
+import Image                from "next/image";
+import RecipeInput          from "@/components/create-recipe/RecipeInput/RecipeInput";
+import RecipeButton         from "@/components/create-recipe/RecipeButton/RecipeButton";
+import RecipeTextarea       from "@/components/create-recipe/RecipeTextarea/RecipeTextarea";
+import RecipeCreateButton   from "@/components/create-recipe/RecipeCreateButton/RecipeCreateButton";
 
 const CreateRecipe = () => {
   const [elements, setElements] = useState<JSX.Element[]>([]);
+  const [recipeImage, setRecipeImage] = useState<File | null>(null);
 
   const handleClick = () => {
     setElements(prevElements => [...prevElements, <div className="relative">
@@ -19,15 +20,26 @@ const CreateRecipe = () => {
 
   const inputFileRef = useRef<HTMLInputElement | null>(null);
 
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+
+    if (file) {
+      setRecipeImage(file);
+    }
+  }
+
   return (
     <>
       <h1 className="head-text">Create recipe</h1>
-      <input ref={inputFileRef} type="file" accept="image/*" hidden />
-
+      <input ref={inputFileRef} onChange={handleImageChange} type="file" accept="image/*" hidden />
       <form className=" my-7">
           <div className="flex">
-            <button onClick={() => inputFileRef.current?.click()} type="button" className="max-w-xl w-full h-80 bg-bg-c-2 flex items-center justify-center rounded-xl">
-              <Image src={'/assets/icons/camera.svg'} alt="Camera" width={48} height={48} />
+            <button onClick={() => inputFileRef.current?.click()} type="button" className="max-w-xl w-full h-80 bg-bg-c-2 flex items-center justify-center rounded-xl overflow-hidden">
+              {recipeImage ? (
+                <Image src={URL.createObjectURL(recipeImage)} className=" object-cover max-w-xl w-full h-80" alt="Camera" width={576} height={320} />
+              ) : (
+                <Image src={'/assets/icons/camera.svg'} alt="Camera" width={48} height={48} />
+              )}
             </button>
             <div className="ml-12">
               <RecipeInput
