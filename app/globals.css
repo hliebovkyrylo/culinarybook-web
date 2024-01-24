@@ -6,6 +6,18 @@ body {
   @apply bg-bg-c-7 dark:bg-bg-c h-full
 }
 
+::-webkit-scrollbar-track {
+  @apply bg-bg-c-2
+}
+
+::-webkit-scrollbar {
+  @apply bg-bg-c-2 w-2 h-2
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-bg-c-3 rounded-md
+}
+
 .main-container {
   @apply flex min-h-screen flex-1 flex-col items-center p-5 2xl:p-0 max-2xl:w-screen
 }
@@ -67,5 +79,5 @@ body {
 }
 
 .custom-textarea {
-  @apply bg-bg-c-2 w-[300px] py-2 px-3 rounded-xl
+  @apply bg-bg-c-2 w-[300px] py-2 px-3 rounded-xl outline-none
 }
