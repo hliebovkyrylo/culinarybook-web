@@ -44,6 +44,10 @@ const config: Config = {
       },
       maxWidth: {
         "mw-1480": "1480px",
+      },
+      fill: {
+        "fill-orange": "#C77D0A",
+        "fill-yellow": "#DDDF72"
       }
     },
   },

@@ -1,29 +1,23 @@
+import { GlassIcon, HomeIcon, AddIcon, UserIcon } from "@/images";
+
 export const sidebarLinks = [
   {
-    darkImageUrl: "/assets/icons/panels/dark/house.svg",
-    lightImageUrl: "/assets/icons/panels/light/house-light.svg",
-    activeImage: "/assets/icons/panels/active/house-active.svg",
+    image   : <HomeIcon className="icon-color" />,
     route   : "/",
     label   : "Home",
   },
   {
-    darkImageUrl: "/assets/icons/panels/dark/glass.svg",
-    lightImageUrl: "/assets/icons/panels/light/glass-light.svg",
-    activeImage: "/assets/icons/panels/active/glass-active.svg",
+    image   : <GlassIcon className="icon-color" />,
     route   : "/search",
     label   : "Search",
   },
   {
-    darkImageUrl: "/assets/icons/panels/dark/plus.svg",
-    lightImageUrl: "/assets/icons/panels/light/plus-light.svg",
-    activeImage: "/assets/icons/panels/active/glass-active.svg",
+    image   : <AddIcon className="icon-color" />,
     route   : "/create-recipe",
     label   : "Create recipe",
   },
   {
-    darkImageUrl: "/assets/icons/panels/dark/user.svg",
-    lightImageUrl: "/assets/icons/panels/light/user-light.svg",
-    activeImage: "/assets/icons/panels/active/glass-active.svg",
+    image   : <UserIcon className="icon-color" />,
     route   : "/profile",
     label   : "My profile",
   },

@@ -3,17 +3,14 @@
 import Recipecard   from "@/components/cards/RecipeCard";
 import CreatorCard  from "@/components/cards/CreatorCard";
 import Link         from "next/link";
-import { useTheme } from "next-themes";
 
 const Home = () => {
-  const { theme } = useTheme();
-
   return (
     <>
       <h1 className='head-text'>Home</h1>
       <div className="flex items-center justify-between  mt-9">
         <h2 className='second-head-text'>Popular recipes</h2>
-        <Link className={theme === "dark" ? "text-color-custom-yellow" : "text-color-orange"} href={'/search'} >See all</Link>
+        <Link className="link-text" href={'/search'} >See all</Link>
       </div>
       <div className="mt-3 mb-28 ">
         <div className="overflow-x-auto">

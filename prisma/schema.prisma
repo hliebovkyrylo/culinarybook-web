@@ -15,3 +15,13 @@ model User {
   password String
   image    String
 }
+
+model Recipe {
+  id           String @id @default(auto()) @map("_id") @db.ObjectId
+  recipeName   String
+  imageUrl     String
+  cookingTime  String
+  complexity   String
+  access       String
+  inagradients String
+}

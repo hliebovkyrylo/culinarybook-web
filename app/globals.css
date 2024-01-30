@@ -54,12 +54,16 @@ body {
   @apply bg-bg-c-6 dark:bg-bg-c-3
 }
 
+.link-text {
+  @apply dark:text-color-custom-yellow text-color-orange
+}
+
 .bottombar {
   @apply fixed bottom-0 px-12 py-3 bg-white dark:bg-bg-c-2 flex justify-between w-full 2xl:hidden
 }
 
 .bottombar__link {
-  @apply flex flex-col items-center
+  @apply flex flex-col items-center py-2 px-4 rounded-md
 }
 
 .dropmenu {
@@ -80,4 +84,8 @@ body {
 
 .custom-textarea {
   @apply bg-bg-c-2 w-[300px] py-2 px-3 rounded-xl outline-none
+}
+
+.icon-color {
+  @apply fill-fill-orange dark:fill-fill-yellow
 }
