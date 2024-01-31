@@ -1,14 +1,25 @@
 "use client"
 
-import { useRef, useState } from "react";
+import { 
+  useRef, 
+  useState 
+}                           from "react";
+import { 
+  CameraIcon, 
+  ClockIcon, 
+  FileIcon, 
+  LockIcon, 
+  SecondMedalIcon 
+}                           from "@/images";
 import Image                from "next/image";
 import RecipeInput          from "@/components/create-recipe/RecipeInput/RecipeInput";
 import RecipeButton         from "@/components/create-recipe/RecipeButton/RecipeButton";
 import RecipeTextarea       from "@/components/create-recipe/RecipeTextarea/RecipeTextarea";
 import RecipeCreateButton   from "@/components/create-recipe/RecipeCreateButton/RecipeCreateButton";
 
+
 const CreateRecipe = () => {
-  const [elements, setElements] = useState<JSX.Element[]>([]);
+  const [elements, setElements]       = useState<JSX.Element[]>([]);
   const [recipeImage, setRecipeImage] = useState<File | null>(null);
 
   const handleClick = () => {
@@ -38,22 +49,22 @@ const CreateRecipe = () => {
               {recipeImage ? (
                 <Image src={URL.createObjectURL(recipeImage)} className=" object-cover max-w-xl w-full h-80" alt="Camera" width={576} height={320} />
               ) : (
-                <Image src={'/assets/icons/camera.svg'} alt="Camera" width={48} height={48} />
+                <CameraIcon className="w-12 h-12" />
               )}
             </button>
             <div className="ml-12">
               <RecipeInput
                 placeholder="Enter recipe name..."
                 type="text"
-                image="/assets/icons/file-signature.svg"
+                image={<FileIcon className="w-5 h-5" />}
               />
               <RecipeInput
                 placeholder="Cooking time..."
                 type="text"
-                image="/assets/icons/clock.svg"
+                image={<ClockIcon className="w-5 h-5" />}
               />
               <div className="flex mb-3">
-                <Image src={'/assets/icons/medal-2.svg'} alt="Name" width={20} height={20} />
+                <SecondMedalIcon className="w-5 h-5"/>
                 <select className="bg-bg-c-2 rounded-md ml-3">
                   <option>Easy</option>
                   <option>Middle</option>
@@ -61,7 +72,7 @@ const CreateRecipe = () => {
                 </select>
               </div>
               <div className="flex mb-3">
-                <Image src={'/assets/icons/lock.png'} alt="Name" width={20} height={20} />
+                <LockIcon className="w-5 h-5" />
                 <select className="bg-bg-c-2 rounded-md ml-3">
                   <option>Avaible for everyone</option>
                   <option>Avaible only to me</option>

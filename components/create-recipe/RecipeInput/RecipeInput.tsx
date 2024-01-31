@@ -1,9 +1,9 @@
-import Image from "next/image";
+import { ReactNode } from "react";
 
 interface RecipeInputProps {
   placeholder: string;
   type: string;
-  image: string;
+  image: ReactNode;
 }
 
 const RecipeInput = ({
@@ -12,8 +12,8 @@ const RecipeInput = ({
   image
 }: RecipeInputProps) => {
   return (
-    <div className="flex mb-3">
-      <Image src={image} alt="Name" width={20} height={18} />
+    <div className="flex mb-3 items-center">
+      {image}
       <input className=" bg-bg-c-2 pl-3 rounded-md outline-none ml-3" type={type} placeholder={placeholder} />
     </div>
   )

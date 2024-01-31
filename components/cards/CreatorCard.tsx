@@ -1,3 +1,7 @@
+import { 
+  ClipboardIcon, 
+  UsersIcon 
+}            from "@/images";
 import Image from "next/image";
 import Link  from "next/link";
 
@@ -22,11 +26,11 @@ const CreatorCard = ({
         <Image className="rounded-full h-8 object-cover" src={userImage} alt="User image" width={32} height={32} />
         <div className="my-4 card__name">{name}</div>
         <div className="flex items-center">
-          <Image src={'/assets/icons/users.svg'} alt="Followers" width={20} height={16} />
+          <UsersIcon />
           <div className="ml-2 text-color-666">{followers}</div>
         </div>
         <div className="flex items-center">
-          <Image src={'/assets/icons/clipboard.svg'} alt="Followers" width={20} height={16} />
+          <ClipboardIcon />
           <div className="ml-2 text-color-666">{recipes}</div>
         </div>
       </Link>

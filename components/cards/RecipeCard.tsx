@@ -1,7 +1,9 @@
 "use client"
 
-import Image from "next/image";
-import Link  from "next/link";
+import { ClockIcon } from "@/images";
+import { Medalicon } from "@/images/icons/MedalIcon/MedalIcon";
+import Image         from "next/image";
+import Link          from "next/link";
 
 interface IRecipeCard {
   id         : string;
@@ -30,11 +32,11 @@ const RecipeCard = ({
           <span className="card__name">{recipeName}</span>
           <span className="text-color-666 text-sm my-2">{foodType}</span>
           <div className="flex">
-            <Image className="mr-2" src={'/assets/icons/clock.svg'} alt="Time" width={20} height={20} />
+            <ClockIcon className="mr-2" />
             <span className="text-color-666 text-sm">{cookingTime}</span>
           </div>
           <div className="flex my-2">
-            <Image className="mr-2" src={'/assets/icons/medal.svg'} alt="Complexity" width={20} height={20} />
+            <Medalicon className="mr-2" />
             <span className="text-color-666 text-sm">{complexity}</span>
           </div>
           <span className="text-color-666 text-sm">{author}</span>
