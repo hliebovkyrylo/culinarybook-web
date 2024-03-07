@@ -1,5 +1,4 @@
 import type { Config } from 'tailwindcss'
-import { nextui }      from "@nextui-org/react";
 
 const config: Config = {
   content: [
@@ -35,7 +34,8 @@ const config: Config = {
         "bg-c-8" : "#ECECEC",
         "bg-c-9" : "#DADADA",
         "bg-c-10": "#DDDF72",
-        "bg-c-11": "#27272a"
+        "bg-c-11": "#27272a",
+        "bg-c-12": "#666666",
       },
       colors: {
         "color-custom-yellow": "#DDDF72",
@@ -51,6 +51,6 @@ const config: Config = {
       }
     },
   },
-  plugins: [nextui()],
+  plugins: [],
 }
 export default config

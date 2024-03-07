@@ -18,3 +18,5 @@ export * from "./ClipboardIcon";
 export * from "./BookmarkIcon";
 export * from "./BurgerIcon";
 export * from "./TriangleIcon";
+export * from "./EyeIcon";
+export * from "./SlashEyeIcon";
