@@ -1,12 +1,15 @@
 "use client"
 
+import { useState }              from "react";
+import { z }                     from "zod";
+import Link                      from "next/link";
 import { 
-  useState
-}                        from "react";
-import { z }             from "zod";
-import Link              from "next/link";
-import { AuthButton, AuthInput } from "@/components/auth";
+  AuthButton, 
+  AuthIconButton, 
+  AuthInput 
+}                                from "@/components/auth";
 import { EyeIcon, SlashEyeIcon } from "@/icons";
+import { FormLayout }            from "../FormLayout";
 
 const signUpSchema = z.object({
   email   : z.string().email(),
@@ -19,9 +22,9 @@ const signUpSchema = z.object({
 export type FormData = z.infer<typeof signUpSchema>;
 
 const SignUp = () => {
-  const [emailInput, setEmailInput] = useState<string>("");
+  const [emailInput, setEmailInput]       = useState<string>("");
   const [usernameInput, setUsernameInput] = useState<string>("");
-  const [nameInput, setNameInput] = useState<string>("");
+  const [nameInput, setNameInput]         = useState<string>("");
   const [passwordInput, setPasswordInput] = useState<string>("");
 
   const isFieldsEmpty = emailInput !== "" && passwordInput !== "" && usernameInput !== "" && nameInput !== "";
@@ -33,8 +36,7 @@ const SignUp = () => {
   };
 
   return (
-    <form className="auth-form">
-      <h1 className="text-2xl">Sign Up</h1>
+    <FormLayout title="Sign Up">
       <div className="my-8 max-w-xs">
         <AuthInput
           type="email"
@@ -69,13 +71,12 @@ const SignUp = () => {
             className="mb-2 max-w-xs"
             onChangeValue={(event) => setPasswordInput(event.target.value)}
           />
-          <button className="absolute right-4 top-4" type="button" onClick={handleVisibleChange}>
-            {passwordInputType === "password" ? (
-              <EyeIcon className="icon-eye" />
-            ) : (
-              <SlashEyeIcon className="icon-eye" />
-            )}
-          </button>
+          <AuthIconButton 
+            firstIcon={<EyeIcon className="icon-eye" />}
+            secondIcon={<SlashEyeIcon className="icon-eye" />}
+            onClick={handleVisibleChange}
+            inputType={passwordInputType}
+          />
         </div>
         <AuthButton
           isActive={isFieldsEmpty}
@@ -85,9 +86,9 @@ const SignUp = () => {
       </div>
       <div className="flex">
         <p className="mr-1">Already have an accont?</p>
-        <Link className="link-text" href={"/sign-in"}>Sign In</Link>
+        <Link className="link-text" href={"/sign-in"}>Sign Up</Link>
       </div>
-    </form>
+    </FormLayout>
   )
 };
 

@@ -1,12 +1,14 @@
 "use client"
 
+import { useState }              from "react";
+import { z }                     from "zod";
+import Link                      from "next/link";
 import { 
-  useState
-}                        from "react";
-import { z }             from "zod";
-import Link              from "next/link";
-import { AuthButton, AuthInput }     from "@/components/auth";
+  AuthButton, 
+  AuthIconButton, 
+  AuthInput }                    from "@/components/auth";
 import { EyeIcon, SlashEyeIcon } from "@/icons";
+import { FormLayout }            from "../FormLayout";
 
 const signInSchema = z.object({
   email   : z.string().email(),
@@ -16,7 +18,7 @@ const signInSchema = z.object({
 export type FormData = z.infer<typeof signInSchema>;
 
 const SignUp = () => {
-  const [emailInput, setEmailInput] = useState<string>("");
+  const [emailInput, setEmailInput]       = useState<string>("");
   const [passwordInput, setPasswordInput] = useState<string>("");
 
   const isFieldsEmpty = emailInput !== "" && passwordInput !== "";
@@ -28,8 +30,7 @@ const SignUp = () => {
   };
 
   return (
-    <form className="auth-form">
-      <h1 className="text-2xl">Sign In</h1>
+    <FormLayout title="Sign In">
       <div className="my-8">
         <AuthInput
           type="email"
@@ -48,13 +49,12 @@ const SignUp = () => {
             className="mb-2"
             onChangeValue={(event) => setPasswordInput(event.target.value)}
           />
-          <button className="absolute right-4 top-4" type="button" onClick={handleVisibleChange}>
-            {passwordInputType === "password" ? (
-              <EyeIcon className="icon-eye" />
-            ) : (
-              <SlashEyeIcon className="icon-eye" />
-            )}
-          </button>
+          <AuthIconButton 
+            firstIcon={<EyeIcon className="icon-eye" />}
+            secondIcon={<SlashEyeIcon className="icon-eye" />}
+            onClick={handleVisibleChange}
+            inputType={passwordInputType}
+          />
         </div>
         <div>
           <Link className="link-text text-sm" href={"/#"}>Forgot password?</Link>
@@ -69,7 +69,7 @@ const SignUp = () => {
         <p className="mr-1">Don’t have an accont yet?</p>
         <Link className="link-text" href={"/sign-up"}>Sign Up</Link>
       </div>
-    </form>
+    </FormLayout>
   )
 };
 
