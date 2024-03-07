@@ -105,3 +105,7 @@ body {
 .icon-eye {
   @apply dark:fill-white fill-black
 }
+
+.auth-numberInput {
+  @apply dark:bg-bg-c-3 w-11 h-16 rounded-md text-center text-2xl outline-none
+}
