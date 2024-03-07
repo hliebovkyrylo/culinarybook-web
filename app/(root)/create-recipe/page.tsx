@@ -10,7 +10,7 @@ import {
   FileIcon, 
   LockIcon, 
   SecondMedalIcon 
-}                           from "@/images";
+}                           from "@/icons";
 import Image                from "next/image";
 import RecipeInput          from "@/components/create-recipe/RecipeInput/RecipeInput";
 import RecipeButton         from "@/components/create-recipe/RecipeButton/RecipeButton";

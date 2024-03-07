@@ -5,7 +5,7 @@ import Link         from "next/link";
 import DropMenu     from "@/components/shared/DropMenu";
 import { useState } from "react";
 import { useTheme } from "next-themes";
-import { LogoIcon } from "@/images";
+import { LogoIcon } from "@/icons";
 
 const Topbar = () => {
   const { theme } = useTheme();

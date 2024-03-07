@@ -1,7 +1,7 @@
 "use client"
 
-import { ClockIcon } from "@/images";
-import { Medalicon } from "@/images/icons/MedalIcon/MedalIcon";
+import { ClockIcon } from "@/icons";
+import { Medalicon } from "@/icons/icons/MedalIcon/MedalIcon";
 import Image         from "next/image";
 import Link          from "next/link";
 

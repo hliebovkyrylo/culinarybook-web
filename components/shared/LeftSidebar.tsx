@@ -4,7 +4,7 @@ import Link             from "next/link";
 import Image            from "next/image";
 import { sidebarLinks } from "@/constants";
 import { usePathname }  from "next/navigation";
-import { LogoIcon }     from "@/images/icons/LogoIcon/LogoIcon";
+import { LogoIcon }     from "@/icons/icons/LogoIcon/LogoIcon";
 
 const LeftSidebar = () => {
   const pathname = usePathname();

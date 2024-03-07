@@ -1,4 +1,4 @@
-import { AddIcon } from "@/images";
+import { AddIcon } from "@/icons";
 import Image from "next/image";
 
 interface RecipeButtonProps {

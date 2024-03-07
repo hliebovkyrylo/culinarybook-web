@@ -6,7 +6,7 @@ import {
   ReportIcon, 
   SavedIcon, 
   SunIcon 
-}                         from "@/images";
+}                         from "@/icons";
 import { useTheme }       from "next-themes";
 import { Cookies }        from "react-cookie";
 import { DropMenuButton } from "../DropMenu";

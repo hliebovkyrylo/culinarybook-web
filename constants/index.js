@@ -1,4 +1,4 @@
-import { GlassIcon, HomeIcon, AddIcon, UserIcon } from "@/images";
+import { GlassIcon, HomeIcon, AddIcon, UserIcon } from "@/icons";
 
 export const sidebarLinks = [
   {
