@@ -34,7 +34,7 @@ const VerifyAccount = () => {
   };
 
   return (
-    <FormLayout title="Verify account">
+    <FormLayout title="Enter confirmation code">
       <div>
         {digits.map((digit, index) => (
           <AuthNumberInput
