@@ -35,11 +35,11 @@ body {
 }
 
 .topbar {
-  @apply w-full h-12 z-50 flex items-center justify-end px-16 fixed dark:bg-bg-c-2 bg-white max-lg:px-5
+  @apply w-full h-12 z-40 flex items-center justify-end px-16 fixed dark:bg-bg-c-2 bg-white max-lg:px-5 drop-shadow-xl
 }
 
 .leftsidebar {
-  @apply sticky top-0 pt-12 flex flex-col w-width-300 h-screen dark:bg-bg-c-2 bg-white max-2xl:hidden
+  @apply sticky top-0 pt-12 flex flex-col w-width-300 h-screen dark:bg-bg-c-2 bg-white max-2xl:hidden drop-shadow-xl z-50
 }
 
 .leftsidebar__text {
@@ -75,7 +75,7 @@ body {
 }
 
 .recipecard {
-  @apply bg-white dark:bg-bg-c-2 w-width-230 rounded-xl
+  @apply bg-[#cccccc4b] hover:bg-[#bbbbbb4b] dark:bg-[#41414159] dark:hover:bg-[#41414170] w-width-230 rounded-xl
 }
 
 .card__name {

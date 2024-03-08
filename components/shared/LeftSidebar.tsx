@@ -1,7 +1,6 @@
 "use client"
 
 import Link             from "next/link";
-import Image            from "next/image";
 import { sidebarLinks } from "@/constants";
 import { usePathname }  from "next/navigation";
 import { LogoIcon }     from "@/icons/icons/LogoIcon/LogoIcon";
@@ -11,9 +10,9 @@ const LeftSidebar = () => {
 
   return (
     <aside className="leftsidebar">
-      <div className="flex items-center ml-14 mb-14">
+      <div className="flex items-center ml-14 mb-10">
         <LogoIcon className="icon-color"/>
-        <span className="leftsidebar__text">Recipe book</span>
+        <span className="leftsidebar__text">Recipebook</span>
       </div>
       {sidebarLinks.map((link) => {
         const isActive = (pathname === link.route);
