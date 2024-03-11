@@ -2,11 +2,11 @@ import { ReactNode } from "react";
 
 interface RecipeInputProps {
   placeholder: string;
-  type: string;
-  image: ReactNode;
+  type       : string;
+  image      : ReactNode;
 }
 
-const RecipeInput = ({
+export const RecipeInput = ({
   placeholder,
   type,
   image
@@ -14,9 +14,7 @@ const RecipeInput = ({
   return (
     <div className="flex mb-3 items-center">
       {image}
-      <input className=" bg-bg-c-2 pl-3 rounded-md outline-none ml-3" type={type} placeholder={placeholder} />
+      <input className="recipe-input ml-3" type={type} placeholder={placeholder} />
     </div>
   )
 };
-
-export default RecipeInput;

@@ -1,13 +1,13 @@
 "use client"
 
 import { 
-  AuthButton, 
   AuthIconButton, 
   AuthInput 
 }                                from "@/components/auth";
 import { FormLayout }            from "../FormLayout";
 import { useState }              from "react";
 import { EyeIcon, SlashEyeIcon } from "@/icons";
+import Button                    from "@/ui/button/Button";
 
 const ResetPassword = () => {
   const [passwordInputType, setPasswordInputType]               = useState("password");
@@ -54,7 +54,7 @@ const ResetPassword = () => {
           />
         </div>
       </div>
-      <AuthButton 
+      <Button 
         isActive = {true}
         text="Change password"
       />

@@ -1,9 +1,10 @@
 "use client"
 
-import { AuthButton, AuthNumberInput }  from "@/components/auth";
+import { AuthNumberInput }              from "@/components/auth";
 import { useEffect, useRef, useState }  from "react";
 import { FormLayout }                   from "../FormLayout";
 import Link                             from "next/link";
+import Button                           from "@/ui/button/Button";
 
 const VerifyAccount = () => {
   const [digits, setDigits] = useState(['', '', '', '', '', '']);
@@ -47,7 +48,7 @@ const VerifyAccount = () => {
           />
         ))}
       </div>
-      <AuthButton
+      <Button
         text="Check code"
         className="!w-[300px]"
         isActive={digits.every(digit => digit !== '')}

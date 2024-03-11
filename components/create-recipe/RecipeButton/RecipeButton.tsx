@@ -1,11 +1,10 @@
 import { AddIcon } from "@/icons";
-import Image from "next/image";
 
 interface RecipeButtonProps {
   buttonClick: () => void;
 };
 
-const RecipeButton = ({
+export const RecipeButton = ({
   buttonClick,
 }: RecipeButtonProps) => {
   return (
@@ -15,5 +14,3 @@ const RecipeButton = ({
     </button>
   )
 };
-
-export default RecipeButton;
