@@ -2,13 +2,13 @@
 
 import { 
   AuthIconButton, 
-  AuthInput 
+  AuthInput, 
+  FormLayout
 }                     from "@/components/auth";
 import { 
   EyeIcon, 
   SlashEyeIcon 
 }                     from "@/icons";
-import { FormLayout } from "../FormLayout";
 import { useState }   from "react";
 import Button         from "@/ui/button/Button";
 

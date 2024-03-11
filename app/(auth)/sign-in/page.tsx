@@ -5,9 +5,9 @@ import { z }                     from "zod";
 import Link                      from "next/link";
 import { 
   AuthIconButton, 
-  AuthInput }                    from "@/components/auth";
+  AuthInput, 
+  FormLayout}                    from "@/components/auth";
 import { EyeIcon, SlashEyeIcon } from "@/icons";
-import { FormLayout }            from "../FormLayout";
 import Button                    from "@/ui/button/Button";
 
 const signInSchema = z.object({

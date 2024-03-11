@@ -1,8 +1,7 @@
 "use client"
 
-import { AuthNumberInput }              from "@/components/auth";
+import { AuthNumberInput, FormLayout }  from "@/components/auth";
 import { useEffect, useRef, useState }  from "react";
-import { FormLayout }                   from "../FormLayout";
 import Link                             from "next/link";
 import Button                           from "@/ui/button/Button";
 

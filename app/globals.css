@@ -6,16 +6,8 @@ body {
   @apply bg-bg-c-7 dark:bg-bg-c h-full
 }
 
-::-webkit-scrollbar-track {
-  @apply bg-bg-c-2
-}
-
 ::-webkit-scrollbar {
-  @apply bg-bg-c-2 w-2 h-2
-}
-
-::-webkit-scrollbar-thumb {
-  @apply bg-bg-c-3 rounded-md
+  @apply bg-[#3a3a3a6e] w-0 h-0
 }
 
 .main-container {
@@ -128,4 +120,12 @@ body {
 
 .recipe-input {
   @apply dark:bg-bg-c-2 dark:hover:bg-bg-c-3 pl-3 rounded-md outline-none transition-all hover:bg-slate-100
+}
+
+.search-field {
+  @apply dark:bg-bg-c-2 dark:hover:bg-bg-c-3 w-full h-8 rounded-md transition-all pl-11 outline-none hover:bg-slate-100
+}
+
+.search-button {
+  @apply dark:bg-bg-c-2 dark:hover:bg-bg-c-3 block w-24 h-6 text-center rounded-md bg-white hover:bg-slate-100 transition-all
 }

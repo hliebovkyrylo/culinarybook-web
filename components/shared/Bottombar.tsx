@@ -2,16 +2,14 @@
 
 import { sidebarLinks } from "@/constants";
 import Link             from "next/link";
-import Image            from "next/image";
 import { usePathname }  from "next/navigation";
 import { useTheme }     from "next-themes";
 
 const Bottombar = () => {
   const pathname  = usePathname();
-  const { theme } = useTheme();
 
   return (
-    <section className="bottombar">
+    <footer className="bottombar">
       {sidebarLinks.map((link) => {
         const isActive = (pathname === link.route);
         return (
@@ -21,7 +19,7 @@ const Bottombar = () => {
           </Link>
         )
       })}
-    </section>
+    </footer>
   )
 };
 

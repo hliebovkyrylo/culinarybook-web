@@ -14,6 +14,7 @@ interface IRecipeCard {
   cookingTime: string;
   complexity : string;
   author     : string;
+  className ?: string;
 }
 
 const RecipeCard = ({
@@ -24,11 +25,12 @@ const RecipeCard = ({
   cookingTime,
   complexity,
   author,
+  className
 }: IRecipeCard) => {
   const [isHovered, setIsHovered] = useState<boolean>(false);
 
   return (
-    <article className="recipecard overflow-hidden" onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
+    <article className={`recipecard overflow-hidden ${className}`} onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
       <Link href={`/recipe/${id}`}>
         <div className="overflow-hidden">
           <Image 
