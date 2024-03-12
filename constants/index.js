@@ -8,7 +8,7 @@ export const sidebarLinks = [
   },
   {
     image   : <GlassIcon className="icon-color" />,
-    route   : "/search",
+    route   : "/search/recipes",
     label   : "Search",
   },
   {

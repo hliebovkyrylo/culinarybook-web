@@ -34,7 +34,7 @@ const RecipeCard = ({
       <Link href={`/recipe/${id}`}>
         <div className="overflow-hidden">
           <Image 
-            className={`rounded-tl-xl rounded-tr-xl transition-all ${isHovered && "scale-110"}`}
+            className={`rounded-tl-xl w-full h-[125px] object-cover rounded-tr-xl transition-all ${isHovered && "scale-110"}`}
             src={recipeImage === "" ? "/assets/testrecipephoto.jpg" : recipeImage} 
             alt="Recipe photo" 
             width={230} 
