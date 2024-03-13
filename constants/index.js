@@ -38,13 +38,13 @@ export const profileLinks = [
     label   : "Recipes",
   },
   {
-    icon    : <HeartSolidIcon className="fill-[#666] mr-1" />,
-    route   : "/profile/liked",
-    label   : "Liked",
-  },
-  {
     icon    : <Bookmark className="fill-[#666] w-4 mr-1" />,
     route   : "/profile/saved",
     label   : "Saved",
+  },
+  {
+    icon    : <HeartSolidIcon className="fill-[#666] mr-1" />,
+    route   : "/profile/liked",
+    label   : "Liked",
   },
 ]

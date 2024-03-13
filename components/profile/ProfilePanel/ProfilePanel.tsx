@@ -11,7 +11,7 @@ export const ProfilePanel = ({ userId, className }: { userId: string, className?
     <nav className={`w-full border-t-2 dark:border-[#363636] border-[#E9E9E9] py-2 ${className}`}>
       <div className="flex w-full max-w-sm mx-auto justify-between">
         {profileLinks.map((link => {
-          const isActive = pathname.includes(link.route) && link.route.length > 1 || pathname === link.route;
+          const isActive = pathname === (link.route) && link.route.length > 1;
 
           if (link.route === '/profile') link.route = `${link.route}/${userId}`
 
