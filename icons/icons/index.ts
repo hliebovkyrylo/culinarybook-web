@@ -23,3 +23,4 @@ export * from "./SlashEyeIcon";
 export * from "./ChevronDownIcon";
 export * from "./ChevronUpIcon";
 export * from "./UntesilsIcon"
+export * from "./HeartSolidIcon";

@@ -1,4 +1,12 @@
-import { GlassIcon, HomeIcon, AddIcon, UserIcon } from "@/icons";
+import { 
+  GlassIcon, 
+  HomeIcon, 
+  AddIcon, 
+  UserIcon, 
+  FileIcon, 
+  HeartSolidIcon, 
+  Bookmark 
+} from "@/icons";
 
 export const sidebarLinks = [
   {
@@ -8,7 +16,7 @@ export const sidebarLinks = [
   },
   {
     image   : <GlassIcon className="icon-color" />,
-    route   : "/search/recipes",
+    route   : "/search",
     label   : "Search",
   },
   {
@@ -22,3 +30,21 @@ export const sidebarLinks = [
     label   : "My profile",
   },
 ];
+
+export const profileLinks = [
+  {
+    icon    : <FileIcon className="fill-[#666] mr-1 w-4" />,
+    route   : "/profile",
+    label   : "Recipes",
+  },
+  {
+    icon    : <HeartSolidIcon className="fill-[#666] mr-1" />,
+    route   : "/profile/liked",
+    label   : "Liked",
+  },
+  {
+    icon    : <Bookmark className="fill-[#666] w-4 mr-1" />,
+    route   : "/profile/saved",
+    label   : "Saved",
+  },
+]

@@ -26,6 +26,10 @@ body {
   @apply text-black dark:text-neutral-50 font-semibold text-lg
 }
 
+.default-text {
+  @apply text-black dark:text-white font-medium
+}
+
 .topbar {
   @apply w-full h-12 z-40 flex items-center justify-end px-16 fixed dark:bg-bg-c-2 bg-white max-lg:px-5 drop-shadow-xl
 }
@@ -128,4 +132,16 @@ body {
 
 .search-button {
   @apply dark:bg-bg-c-2 dark:hover:bg-bg-c-3 block w-24 h-6 text-center rounded-md bg-white hover:bg-slate-100 transition-all
+}
+
+.profile-button {
+  @apply dark:bg-bg-c-2 dark:hover:bg-bg-c-3
+}
+
+.profile-link {
+  @apply dark:hover:bg-bg-c-2 transition-all
+}
+
+.profile-link-active {
+  @apply dark:bg-bg-c-2 dark:hover:bg-bg-c-3
 }
