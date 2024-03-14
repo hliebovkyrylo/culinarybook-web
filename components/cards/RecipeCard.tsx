@@ -1,10 +1,9 @@
 "use client"
 
-import { ClockIcon } from "@/icons";
-import { Medalicon } from "@/icons/icons/MedalIcon/MedalIcon";
-import Image         from "next/image";
-import Link          from "next/link";
-import { useState }  from "react";
+import { ClockIcon, MedalIcon } from "@/icons";
+import Image                    from "next/image";
+import Link                     from "next/link";
+import { useState }             from "react";
 
 interface IRecipeCard {
   id         : string;
@@ -49,7 +48,7 @@ const RecipeCard = ({
             <span className="text-color-666 text-sm">{cookingTime}</span>
           </div>
           <div className="flex my-2">
-            <Medalicon className="mr-2" />
+            <MedalIcon className="mr-2" />
             <span className="text-color-666 text-sm">{complexity}</span>
           </div>
           <div className="flex">

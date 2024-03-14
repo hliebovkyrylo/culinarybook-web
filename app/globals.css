@@ -6,8 +6,16 @@ body {
   @apply bg-bg-c-7 dark:bg-bg-c h-full
 }
 
+::-webkit-scrollbar-track {
+  @apply bg-[#a7a7a7] 
+}
+
 ::-webkit-scrollbar {
-  @apply bg-[#3a3a3a6e] w-0 h-0
+  @apply bg-[#4e4e4e] w-2 h-2 max-md:w-0 max-md:h-0 
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-[#818181] rounded-md 
 }
 
 .main-container {
@@ -82,6 +90,10 @@ body {
   @apply dark:bg-bg-c-2 dark:hover:bg-bg-c-3 py-2 px-3 rounded-xl outline-none transition-all hover:bg-slate-100
 }
 
+.custom-input {
+  @apply dark:bg-bg-c-2 dark:hover:bg-bg-c-3 w-full py-2 px-3 transition-all rounded-xl outline-none
+}
+
 .icon-color {
   @apply fill-fill-orange dark:fill-fill-yellow
 }
@@ -144,4 +156,16 @@ body {
 
 .profile-link-active {
   @apply dark:bg-bg-c-2 dark:hover:bg-bg-c-3
+}
+
+.recipe-content-card {
+  @apply bg-[#cccccc4b] dark:bg-[#41414159] break-words p-3 rounded-xl
+}
+
+.star-icon {
+  @apply dark:fill-color-custom-yellow fill-fill-orange
+}
+
+.star-icon-active {
+  @apply dark:fill-[#F4F4C8] fill-[#E3BA7A]
 }

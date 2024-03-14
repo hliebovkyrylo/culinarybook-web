@@ -24,3 +24,7 @@ export * from "./ChevronDownIcon";
 export * from "./ChevronUpIcon";
 export * from "./UntesilsIcon"
 export * from "./HeartSolidIcon";
+export * from "./MedalIcon"
+export * from "./StarIcon";
+export * from "./HeartRegularIcon";
+export * from "./BookmarkSolidIcon";

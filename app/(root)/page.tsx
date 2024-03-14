@@ -6,7 +6,7 @@ import {
 }                  from "@/components/home";
 import Recipecard  from "@/components/cards/RecipeCard";
 import CreatorCard from "@/components/cards/CreatorCard";
-import Image from "next/image";
+import Image       from "next/image";
 
 const Home = () => {
   return (
