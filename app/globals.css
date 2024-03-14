@@ -7,15 +7,15 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  @apply bg-bg-c-2
+  @apply bg-[#a7a7a7] 
 }
 
 ::-webkit-scrollbar {
-  @apply bg-bg-c-2 w-2 h-2
+  @apply bg-[#4e4e4e] w-2 h-2 max-md:w-0 max-md:h-0 
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-bg-c-3 rounded-md
+  @apply bg-[#818181] rounded-md 
 }
 
 .main-container {
@@ -34,12 +34,16 @@ body {
   @apply text-black dark:text-neutral-50 font-semibold text-lg
 }
 
+.default-text {
+  @apply text-black dark:text-white font-medium
+}
+
 .topbar {
-  @apply w-full h-12 z-50 flex items-center justify-end px-16 fixed dark:bg-bg-c-2 bg-white max-lg:px-5
+  @apply w-full h-12 z-40 flex items-center justify-end px-16 fixed dark:bg-bg-c-2 bg-white max-lg:px-5 drop-shadow-xl
 }
 
 .leftsidebar {
-  @apply sticky top-0 pt-12 flex flex-col w-width-300 h-screen dark:bg-bg-c-2 bg-white max-2xl:hidden
+  @apply sticky top-0 pt-12 flex flex-col w-width-300 h-screen dark:bg-bg-c-2 bg-white max-2xl:hidden drop-shadow-xl z-50
 }
 
 .leftsidebar__text {
@@ -59,7 +63,7 @@ body {
 }
 
 .bottombar {
-  @apply fixed bottom-0 px-12 py-3 bg-white dark:bg-bg-c-2 flex justify-between w-full 2xl:hidden
+  @apply fixed bottom-0 px-12 py-3 bg-white dark:bg-bg-c-2 flex justify-between w-full 2xl:hidden z-50
 }
 
 .bottombar__link {
@@ -75,7 +79,7 @@ body {
 }
 
 .recipecard {
-  @apply bg-white dark:bg-bg-c-2 w-width-230 rounded-xl
+  @apply bg-[#cccccc4b] hover:bg-[#bbbbbb4b] dark:bg-[#41414159] dark:hover:bg-[#41414170] w-width-230 rounded-xl
 }
 
 .card__name {
@@ -83,7 +87,11 @@ body {
 }
 
 .custom-textarea {
-  @apply bg-bg-c-2 w-[300px] py-2 px-3 rounded-xl outline-none
+  @apply dark:bg-bg-c-2 dark:hover:bg-bg-c-3 py-2 px-3 rounded-xl outline-none transition-all hover:bg-slate-100
+}
+
+.custom-input {
+  @apply dark:bg-bg-c-2 dark:hover:bg-bg-c-3 w-full py-2 px-3 transition-all rounded-xl outline-none
 }
 
 .icon-color {
@@ -108,4 +116,56 @@ body {
 
 .auth-numberInput {
   @apply dark:bg-bg-c-3 w-11 h-16 rounded-md text-center text-2xl outline-none
+}
+
+.select-button {
+  @apply h-6 px-3 dark:bg-bg-c-2 rounded-md dark:hover:bg-bg-c-3 transition-all bg-white hover:bg-slate-100 
+}
+
+.select-content {
+  @apply p-1 dark:bg-bg-c-2 w-full rounded-md transition-all z-50 bg-white
+}
+
+.select-field {
+  @apply dark:bg-bg-c-2 w-full py-1 px-3 dark:hover:bg-bg-c-3 list-none cursor-pointer text-left rounded-sm transition-all hover:bg-slate-100
+}
+
+.recipe-cover {
+  @apply w-full h-80 dark:bg-bg-c-2 dark:hover:bg-bg-c-3 transition-all hover:bg-slate-100 bg-white
+}
+
+.recipe-input {
+  @apply dark:bg-bg-c-2 dark:hover:bg-bg-c-3 pl-3 rounded-md outline-none transition-all hover:bg-slate-100
+}
+
+.search-field {
+  @apply dark:bg-bg-c-2 dark:hover:bg-bg-c-3 w-full h-8 rounded-md transition-all pl-11 outline-none hover:bg-slate-100
+}
+
+.search-button {
+  @apply dark:bg-bg-c-2 dark:hover:bg-bg-c-3 block w-24 h-6 text-center rounded-md bg-white hover:bg-slate-100 transition-all
+}
+
+.profile-button {
+  @apply dark:bg-bg-c-2 dark:hover:bg-bg-c-3
+}
+
+.profile-link {
+  @apply dark:hover:bg-bg-c-2 transition-all
+}
+
+.profile-link-active {
+  @apply dark:bg-bg-c-2 dark:hover:bg-bg-c-3
+}
+
+.recipe-content-card {
+  @apply bg-[#cccccc4b] dark:bg-[#41414159] break-words p-3 rounded-xl
+}
+
+.star-icon {
+  @apply dark:fill-color-custom-yellow fill-fill-orange
+}
+
+.star-icon-active {
+  @apply dark:fill-[#F4F4C8] fill-[#E3BA7A]
 }

@@ -4,11 +4,11 @@ import { useState }              from "react";
 import { z }                     from "zod";
 import Link                      from "next/link";
 import { 
-  AuthButton, 
   AuthIconButton, 
-  AuthInput }                    from "@/components/auth";
+  AuthInput, 
+  FormLayout}                    from "@/components/auth";
 import { EyeIcon, SlashEyeIcon } from "@/icons";
-import { FormLayout }            from "../FormLayout";
+import Button                    from "@/ui/button/Button";
 
 const signInSchema = z.object({
   email   : z.string().email(),
@@ -59,7 +59,7 @@ const SignUp = () => {
         <div>
           <Link className="link-text text-sm" href={"/#"}>Forgot password?</Link>
         </div>
-        <AuthButton
+        <Button
           isActive={isFieldsEmpty}
           text="Sign in"
           className={"!w-80 mt-3"}

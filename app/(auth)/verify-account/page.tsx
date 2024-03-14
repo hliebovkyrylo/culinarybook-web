@@ -1,9 +1,9 @@
 "use client"
 
-import { AuthButton, AuthNumberInput }  from "@/components/auth";
+import { AuthNumberInput, FormLayout }  from "@/components/auth";
 import { useEffect, useRef, useState }  from "react";
-import { FormLayout }                   from "../FormLayout";
 import Link                             from "next/link";
+import Button                           from "@/ui/button/Button";
 
 const VerifyAccount = () => {
   const [digits, setDigits] = useState(['', '', '', '', '', '']);
@@ -34,7 +34,7 @@ const VerifyAccount = () => {
   };
 
   return (
-    <FormLayout title="Enter confirmation code">
+    <FormLayout title="Verify account">
       <div>
         {digits.map((digit, index) => (
           <AuthNumberInput
@@ -47,7 +47,7 @@ const VerifyAccount = () => {
           />
         ))}
       </div>
-      <AuthButton
+      <Button
         text="Check code"
         className="!w-[300px]"
         isActive={digits.every(digit => digit !== '')}

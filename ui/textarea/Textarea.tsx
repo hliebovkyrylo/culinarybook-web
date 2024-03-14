@@ -3,7 +3,7 @@ interface RecipeTextareaProps {
   placeholder: string;
 }
 
-const RecipeTextarea = ({
+const Textarea = ({
   className,
   placeholder
 }: RecipeTextareaProps) => {
@@ -14,4 +14,4 @@ const RecipeTextarea = ({
   )
 };
 
-export default RecipeTextarea;
+export default Textarea;

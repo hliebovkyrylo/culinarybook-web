@@ -1,6 +1,6 @@
 import { createIcon } from "../../utils";
 
-export const Medalicon = createIcon((params, ref) => (
+export const MedalIcon = createIcon((params, ref) => (
   <svg width="20" height="20" {...params} ref={ref} viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
     <g clipPath="url(#clip0_9_17)">
       <g clip-path="url(#clip1_9_17)">

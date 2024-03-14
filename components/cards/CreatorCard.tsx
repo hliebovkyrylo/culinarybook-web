@@ -6,11 +6,12 @@ import Image from "next/image";
 import Link  from "next/link";
 
 interface ICreatorCard {
-  id       : string;
-  userImage: string;
-  name     : string;
-  followers: number;
-  recipes  : number;
+  id         : string;
+  userImage  : string;
+  name       : string;
+  followers  : number;
+  recipes    : number;
+  className ?:string;
 }
 
 const CreatorCard = ({
@@ -18,10 +19,11 @@ const CreatorCard = ({
   userImage,
   name,
   followers,
-  recipes
+  recipes,
+  className
 }: ICreatorCard) => {
   return (
-    <article className="bg-white dark:bg-bg-c-2 w-width-160 py-3 px-4 rounded-xl">
+    <article className={`bg-[#cccccc4b] hover:bg-[#bbbbbb4b] dark:bg-[#41414159] dark:hover:bg-[#41414170] w-width-160 py-3 px-4 rounded-xl ${className}`}>
       <Link href={`/profile/${id}`}>
         <Image className="rounded-full h-8 object-cover" src={userImage} alt="User image" width={32} height={32} />
         <div className="my-4 card__name">{name}</div>
