@@ -150,7 +150,7 @@ const CreateRecipe = () => {
           <h3 className="text-color-custom-yellow font-semibold my-5">Ingredients</h3>
           <Textarea placeholder="Enter ingredients..." className="w-full max-w-sm min-h-[170px]" />
           <h3 className="text-color-custom-yellow font-semibold my-5">Instructions</h3>
-          <div className="flex overflow-x-auto">
+          <div>
             <div className="relative">
               <span className="absolute left-3 top-2 text-color-custom-yellow font-semibold z-50">Step 1</span>
               <Textarea placeholder="Enter text for step..." className="!pt-10 min-h-[128px] mr-3 w-[300px]" />

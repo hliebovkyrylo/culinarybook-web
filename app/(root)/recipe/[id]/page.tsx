@@ -6,11 +6,13 @@ import {
   RecipeContentCard, 
   RecipeInfo, 
   RecipeRating 
-}                   from "@/components/recipe";
-import Button       from "@/ui/button/Button";
-import { Input }    from "@/ui/input/Input";
-import Image        from "next/image";
-import { useEffect, useRef, useState } from "react";
+}                              from "@/components/recipe";
+import Button                  from "@/ui/button/Button";
+import { Input }               from "@/ui/input/Input";
+import Image                   from "next/image";
+import { useState }            from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import                              'swiper/swiper-bundle.css';
 
 const Recipe = () => {
   const [isLiked, setIsLiked] = useState<boolean>(false);
@@ -53,13 +55,17 @@ const Recipe = () => {
         </>
       } />
       <h3 className="link-text font-semibold my-5">Instructions</h3>
-      <div className="flex overflow-x-auto">
-        {[...Array(12)].map(() => (
-          <div className="relative">
-            <span className="absolute left-3 top-2 link-text font-semibold z-50">Step 1</span>
-            <RecipeContentCard text="dfgasf" className="w-[300px] !pt-10 min-h-[128px] mr-3" />
-          </div>
-        ))}
+      <div className="flex justify-start">
+        <Swiper spaceBetween={70} slidesPerView={"auto"} freeMode={true} centeredSlides={false} className="!m-0">
+          {[...Array(12)].map(() => (
+            <SwiperSlide style={{ width: '240px' }}>
+              <div className="relative">
+                <span className="absolute left-3 top-2 link-text font-semibold z-50">Step 1</span>
+                <RecipeContentCard text="dfgasf" className="w-[300px] !pt-10 min-h-[128px]" />
+              </div>
+            </SwiperSlide>
+          ))}
+        </Swiper>
       </div>
       <div className="mt-12">
         <h3 className="link-text font-semibold my-5">Reviews and ratings</h3>
