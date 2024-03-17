@@ -9,7 +9,7 @@ import {
 }                         from "@/icons";
 import { useTheme }       from "next-themes";
 import { Cookies }        from "react-cookie";
-import { DropMenuButton } from "../DropMenu";
+import { DropMenuButton } from "./DropMenuButton";
 
 const DropMenu = () => {
   const { theme, setTheme } = useTheme();

@@ -1,11 +1,9 @@
 "use client"
 
-import { Poppins }       from 'next/font/google'
-import Topbar            from '@/components/shared/Topbar'
-import LeftSidebar       from '@/components/shared/LeftSidebar'
-import Bottombar         from "@/components/shared/Bottombar";
-import { ThemeProvider } from "next-themes";
-import                        "../globals.css";
+import { Poppins }                            from 'next/font/google'
+import { ThemeProvider }                      from "next-themes";
+import { Bottombar, LeftSidebar, Topbar }     from '@/components/shared';
+import                                             "../globals.css";
 
 const poppins = Poppins({ weight: ['400', '500', '700', '800'], subsets: ['latin'] })
 

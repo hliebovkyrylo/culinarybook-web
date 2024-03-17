@@ -4,7 +4,7 @@ import { sidebarLinks } from "@/constants";
 import Link             from "next/link";
 import { usePathname }  from "next/navigation";
 
-const Bottombar = () => {
+export const Bottombar = () => {
   const pathname  = usePathname();
 
   return (
@@ -21,5 +21,3 @@ const Bottombar = () => {
     </footer>
   )
 };
-
-export default Bottombar;

@@ -5,7 +5,7 @@ import { sidebarLinks } from "@/constants";
 import { usePathname }  from "next/navigation";
 import { LogoIcon }     from "@/icons/icons/LogoIcon/LogoIcon";
 
-const LeftSidebar = () => {
+export const LeftSidebar = () => {
   const pathname = usePathname();
 
   const userId = "3489hg33934hujgg"
@@ -31,5 +31,3 @@ const LeftSidebar = () => {
     </aside>
   )
 };
-
-export default LeftSidebar;
