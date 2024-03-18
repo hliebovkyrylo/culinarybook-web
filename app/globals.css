@@ -110,6 +110,10 @@ body {
   @apply dark:bg-bg-c-10 text-black w-full py-2 rounded-lg dark:hover:bg-[#ADAE5E] transition-all bg-[#C77D0A] hover:bg-[#c7750a]
 }
 
+.auth-button-disabled {
+  @apply !bg-[#888888]
+}
+
 .icon-eye {
   @apply dark:fill-white fill-black
 }
