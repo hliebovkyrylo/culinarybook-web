@@ -64,7 +64,10 @@ export const Topbar = () => {
             <Link href={'/notifications'} className="mr-6 fill-[#6b6b6b] hover:fill-[#808080] transition-all relative">
               <BellIcon className="w-6" />
               {isUnread && (
-                <span className="block absolute top-[3px] right-[-1px] rounded-full w-3 h-3 bg-red-600" />
+                <>
+                  <span className="block absolute top-[3px] right-[-1px] rounded-full w-3 h-3 bg-red-600 animate-ping" />
+                  <span className="block absolute top-[3px] right-[-1px] rounded-full w-3 h-3 bg-red-600" />
+                </>
               )}
             </Link>
             <button onClick={onClickOpenMenu}>
@@ -93,17 +96,20 @@ export const Topbar = () => {
         {isVisible && (
           <DropMenu>
             <DropMenuButton 
-              icon={theme === 'dark' ? <SunIcon className='ml-4 mr-2' /> : <MoonIcon className='ml-4 mr-2' />} 
+              icon={theme === 'dark' ? <SunIcon className='mr-1 ' /> : <MoonIcon className='mr-2' />} 
               text="Change theme" 
               onClick={handleChangeTheme} 
+              className="pl-3"
             />
             <DropMenuButton 
-              icon={<GearIcon className="dark:fill-white fill-black ml-4 mr-2" />} 
+              icon={<GearIcon className="dark:fill-white fill-black mr-2" />} 
               text="Settings" 
+              className="pl-4"
             />
             <DropMenuButton 
-              icon={<SavedIcon className="dark:fill-white fill-black ml-4 mr-2" />} 
+              icon={<SavedIcon className="dark:fill-white fill-black mr-2" />} 
               text="Saved recipes" 
+              className="pl-4"
             />
             <DropMenuButton 
               text="Logout" 

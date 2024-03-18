@@ -7,8 +7,15 @@ import {
 import Recipecard  from "@/components/cards/RecipeCard";
 import CreatorCard from "@/components/cards/CreatorCard";
 import Image       from "next/image";
+import { Loader }  from "@/components/shared";
 
 const Home = () => {
+  const isLoading = false;
+
+  if (isLoading) {
+    return <Loader className="mt-[-64px]" />
+  }
+
   return (
     <>
       <Image className="absolute w-full h-screen top-0 left-0 object-cover z-[-1] blur-sm opacity-10" src={"/assets/testrecipephoto.jpg"} alt="" width={500} height={500} />
@@ -16,7 +23,7 @@ const Home = () => {
       <ContentHeader
         title="Based on your interests"
         linkText="See all"
-        linkHref="/search"
+        linkHref="/search/recipes"
         className="mt-6"
       />
       <div className="mt-3 mb-28">
