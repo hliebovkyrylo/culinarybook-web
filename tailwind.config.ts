@@ -36,6 +36,7 @@ const config: Config = {
         "bg-c-10": "#DDDF72",
         "bg-c-11": "#27272a",
         "bg-c-12": "#666666",
+        "bg-c-13": "#262626",
       },
       colors: {
         "color-custom-yellow": "#DDDF72",

@@ -18,8 +18,10 @@ import { DropMenuButton }      from "../..";
 import { Cookies }             from "react-cookie";
 
 export const Topbar = () => {
+  const userId = '3489hg33934hujgg';
+
   const [isVisible, setIsVisible] = useState(false);
-  const { theme, setTheme } = useTheme();
+  const { theme, setTheme }       = useTheme();
 
   const [isMounted, setIsMounted] = useState(false);
 
@@ -47,7 +49,8 @@ export const Topbar = () => {
     cookies.remove('accessToken');
   };
 
-  const isUnread = true;
+  const isUnread            = true;
+  const notificationsNumber = 2;
 
   return (
     <nav className="topbar">
@@ -66,7 +69,7 @@ export const Topbar = () => {
               {isUnread && (
                 <>
                   <span className="block absolute top-[3px] right-[-1px] rounded-full w-3 h-3 bg-red-600 animate-ping" />
-                  <span className="block absolute top-[3px] right-[-1px] rounded-full w-3 h-3 bg-red-600" />
+                  <span className="block absolute top-[3px] text-white right-[-1px] rounded-full text-xs text-center w-3 h-3 bg-red-600">{notificationsNumber > 10 ? "9+" : notificationsNumber}</span>
                 </>
               )}
             </Link>
@@ -104,13 +107,15 @@ export const Topbar = () => {
             <DropMenuButton 
               icon={<GearIcon className="dark:fill-white fill-black mr-2" />} 
               text="Settings" 
-              className="pl-4"
+              className="pl-[13px]"
             />
-            <DropMenuButton 
-              icon={<SavedIcon className="dark:fill-white fill-black mr-2" />} 
-              text="Saved recipes" 
-              className="pl-4"
-            />
+            <Link href={`/profile/${userId}/saved`}>
+              <DropMenuButton 
+                icon={<SavedIcon className="dark:fill-white fill-black mr-2" />} 
+                text="Saved recipes" 
+                className="pl-4"
+              />
+            </Link>
             <DropMenuButton 
               text="Logout" 
               onClick={onClickSignOut}
