@@ -12,7 +12,7 @@ const Button = ({
   isActive
 }: IButton) => {
   return (
-    <button onClick={onClick} disabled={isActive} className={`auth-button font-semibold ${className}`}>{text}</button>
+    <button onClick={onClick} disabled={!isActive} className={`${!isActive && "auth-button-disabled"} auth-button font-semibold ${className}`}>{text}</button>
   )
 };
 

@@ -28,3 +28,4 @@ export * from "./MedalIcon"
 export * from "./StarIcon";
 export * from "./HeartRegularIcon";
 export * from "./BookmarkSolidIcon";
+export * from "./BellIcon";
