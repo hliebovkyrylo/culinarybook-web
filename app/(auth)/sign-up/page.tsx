@@ -9,7 +9,7 @@ import {
   FormLayout
 }                                from "@/components/auth";
 import { EyeIcon, SlashEyeIcon } from "@/icons";
-import Button                    from "@/ui/button/Button";
+import { Button }                from "@/ui";
 
 const signUpSchema = z.object({
   email   : z.string().email(),

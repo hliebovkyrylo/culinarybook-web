@@ -9,8 +9,8 @@ import {
   EyeIcon, 
   SlashEyeIcon 
 }                     from "@/icons";
+import { Button }     from "@/ui";
 import { useState }   from "react";
-import Button         from "@/ui/button/Button";
 
 const ChangePassword = () => {
   const [passwordInputType, setPasswordInputType]               = useState("password");

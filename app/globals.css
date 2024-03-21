@@ -99,7 +99,7 @@ body {
 }
 
 .custom-input {
-  @apply dark:bg-bg-c-2 dark:hover:bg-bg-c-3 w-full py-2 px-3 transition-all rounded-xl outline-none
+  @apply dark:bg-bg-c-2 dark:hover:bg-bg-c-3 w-full py-2 px-3 transition-all rounded-xl outline-none dark:focus:bg-bg-c-3
 }
 
 .icon-color {
@@ -180,4 +180,20 @@ body {
 
 .star-icon-active {
   @apply dark:fill-[#F4F4C8] fill-[#E3BA7A]
+}
+
+.settings-background {
+  @apply dark:bg-[#00000085] backdrop-blur-sm
+}
+
+.checkbox-bg {
+  @apply w-10 block relative h-5 bg-bg-c-3 rounded-2xl
+}
+
+.checkbox-item {
+  @apply bg-[#d9d9d9] block w-5 h-full rounded-full absolute top-0 left-0 transition-all
+}
+
+.checkbox-item-checked {
+  @apply dark:!bg-bg-c-10 !bg-[#C77D0A] !right-0 left-auto
 }

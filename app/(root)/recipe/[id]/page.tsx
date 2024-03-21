@@ -7,7 +7,7 @@ import {
   RecipeInfo, 
   RecipeRating 
 }                              from "@/components/recipe";
-import Button                  from "@/ui/button/Button";
+import { Button }               from "@/ui";
 import { Input }               from "@/ui/input/Input";
 import Image                   from "next/image";
 import { useState }            from "react";

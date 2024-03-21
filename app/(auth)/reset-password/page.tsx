@@ -7,7 +7,7 @@ import {
 }                                from "@/components/auth";
 import { useState }              from "react";
 import { EyeIcon, SlashEyeIcon } from "@/icons";
-import Button                    from "@/ui/button/Button";
+import { Button }                from "@/ui";
 
 const ResetPassword = () => {
   const [passwordInputType, setPasswordInputType]               = useState("password");
