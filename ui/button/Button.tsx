@@ -5,7 +5,7 @@ interface IButton {
   isActive  : boolean;
 }
 
-const Button = ({
+export const Button = ({
   text,
   onClick,
   className,
@@ -15,5 +15,3 @@ const Button = ({
     <button onClick={onClick} disabled={!isActive} className={`${!isActive && "auth-button-disabled"} auth-button font-semibold ${className}`}>{text}</button>
   )
 };
-
-export default Button;

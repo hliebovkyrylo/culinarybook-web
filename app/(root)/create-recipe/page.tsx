@@ -17,13 +17,13 @@ import {
   SelectContent, 
   SelectField 
 }                           from "@/components/select";
-import Button               from "@/ui/button/Button";
 import Textarea             from "@/ui/textarea/Textarea";
 import { 
   RecipeCreateCover, 
   RecipeInput, 
   RecipeButton 
 }                           from "@/components/create-recipe";
+import { Button }           from "@/ui";
 
 const CreateRecipe = () => {
   const [elements, setElements]       = useState<JSX.Element[]>([]);
