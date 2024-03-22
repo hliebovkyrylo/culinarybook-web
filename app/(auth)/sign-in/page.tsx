@@ -62,7 +62,7 @@ const SignUp = () => {
         <Button
           isActive={isFieldsEmpty}
           text="Sign in"
-          className={"!w-80 mt-3"}
+          className={"max-w-xs mt-3"}
         />
       </div>
       <div className="flex">

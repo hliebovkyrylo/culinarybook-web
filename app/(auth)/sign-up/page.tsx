@@ -22,18 +22,23 @@ const signUpSchema = z.object({
 export type FormData = z.infer<typeof signUpSchema>;
 
 const SignUp = () => {
-  const [emailInput, setEmailInput]       = useState<string>("");
-  const [usernameInput, setUsernameInput] = useState<string>("");
-  const [nameInput, setNameInput]         = useState<string>("");
-  const [passwordInput, setPasswordInput] = useState<string>("");
+  const [emailInput, setEmailInput]                     = useState<string>("");
+  const [usernameInput, setUsernameInput]               = useState<string>("");
+  const [nameInput, setNameInput]                       = useState<string>("");
+  const [passwordInput, setPasswordInput]               = useState<string>("");
+  const [confirmPasswordInput, setConfirmPasswordInput] = useState<string>("");
 
-  const isFieldsEmpty = emailInput !== "" && passwordInput !== "" && usernameInput !== "" && nameInput !== "";
+  const isFieldsEmpty = emailInput !== "" && passwordInput !== "" && usernameInput !== "" && nameInput !== "" && confirmPasswordInput !== "";
 
-  const [passwordInputType, setPasswordInputType] = useState("password");
+  const [passwordInputType, setPasswordInputType]               = useState("password");
+  const [confirmPasswordInputType, setConfirmPasswordInputType] = useState("password");
 
-  const handleVisibleChange = () => {
-    setPasswordInputType(passwordInputType === "password" ? "text" : "password");
+  const handleVisibleChange = (setInputType: React.Dispatch<React.SetStateAction<string>>, inputType: string) => {
+    setInputType(inputType === "password" ? "text" : "password");
   };
+
+  const togglePasswordVisibility        = () => handleVisibleChange(setPasswordInputType, passwordInputType);
+  const toggleConfirmPasswordVisibility = () => handleVisibleChange(setConfirmPasswordInputType, confirmPasswordInputType);
 
   return (
     <FormLayout title="Sign Up">
@@ -74,19 +79,35 @@ const SignUp = () => {
           <AuthIconButton 
             firstIcon={<EyeIcon className="icon-eye" />}
             secondIcon={<SlashEyeIcon className="icon-eye" />}
-            onClick={handleVisibleChange}
+            onClick={togglePasswordVisibility}
             inputType={passwordInputType}
+          />
+        </div>
+        <div className="relative max-w-xs">
+          <AuthInput
+            type={confirmPasswordInputType}
+            errorMessage=""
+            color="default"
+            placeholder="Confirm password"
+            className="mb-2 max-w-xs"
+            onChangeValue={(event) => setConfirmPasswordInput(event.target.value)}
+          />
+          <AuthIconButton 
+            firstIcon={<EyeIcon className="icon-eye" />}
+            secondIcon={<SlashEyeIcon className="icon-eye" />}
+            onClick={toggleConfirmPasswordVisibility}
+            inputType={confirmPasswordInputType}
           />
         </div>
         <Button
           isActive={isFieldsEmpty}
           text="Sign in"
-          className={"!w-80 mt-3"}
+          className={"max-w-xs mt-3"}
         />
       </div>
       <div className="flex">
         <p className="mr-1">Already have an accont?</p>
-        <Link className="link-text" href={"/sign-in"}>Sign Up</Link>
+        <Link className="link-text" href={"/sign-in"}>Sign In</Link>
       </div>
     </FormLayout>
   )
