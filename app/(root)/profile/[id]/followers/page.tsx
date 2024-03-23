@@ -1,5 +1,6 @@
 import RecipeCard                     from "@/components/cards/RecipeCard/RecipeCard";
 import { FollowWindow, FollowerCard } from "@/components/profile"
+import { Input }                      from "@/ui";
 
 const Followers = () => {
   return (
@@ -21,6 +22,7 @@ const Followers = () => {
         title="Followers"
         userId="3489hg33934hujgg"
       >
+        <Input type="search" placeholder="Enter username" className="mb-4 border-[1px] border-[#383838]" />
         {[...Array(12)].map(() => (
           <FollowerCard 
             key={'wfwsfgre'}

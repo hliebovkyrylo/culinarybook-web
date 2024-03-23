@@ -7,15 +7,15 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  @apply bg-[#a7a7a7] 
+  @apply bg-[#a7a7a775] 
 }
 
 ::-webkit-scrollbar {
-  @apply bg-[#4e4e4e] w-2 h-2 max-md:w-0 max-md:h-0 
+  @apply bg-[#4e4e4e88] w-2 h-2 max-md:w-0 max-md:h-0 
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-[#818181] rounded-md 
+  @apply bg-[#6d6d6d8f] rounded-md 
 }
 
 .main-container {
