@@ -197,3 +197,7 @@ body {
 .checkbox-item-checked {
   @apply dark:!bg-bg-c-10 !bg-[#C77D0A] !right-0 left-auto
 }
+
+.follower-card-bg {
+  @apply dark:bg-bg-c-4 bg-bg-c-8
+}

@@ -1,6 +1,6 @@
 import RecipeCard from "@/components/cards/RecipeCard/RecipeCard";
 
-const Profile = ({ children }: { children: React.ReactNode }) => {
+const Profile = () => {
   return (
     <>
       {[...Array(5)].map(() => (
