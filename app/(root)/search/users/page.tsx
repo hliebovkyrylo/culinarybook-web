@@ -1,6 +1,6 @@
 "use client"
 
-import CreatorCard   from "@/components/cards/CreatorCard";
+import CreatorCard   from "@/components/cards/CreatorCard/CreatorCard";
 import { 
   SearchButtons, 
   SearchField, 

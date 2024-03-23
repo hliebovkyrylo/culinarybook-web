@@ -4,8 +4,8 @@ import {
   ContentHeader, 
   ContentMain 
 }                  from "@/components/home";
-import Recipecard  from "@/components/cards/RecipeCard";
-import CreatorCard from "@/components/cards/CreatorCard";
+import Recipecard  from "@/components/cards/RecipeCard/RecipeCard";
+import CreatorCard from "@/components/cards/CreatorCard/CreatorCard";
 import Image       from "next/image";
 import { Loader }  from "@/components/shared";
 

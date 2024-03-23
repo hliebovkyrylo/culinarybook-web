@@ -1,6 +1,6 @@
 "use client"
 
-import RecipeCard    from "@/components/cards/RecipeCard";
+import RecipeCard from "@/components/cards/RecipeCard/RecipeCard";
 import { 
   SearchButtons, 
   SearchField, 

@@ -1,4 +1,4 @@
-import RecipeCard        from "@/components/cards/RecipeCard";
+import RecipeCard        from "@/components/cards/RecipeCard/RecipeCard";
 import { HistoryLayout } from "@/components/history";
 
 const HistoryPage = () => {

@@ -2,7 +2,6 @@
 
 import { AuthNumberInput, FormLayout }  from "@/components/auth";
 import { useEffect, useRef, useState }  from "react";
-import Link                             from "next/link";
 import { Button }                       from "@/ui";
 import { ArrowRightSquare }             from "@/icons";
 
