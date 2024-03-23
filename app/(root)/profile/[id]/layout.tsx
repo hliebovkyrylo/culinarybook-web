@@ -1,4 +1,3 @@
-import RecipeCard                        from "@/components/cards/RecipeCard/RecipeCard";
 import { ProfilePanel, ProfileUserInfo } from "@/components/profile";
 
 const ProfileLayout = ({ children }: { children: React.ReactNode }) => {
@@ -6,6 +5,7 @@ const ProfileLayout = ({ children }: { children: React.ReactNode }) => {
     <div className="w-full max-w-3xl mx-auto">
       <ProfileUserInfo
         username="jhondoe"
+        userId="3489hg33934hujgg"
         name="Jhon Doe"
         followersNumber={54}
         followingsNumber={13}

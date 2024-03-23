@@ -1,7 +1,9 @@
 import Image from "next/image";
+import Link  from "next/link";
 
 interface IProfileUserInfo {
   username        : string;
+  userId          : string;
   recipesNumber   : number;
   followersNumber : number;
   followingsNumber: number;
@@ -15,6 +17,7 @@ export const ProfileUserInfo = ({
   followersNumber, 
   followingsNumber,
   name,
+  userId,
   image
 }: IProfileUserInfo) => {
   return (
@@ -26,8 +29,8 @@ export const ProfileUserInfo = ({
         </div>
         <div className="flex justify-between">
           <p className="default-text text-center"><span className="link-text">{recipesNumber}</span> {recipesNumber > 1 ? "recipes" : "recipe"}</p>
-          <p className="default-text text-center"><span className="link-text">{followersNumber}</span> {followersNumber > 1 ? "followers" : "follower"}</p>
-          <p className="default-text text-center"><span className="link-text">{followingsNumber}</span> {followingsNumber > 1 ? "followings" : "following"}</p>
+          <Link href={`/profile/${userId}/followers`} className="default-text text-center"><span className="link-text">{followersNumber}</span> {followersNumber > 1 ? "followers" : "follower"}</Link>
+          <Link href={`/profile/${userId}/followings`} className="default-text text-center"><span className="link-text">{followingsNumber}</span> {followingsNumber > 1 ? "followings" : "following"}</Link>
         </div>
         <p className="default-text">{name}</p>
       </div>
