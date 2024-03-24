@@ -199,5 +199,5 @@ body {
 }
 
 .follower-card-bg {
-  @apply dark:bg-bg-c-4 bg-bg-c-8
+  @apply dark:bg-bg-c-4 bg-bg-c-8 dark:hover:bg-bg-c-3
 }
