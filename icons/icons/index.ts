@@ -31,3 +31,4 @@ export * from "./BookmarkSolidIcon";
 export * from "./BellIcon";
 export * from "./ArrowRightSquare";
 export * from "./XMarkIcon";
+export * from "./ImageIcon";
