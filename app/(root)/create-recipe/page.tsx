@@ -8,6 +8,7 @@ import {
 import {
   ClockIcon, 
   FileIcon, 
+  ImageIcon, 
   LockIcon, 
   SecondMedalIcon, 
   UntesilsIcon
@@ -32,7 +33,7 @@ const CreateRecipe = () => {
   const handleClick = () => {
     setElements(prevElements => [...prevElements, <div className="relative">
       <span className="absolute left-3 top-2 text-color-custom-yellow font-semibold z-50">{`Step ${prevElements.length + 2}`}</span>
-      <Textarea placeholder="Enter text for step..." className="!pt-10 min-h-[128px] mr-3 w-[300px]" />
+      <Textarea placeholder="Enter text for step..." className="!pt-10 min-h-[128px] mr-3 w-full max-w-[300px]" />
     </div>]);
   };
 
@@ -49,16 +50,19 @@ const CreateRecipe = () => {
   const [activeId, setActiveId] = useState<string | null>(null);
 
   const [complexity, setComplexity] = useState<string>(""); 
-  const [access, setAccess]         = useState<string>(""); 
+  const [access, setAccess]         = useState<boolean>(true); 
   const [type, setType]             = useState<string>(""); 
+  const [bgImage, setBgImage]       = useState<boolean>(true);
 
-  const onClickSetValue = (id: string, value: string) => {
+  const onClickSetValue = (id: string, value: any) => {
     if (id === 'complexity') {
       setComplexity(value);
     } else if (id === 'access') {
       setAccess(value);
     } else if (id === 'type') {
       setType(value);
+    } else if (id === 'bgImage') {
+      setBgImage(value);
     }
 
     setActiveId(null);
@@ -112,12 +116,12 @@ const CreateRecipe = () => {
                   <SelectButton 
                     isActive={activeId === 'access'} 
                     className="w-[218px] text-left" 
-                    title={access === '' ? 'Access' : access}
+                    title={access ? 'Avaible for everyone' : 'Avaible only to me'}
                     onClick={() => onClickChangeStates('access')} 
                   />
                   <SelectContent isActive={activeId === 'access'}>
-                    <SelectField icon={<span>🌐</span>} value="Avaible for everyone" id="1" onClick={() => onClickSetValue('access', "Avaible for everyone")} />
-                    <SelectField icon={<span>🔒</span>} value="Avaible only to me" id="2" onClick={() => onClickSetValue('access', "Avaible only to me")} />
+                    <SelectField icon={<span>🌐</span>} value="Avaible for everyone" id="1" onClick={() => onClickSetValue('access', true)} />
+                    <SelectField icon={<span>🔒</span>} value="Avaible only to me" id="2" onClick={() => onClickSetValue('access', false)} />
                   </SelectContent>
                 </div>
               </div>
@@ -145,6 +149,23 @@ const CreateRecipe = () => {
                   </SelectContent>
                 </div>
               </div>
+              {recipeImage && (
+                <div className="flex mb-3">
+                  <ImageIcon className="w-5 h-5 fill-[#666]" />
+                  <div className="relative ml-3">
+                    <SelectButton 
+                      isActive={activeId === 'bgImage'} 
+                      className="w-[218px] text-left" 
+                      title={bgImage ? 'Apply' : 'Do not use'} 
+                      onClick={() => onClickChangeStates('bgImage')} 
+                    />
+                    <SelectContent isActive={activeId === 'bgImage'}>
+                      <SelectField icon={<span>✅</span>} value="Apply photo as background image" id="1" onClick={() => onClickSetValue('bgImage', true)} />
+                      <SelectField icon={<span>❎</span>} value="Do not use photo as background image" id="1" onClick={() => onClickSetValue('bgImage', false)} />
+                    </SelectContent>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
           <h3 className="text-color-custom-yellow font-semibold my-5">Ingredients</h3>
@@ -153,12 +174,14 @@ const CreateRecipe = () => {
           <div>
             <div className="relative">
               <span className="absolute left-3 top-2 text-color-custom-yellow font-semibold z-50">Step 1</span>
-              <Textarea placeholder="Enter text for step..." className="!pt-10 min-h-[128px] mr-3 w-[300px]" />
+              <Textarea placeholder="Enter text for step..." className="!pt-10 min-h-[128px] mr-3 w-full max-w-[300px]" />
             </div>
             {elements}
-            <RecipeButton
-              buttonClick={handleClick}
-            />
+            <div className="w-full max-w-[300px] flex justify-center">
+              <RecipeButton
+                buttonClick={handleClick}
+              />
+            </div>
           </div>
         <Button text="Create recipe" className="mt-12 max-w-[234px] cursor-pointer max-md:mb-14" isActive={true} />
       </form>
