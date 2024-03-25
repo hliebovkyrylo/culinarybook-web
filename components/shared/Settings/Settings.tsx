@@ -20,10 +20,19 @@ export const Settings = ({ closeSettings }: { closeSettings: () => void }) => {
   const handleCheck = () => {
     setChecked(!checked);
   }
+
+  const handleOutsideClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    closeSettings();
+  };
+
+  const handleInsideClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    event.stopPropagation();
+  };
+  
   
   return (
-    <div className="flex justify-center items-center fixed top-0 left-0 w-full h-screen settings-background z-[60]">
-      <section className="flex flex-col justify-between w-full max-w-[600px] h-[615px] p-6 rounded-xl main-background">
+    <div className="flex justify-center items-center fixed top-0 left-0 w-full h-screen settings-background z-[60]" onClick={handleOutsideClick}>
+      <section className="flex flex-col justify-between w-full max-w-[600px] h-[615px] p-6 rounded-xl main-background" onClick={handleInsideClick}>
         <div>
           <SettingsPanel 
             selectedUserImage={selectedUserImage}
