@@ -3,7 +3,7 @@ import RecipeCard from "@/components/cards/RecipeCard/RecipeCard";
 const Profile = () => {
   return (
     <>
-      {[...Array(5)].map(() => (
+      {[...Array(8)].map(() => (
         <RecipeCard
           key={'ssgsg'}
           id="dgfg9034hg348yfg3j0s94"
