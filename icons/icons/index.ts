@@ -32,3 +32,5 @@ export * from "./BellIcon";
 export * from "./ArrowRightSquare";
 export * from "./XMarkIcon";
 export * from "./ImageIcon";
+export * from "./ArrowSortUpIcon";
+export * from "./ArrowSortDownIcon";
