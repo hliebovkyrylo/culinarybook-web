@@ -1,5 +1,3 @@
-import { useState } from "react"
-
 interface ICheckbox {
   isChecked: boolean;
   onClick ?: () => void;
