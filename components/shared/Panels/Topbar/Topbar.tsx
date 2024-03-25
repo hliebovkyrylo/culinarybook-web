@@ -19,7 +19,7 @@ import { Cookies }                  from "react-cookie";
 
 export const Topbar = () => {
   const cookies = new Cookies();
-  const userId = '3489hg33934hujgg';
+  const userId  = '3489hg33934hujgg'; 
 
   const [isVisible, setIsVisible]               = useState<boolean>(false);
   const [isOpenedSettings, setIsOpenedSettings] = useState<boolean>(false);
@@ -53,6 +53,7 @@ export const Topbar = () => {
 
   const onClickOpenSettings = () => {
     setIsOpenedSettings(true);
+    setIsVisible(false)
   };
 
   return (
@@ -122,6 +123,7 @@ export const Topbar = () => {
                   icon={<SavedIcon className="dark:fill-white fill-black mr-2" />} 
                   text="Saved recipes" 
                   className="pl-4"
+                  onClick={() => setIsVisible(false)}
                 />
               </Link>
               <DropMenuButton 
