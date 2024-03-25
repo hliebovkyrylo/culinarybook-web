@@ -187,15 +187,15 @@ body {
 }
 
 .checkbox-bg {
-  @apply w-10 block relative h-5 bg-bg-c-3 rounded-2xl
+  @apply w-10 block relative h-5 dark:bg-bg-c-3 bg-bg-c-8 rounded-2xl
 }
 
 .checkbox-item {
-  @apply bg-[#d9d9d9] block w-5 h-full rounded-full absolute top-0 left-0 transition-all
+  @apply bg-[#d9d9d9] block w-5 h-full rounded-full absolute top-0 translate-x-0 transition-all
 }
 
 .checkbox-item-checked {
-  @apply dark:!bg-bg-c-10 !bg-[#C77D0A] !right-0 left-auto
+  @apply dark:!bg-bg-c-10 !bg-[#C77D0A] translate-x-5
 }
 
 .follower-card-bg {
