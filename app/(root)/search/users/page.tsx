@@ -28,6 +28,7 @@ const Search = () => {
             followers={100}
             recipes={17}
             className="mb-2 !w-[186px] max-lg:!w-[98%]"
+            userBanner=""
           />
         ))}
       </div>
