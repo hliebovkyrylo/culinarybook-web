@@ -54,6 +54,7 @@ const Home = () => {
               name="Jhon Doe"
               followers={100}
               recipes={17}
+              userBanner={"/assets/testbanner.jpg"}
             />
           ))}
         </ContentMain>
