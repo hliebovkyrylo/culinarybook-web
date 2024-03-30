@@ -4,30 +4,25 @@ import {
   AuthIconButton, 
   AuthInput, 
   FormLayout
-}                     from "@/components/auth";
+}                                from "@/components/auth";
+import { usePasswordVisibility } from "@/hooks/usePasswordVisibility";
 import { 
   EyeIcon, 
   SlashEyeIcon 
-}                     from "@/icons";
-import { Button }     from "@/ui";
-import Link           from "next/link";
-import { useState }   from "react";
+}                                from "@/icons";
+import { Button }                from "@/ui";
+import Link                      from "next/link";
+import { useTranslation }        from "react-i18next";
 
 const ChangePassword = () => {
-  const [passwordInputType, setPasswordInputType]               = useState("password");
-  const [confirmPasswordInputType, setConfirmPasswordInputType] = useState("password");
+  const { t } = useTranslation();
 
-  const handleVisibleChange = (setInputType: React.Dispatch<React.SetStateAction<string>>, inputType: string) => {
-    setInputType(inputType === "password" ? "text" : "password");
-  };
-
-  const togglePasswordVisibility        = () => handleVisibleChange(setPasswordInputType, passwordInputType);
-  const toggleConfirmPasswordVisibility = () => handleVisibleChange(setConfirmPasswordInputType, confirmPasswordInputType);
+  const { passwordInputType, confirmPasswordInputType, togglePasswordVisibility, toggleConfirmPasswordVisibility } = usePasswordVisibility();
 
   return (
     <>
       <FormLayout
-        title="Change password"
+        title={t('title-change')}
         className="w-full max-w-[384px]"
       >
         <div className="my-6">
@@ -35,14 +30,14 @@ const ChangePassword = () => {
             type={"text"}
             errorMessage=""
             color="default"
-            placeholder="Old password"
+            placeholder={t('old-password-placeholder')}
           />
           <div className="relative mt-2">
             <AuthInput
               type={passwordInputType}
               errorMessage=""
               color="default"
-              placeholder="New password"
+              placeholder={t('new-password-placeholder')}
             />
             <AuthIconButton
               firstIcon={<EyeIcon className="icon-eye" />}
@@ -56,7 +51,7 @@ const ChangePassword = () => {
               type={confirmPasswordInputType}
               errorMessage=""
               color="default"
-              placeholder="Confirm new password"
+              placeholder={t('confirm-new-password-placeholder')}
             />
             <AuthIconButton
               firstIcon={<EyeIcon className="icon-eye" />}
@@ -68,10 +63,10 @@ const ChangePassword = () => {
         </div>
         <Button
           isActive={true}
-          text="Change password"
+          text={t('change-button')}
         />
       </FormLayout>
-      <Link href="/" className="absolute left-6 bottom-6 flex items-center text-[#727272]">Back home</Link>
+      <Link href="/" className="absolute left-6 bottom-6 flex items-center text-[#727272]">{t('back-home')}</Link>
     </>
   )
 };

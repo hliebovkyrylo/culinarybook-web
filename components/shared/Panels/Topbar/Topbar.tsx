@@ -16,8 +16,10 @@ import { Button }                   from "@/ui";
 import { useTheme }                 from "next-themes";
 import { DropMenuButton, Settings } from "../..";
 import { Cookies }                  from "react-cookie";
+import { useTranslation } from "react-i18next";
 
 export const Topbar = () => {
+  const { t }   = useTranslation();
   const cookies = new Cookies();
   const userId  = '3489hg33934hujgg'; 
 
@@ -31,7 +33,7 @@ export const Topbar = () => {
 
   const [isMounted, setIsMounted] = useState(false);
 
-  const isAuth              = true;
+  const isAuth              = false;
   const isUnread            = true;
   const notificationsNumber = 2;
 
@@ -100,7 +102,7 @@ export const Topbar = () => {
                 }
               </button>
               <Link href={'/sign-in'} className="w-[160px]">
-                <Button text="Sign in" isActive={true} className="h-9" />
+                <Button text={t('title-signin')} isActive={true} className="h-9" />
               </Link>
             </div>
           )}
@@ -108,26 +110,26 @@ export const Topbar = () => {
             <DropMenu>
               <DropMenuButton 
                 icon={theme === 'dark' ? <SunIcon className='mr-1 ' /> : <MoonIcon className='mr-2' />} 
-                text="Change theme" 
+                text={t('theme')}
                 onClick={handleChangeTheme} 
                 className="pl-3"
               />
               <DropMenuButton 
                 icon={<GearIcon className="dark:fill-white fill-black mr-2" />} 
-                text="Settings" 
+                text={t('settings')}
                 className="pl-[13px]"
                 onClick={onClickOpenSettings}
               />
               <Link href={`/profile/${userId}/saved`}>
                 <DropMenuButton 
                   icon={<SavedIcon className="dark:fill-white fill-black mr-2" />} 
-                  text="Saved recipes" 
+                  text={t('saved')}
                   className="pl-4"
                   onClick={() => setIsVisible(false)}
                 />
               </Link>
               <DropMenuButton 
-                text="Logout" 
+                text={t('logout')} 
                 onClick={onClickSignOut}
                 className="pl-4"
               />

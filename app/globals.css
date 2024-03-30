@@ -127,7 +127,7 @@ body {
 }
 
 .auth-numberInput {
-  @apply dark:bg-bg-c-3 w-11 h-16 rounded-md text-center text-2xl outline-none max-[368px]:w-7 max-[368px]:h-11
+  @apply dark:bg-bg-c-3 w-12 h-16 rounded-md text-center text-2xl outline-none max-[368px]:w-7 max-[368px]:h-11
 }
 
 .select-button {
@@ -155,7 +155,7 @@ body {
 }
 
 .search-button {
-  @apply dark:bg-bg-c-2 dark:hover:bg-bg-c-3 block w-24 h-6 text-center rounded-md bg-white hover:bg-slate-100 transition-all
+  @apply dark:bg-bg-c-2 dark:hover:bg-bg-c-3 block w-32 h-6 text-center rounded-md bg-white hover:bg-slate-100 transition-all
 }
 
 .profile-button {

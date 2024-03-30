@@ -12,22 +12,22 @@ export const sidebarLinks = [
   {
     image   : <HomeIcon className="icon-color" />,
     route   : "/",
-    label   : "Home",
+    label   : "title",
   },
   {
     image   : <GlassIcon className="icon-color" />,
     route   : "/search",
-    label   : "Search",
+    label   : "search",
   },
   {
     image   : <AddIcon className="icon-color" />,
     route   : "/create-recipe",
-    label   : "Create recipe",
+    label   : "create-recipe",
   },
   {
     image   : <UserIcon className="icon-color" />,
     route   : "/profile",
-    label   : "My profile",
+    label   : "profile",
   },
 ];
 
@@ -35,16 +35,16 @@ export const profileLinks = [
   {
     icon    : <FileIcon className="fill-[#666] w-4" />,
     route   : "/profile",
-    label   : "Recipes",
+    label   : "recipe-button",
   },
   {
     icon    : <Bookmark className="fill-[#666] w-4 mr-1"  />,
     route   : "/profile/saved",
-    label   : "Saved",
+    label   : "saved-button",
   },
   {
     icon    : <HeartSolidIcon className="fill-[#666]" />,
     route   : "/profile/liked",
-    label   : "Liked",
+    label   : "liked-button",
   },
 ]

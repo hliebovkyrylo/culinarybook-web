@@ -13,7 +13,7 @@ const ProfileLayout = ({ children }: { children: React.ReactNode }) => {
         followingsNumber={13}
         recipesNumber={1}
         isFollowed={false}
-        followActions={() => console.log('click')}
+        followActions={() => {}}
       />
       <ProfilePanel
         userId="3489hg33934hujgg"

@@ -1,8 +1,12 @@
+"use client"
+
 import RecipeCard                     from "@/components/cards/RecipeCard/RecipeCard"
 import { FollowWindow, FollowerCard } from "@/components/profile"
 import { Input }                      from "@/ui";
+import { useTranslation }             from "react-i18next";
 
 const Followings = () => {
+  const { t } = useTranslation();
   return (
     <>
       {[...Array(5)].map(() => (
@@ -19,10 +23,10 @@ const Followings = () => {
         />
       ))}
       <FollowWindow
-        title="Followings"
+        title={t('followings')}
         userId="3489hg33934hujgg"
       >
-        <Input type="search" placeholder="Enter username" className="mb-4 border-[1px] border-[#383838]" />
+        <Input type="search" placeholder={t('input-username-placeholder')} className="mb-4 border-[1px] border-[#383838]" />
         {[...Array(3)].map(() => (
           <FollowerCard 
             key={'wfwsfgre'}
