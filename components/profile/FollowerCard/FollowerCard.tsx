@@ -1,6 +1,7 @@
 import { Button } from "@/ui";
 import Image      from "next/image";
 import Link       from "next/link";
+import { useTranslation } from "react-i18next";
 
 interface IFollowerCard {
   username  : string;
@@ -21,6 +22,7 @@ export const FollowerCard = ({
   className,
   userId
 }: IFollowerCard) => {
+  const { t } = useTranslation();
   return (
     <article className={`flex justify-between items-center rounded-md px-3 py-2 follower-card-bg ${className}`}>
       <div className="flex">
@@ -33,7 +35,7 @@ export const FollowerCard = ({
         </div>
       </div>
       {!isFollowed && (
-        <Button text="Follow" className=" max-w-[64px] h-10" onClick={onClick} isActive={true} />
+        <Button text={t('follow-button')} className=" max-w-[128px] h-8 flex items-center justify-center" onClick={onClick} isActive={true} />
       )}
     </article>
   )

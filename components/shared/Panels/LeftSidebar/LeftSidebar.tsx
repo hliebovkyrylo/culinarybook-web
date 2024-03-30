@@ -4,8 +4,10 @@ import Link             from "next/link";
 import { sidebarLinks } from "@/constants";
 import { usePathname }  from "next/navigation";
 import { LogoIcon }     from "@/icons/icons/LogoIcon/LogoIcon";
+import { useTranslation } from "react-i18next";
 
 export const LeftSidebar = () => {
+  const { t }    = useTranslation();
   const pathname = usePathname();
 
   const userId = "3489hg33934hujgg"
@@ -21,10 +23,12 @@ export const LeftSidebar = () => {
 
         if (link.route === '/profile') link.route = `${link.route}/${userId}`
 
+        const label = link.label;
+
         return (
           <Link key={link.route} href={link.route === '/search' ? '/search/recipes' : link.route} className={`link-button ${isActive && 'link-button-active'}`}>
             {link.image}
-            <span className="leftsidebar__text ml-2">{link.label}</span>
+            <span className="leftsidebar__text ml-2">{t(label)}</span>
           </Link>
         )
       })}

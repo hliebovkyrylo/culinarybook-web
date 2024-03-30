@@ -8,29 +8,26 @@ import {
 import { useState }              from "react";
 import { EyeIcon, SlashEyeIcon } from "@/icons";
 import { Button }                from "@/ui";
+import { useTranslation }        from "react-i18next";
+import { usePasswordVisibility } from "@/hooks/usePasswordVisibility";
 
 const ResetPassword = () => {
-  const [passwordInputType, setPasswordInputType]               = useState("password");
-  const [confirmPasswordInputType, setConfirmPasswordInputType] = useState("password");
+  const { t } = useTranslation();
 
-  const handleVisibleChange = (setInputType: React.Dispatch<React.SetStateAction<string>>, inputType: string) => {
-    setInputType(inputType === "password" ? "text" : "password");
-  };
-
-  const togglePasswordVisibility        = () => handleVisibleChange(setPasswordInputType, passwordInputType);
-  const toggleConfirmPasswordVisibility = () => handleVisibleChange(setConfirmPasswordInputType, confirmPasswordInputType);
+  const { passwordInputType, confirmPasswordInputType, togglePasswordVisibility, toggleConfirmPasswordVisibility } = usePasswordVisibility();
 
   return (
     <FormLayout
-      title="Enter your new password"
+      title={t('title-new-password')}
+      className="min-w-[243px]"
     >
-      <div className="my-6">
+      <div className="my-6 min-w-[283px]">
         <div className="relative">
           <AuthInput
             type={passwordInputType}
             errorMessage=""
             color="default"
-            placeholder="New password"
+            placeholder={t('new-password-placeholder')}
           />
           <AuthIconButton
             firstIcon={<EyeIcon className="icon-eye" />}
@@ -44,7 +41,7 @@ const ResetPassword = () => {
             type={confirmPasswordInputType}
             errorMessage=""
             color="default"
-            placeholder="Confirm new password"
+            placeholder={t('confirm-new-password-placeholder')}
           />
           <AuthIconButton
             firstIcon={<EyeIcon className="icon-eye" />}
@@ -56,7 +53,7 @@ const ResetPassword = () => {
       </div>
       <Button 
         isActive = {true}
-        text="Change password"
+        text={t('title-change')}
       />
     </FormLayout>
   )

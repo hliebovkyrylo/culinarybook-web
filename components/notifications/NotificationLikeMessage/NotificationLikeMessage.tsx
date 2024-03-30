@@ -1,4 +1,6 @@
-import Link from "next/link";
+import useFormatDaysAgo   from "@/hooks/useFormatDaysAgo";
+import Link               from "next/link";
+import { useTranslation } from "react-i18next";
 
 interface INotificationLikeMessage {
   userImage  : React.ReactNode | "";
@@ -17,27 +19,9 @@ export const NotificationLikeMessage = ({
   userId,
   createdAt,
 }: INotificationLikeMessage) => {
-  const currentDate = new Date();
+  const { t } = useTranslation();
 
-  const millisecondsInDay = 1000 * 60 * 60 * 24; 
-
-  const differenceInMilliseconds = currentDate.getTime() - createdAt.getTime();
-  const daysDifference           = Math.floor(differenceInMilliseconds / millisecondsInDay);
-
-  function formatDaysAgo(daysDifference: number) {
-    if (daysDifference < 1) {
-      return "Today";
-    } else if (daysDifference === 1) {
-      return "1 day ago";
-    } else if (daysDifference < 7) {
-      return `${daysDifference} days ago`;
-    } else if (daysDifference <= 30) {
-      const weeks = Math.floor(daysDifference / 7);
-      return `${weeks} ${weeks === 1 ? 'week' : 'weeks'} ago`;
-    } else {
-      return "more than a year ago";
-    }
-  }
+  const formatDaysAgo = useFormatDaysAgo();
 
   return (
     <article className="w-full min-h-[64px] second-background flex items-center py-2 px-3 rounded-lg mb-2">
@@ -47,11 +31,11 @@ export const NotificationLikeMessage = ({
           <div>
             <div>
               <Link href={`/profile/${userId}`}><b>{username}</b></Link>
-              <span className="text-[#959595]"> liked your recipe!</span>
+              <span className="text-[#959595]"> {t('comment-type-like')}</span>
             </div>
             <div className="flex items-center">
               <span className="block w-1 h-1 bg-[#959595] rounded-full mr-1" />
-              <p className="text-[#959595] text-sm">{formatDaysAgo(daysDifference)}</p>
+              <p className="text-[#959595] text-sm">{formatDaysAgo(createdAt)}</p>
             </div>
           </div>
         </div>

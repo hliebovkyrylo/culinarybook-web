@@ -1,41 +1,19 @@
 "use client"
 
 import { AuthNumberInput, FormLayout }  from "@/components/auth";
-import { useEffect, useRef, useState }  from "react";
 import { Button }                       from "@/ui";
 import { ArrowRightSquare }             from "@/icons";
+import { useTranslation }               from "react-i18next";
+import { useDigitInput }                from "@/hooks/useDigitInput";
 
 const VerifyAccount = () => {
-  const [digits, setDigits] = useState(['', '', '', '', '', '']);
-  const inputRefs           = useRef<HTMLInputElement[]>([]);
+  const { t } = useTranslation();
 
-  useEffect(() => {
-    inputRefs.current[0]?.focus();
-  }, []);
-
-  const handleChange = (index: number, value: string) => {
-    if (!/^\d*$/.test(value)) {
-      return;
-    }
-  
-    const newDigits  = [...digits];
-    newDigits[index] = value;
-    setDigits(newDigits);
-  
-    if (value !== '' && index < 5) {
-      inputRefs.current[index + 1]?.focus();
-    }
-  };
-
-  const handleKeyDown = (index: number, e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Backspace' && index > 0 && digits[index] === '') {
-      inputRefs.current[index - 1]?.focus();
-    }
-  };
+  const { digits, inputRefs, handleChange, handleKeyDown } = useDigitInput();
 
   return (
     <>
-      <FormLayout title="Enter confirmation code" className="w-full max-w-[364px]">
+      <FormLayout title={t('title-confirm')} className="w-full max-w-[394px]">
         <div className="flex justify-between">
           {digits.map((digit, index) => (
             <AuthNumberInput
@@ -53,11 +31,11 @@ const VerifyAccount = () => {
           isActive={digits.every(digit => digit !== '')}
         />
         <div className="flex mt-4">
-          <p className="mr-1">Didn't receive the code?</p>
-          <button className="link-text">Resent it</button>
+          <p className="mr-1">{t('resent-text-confirm')}</p>
+          <button className="link-text">{t('resent-button-confirm')}</button>
         </div>
       </FormLayout>
-      <button className="absolute left-6 bottom-6 flex items-center text-[#727272]">Sign out<ArrowRightSquare className=" ml-3" /></button>
+      <button className="absolute left-6 bottom-6 flex items-center text-[#727272]">{t('logout-button-confirm')}<ArrowRightSquare className=" ml-3" /></button>
     </>
   )
 };

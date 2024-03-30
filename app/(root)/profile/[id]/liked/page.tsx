@@ -1,5 +1,4 @@
 import RecipeCard                        from "@/components/cards/RecipeCard/RecipeCard";
-import { ProfilePanel, ProfileUserInfo } from "@/components/profile";
 
 const Profile = () => {
   return (

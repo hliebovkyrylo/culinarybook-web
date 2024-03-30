@@ -5,8 +5,10 @@ import { ArrowSortDownIcon, ArrowSortUpIcon } from "@/icons"
 import Link                                   from "next/link"
 import { usePathname }                        from "next/navigation"
 import { useState }                           from "react"
+import { useTranslation } from "react-i18next"
 
 export const ProfilePanel = ({ userId, className }: { userId: string, className?: string }) => {
+  const { t } = useTranslation();
   const pathname = usePathname();
 
   const [sortBy, setSortBy] = useState<string>("new");
@@ -27,8 +29,10 @@ export const ProfilePanel = ({ userId, className }: { userId: string, className?
 
           if (link.route === '/profile/saved') link.route = `/profile/${userId}/saved`
 
+          let label = link.label;
+
           return (
-            <Link key={link.label} className={`my-[6px] profile-link rounded-md flex items-center w-28 max-[409px]:!w-20 justify-center ${isActive && "link-text profile-link-active"}`} href={link.route}>{link.icon}<p className="max-[409px]:hidden ml-1">{link.label}</p></Link>
+            <Link key={link.label} className={`my-[6px] px-3 profile-link rounded-md flex items-center w-full max-w-[186px] max-[695px]:!w-20 justify-center ${isActive && "link-text profile-link-active"}`} href={link.route}>{link.icon}<p className="max-[695px]:hidden ml-1">{t(label)}</p></Link>
           )
         }))}
       </div>
@@ -36,12 +40,12 @@ export const ProfilePanel = ({ userId, className }: { userId: string, className?
         {sortBy === 'new' ? (
           <div className="flex">
             <ArrowSortDownIcon className="w-6 h-6 fill-color-666" />
-            <p className="block text-color-666 ml-3 max-sm:hidden">From new to old</p>
+            <p className="block text-color-666 ml-3 max-sm:hidden">{t('sort-new-old')}</p>
           </div>
         ) : (
           <div className="flex">
             <ArrowSortUpIcon className="w-6 h-6 fill-color-666" />
-            <p className="text-color-666 ml-3 max-sm:hidden">From old to new</p>
+            <p className="text-color-666 ml-3 max-sm:hidden">{t('sort-old-new')}</p>
           </div>
         )}
       </button>

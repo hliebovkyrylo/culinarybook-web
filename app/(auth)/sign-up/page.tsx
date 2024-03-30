@@ -10,6 +10,8 @@ import {
 }                                from "@/components/auth";
 import { EyeIcon, SlashEyeIcon } from "@/icons";
 import { Button }                from "@/ui";
+import { useTranslation }        from "react-i18next";
+import { usePasswordVisibility } from "@/hooks/usePasswordVisibility";
 
 const signUpSchema = z.object({
   email   : z.string().email(),
@@ -22,6 +24,8 @@ const signUpSchema = z.object({
 export type FormData = z.infer<typeof signUpSchema>;
 
 const SignUp = () => {
+  const { t } = useTranslation();
+
   const [emailInput, setEmailInput]                     = useState<string>("");
   const [usernameInput, setUsernameInput]               = useState<string>("");
   const [nameInput, setNameInput]                       = useState<string>("");
@@ -30,24 +34,16 @@ const SignUp = () => {
 
   const isFieldsEmpty = emailInput !== "" && passwordInput !== "" && usernameInput !== "" && nameInput !== "" && confirmPasswordInput !== "";
 
-  const [passwordInputType, setPasswordInputType]               = useState("password");
-  const [confirmPasswordInputType, setConfirmPasswordInputType] = useState("password");
-
-  const handleVisibleChange = (setInputType: React.Dispatch<React.SetStateAction<string>>, inputType: string) => {
-    setInputType(inputType === "password" ? "text" : "password");
-  };
-
-  const togglePasswordVisibility        = () => handleVisibleChange(setPasswordInputType, passwordInputType);
-  const toggleConfirmPasswordVisibility = () => handleVisibleChange(setConfirmPasswordInputType, confirmPasswordInputType);
+  const { passwordInputType, confirmPasswordInputType, togglePasswordVisibility, toggleConfirmPasswordVisibility } = usePasswordVisibility();
 
   return (
-    <FormLayout title="Sign Up">
+    <FormLayout title={t('title-signup')}>
       <div className="my-8 max-w-xs">
         <AuthInput
           type="email"
           errorMessage=""
           color="default"
-          placeholder="Email"
+          placeholder={t('email-placeholder')}
           className="mb-2 max-w-xs"
           onChangeValue={(event) => setEmailInput(event.target.value)}
         />
@@ -55,7 +51,7 @@ const SignUp = () => {
           type="text"
           errorMessage=""
           color="default"
-          placeholder="Username"
+          placeholder={t('username-placeholder-signup')}
           className="mb-2 max-w-xs"
           onChangeValue={(event) => setUsernameInput(event.target.value)}
         />
@@ -63,7 +59,7 @@ const SignUp = () => {
           type="text"
           errorMessage=""
           color="default"
-          placeholder="Name"
+          placeholder={t('name-placeholder-signup')}
           className="mb-2 max-w-xs"
           onChangeValue={(event) => setNameInput(event.target.value)}
         />
@@ -72,7 +68,7 @@ const SignUp = () => {
             type={passwordInputType}
             errorMessage=""
             color="default"
-            placeholder="Password"
+            placeholder={t('password-placeholder')}
             className="mb-2 max-w-xs"
             onChangeValue={(event) => setPasswordInput(event.target.value)}
           />
@@ -88,7 +84,7 @@ const SignUp = () => {
             type={confirmPasswordInputType}
             errorMessage=""
             color="default"
-            placeholder="Confirm password"
+            placeholder={t('confirm-password-placeholder')}
             className="mb-2 max-w-xs"
             onChangeValue={(event) => setConfirmPasswordInput(event.target.value)}
           />
@@ -101,13 +97,13 @@ const SignUp = () => {
         </div>
         <Button
           isActive={isFieldsEmpty}
-          text="Sign in"
+          text={t('signUp-button')}
           className={"max-w-xs mt-3"}
         />
       </div>
       <div className="flex">
-        <p className="mr-1">Already have an accont?</p>
-        <Link className="link-text" href={"/sign-in"}>Sign In</Link>
+        <p className="mr-1">{t('have-account')}</p>
+        <Link className="link-text" href={"/sign-in"}>{t('signUp-link')}</Link>
       </div>
     </FormLayout>
   )
