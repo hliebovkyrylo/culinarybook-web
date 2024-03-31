@@ -12,10 +12,13 @@ import { Button }              from "@/ui";
 import { Input }               from "@/ui/input/Input";
 import Image                   from "next/image";
 import { useState }            from "react";
+import { useTranslation }      from "react-i18next";
 import { Swiper, SwiperSlide } from "swiper/react";
 import                              'swiper/swiper-bundle.css';
 
 const Recipe = () => {
+  const { t } = useTranslation();
+
   const [isLiked, setIsLiked] = useState<boolean>(false);
   const [isSaved, setIsSaved] = useState<boolean>(false);
 
@@ -48,19 +51,19 @@ const Recipe = () => {
         likeButtonClick={handleLikeClick}
         saveButtonClick={handleSaveClick}
       />
-      <h3 className="link-text font-semibold my-5">Ingredients</h3>
+      <h3 className="link-text font-semibold my-5">{t('title-ingradients')}</h3>
       <RecipeContentCard className="w-full max-w-[364px]" text={
         <>
           130 g flour, <br/> 340 ml milk, <br/> 2 eggs, <br/> 2 tbsp. <br/> l. sunflower oil (and additional for frying), <br/> 2 tbsp. <br/> l. sugar, <br/> 1 pinch of salt
         </>
       } />
-      <h3 className="link-text font-semibold my-5">Instructions</h3>
+      <h3 className="link-text font-semibold my-5">{t('title-instructions')}</h3>
       <div className="flex justify-start">
         <Swiper spaceBetween={70} slidesPerView={"auto"} freeMode={true} centeredSlides={false} className="!m-0">
-          {[...Array(12)].map(() => (
+          {[...Array(12)].map((_, index) => (
             <SwiperSlide style={{ width: '240px' }} key={'26g432g2354g34'}>
               <div className="relative">
-                <span className="absolute left-3 top-2 link-text font-semibold z-50">Step 1</span>
+                <span className="absolute left-3 top-2 link-text font-semibold z-50">{t('step')} {index + 1}</span>
                 <RecipeContentCard text="dfgasf" className="w-[300px] !pt-10 min-h-[128px]" />
               </div>
             </SwiperSlide>
@@ -68,7 +71,7 @@ const Recipe = () => {
         </Swiper>
       </div>
       <div className="mt-12">
-        <h3 className="link-text font-semibold my-5">Reviews and ratings</h3>
+        <h3 className="link-text font-semibold my-5">{t('title-comment')}</h3>
         <div className="flex">
           {[...Array(5)].map((star, i) => {
             const ratingValue = i + 1;
@@ -86,8 +89,8 @@ const Recipe = () => {
             )
           })}
         </div>
-        <Input type="text" className="max-w-[615px] block mt-8" placeholder="Write your review..." />
-        <Button className="max-w-[234px] cursor-pointer my-8" text="Send your review" isActive={true} />
+        <Input type="text" className="max-w-[615px] block mt-8" placeholder={t('comment-placeholder')} />
+        <Button className="max-w-[234px] cursor-pointer my-8" text={t('create-comment-button')} isActive={true} />
         <RecipeCommentContent>
           {[...Array(4)].map((_, index) => (
             <div className="mb-6" key={index}>
@@ -105,10 +108,10 @@ const Recipe = () => {
               <div className="ml-14">
                 {openReplyInput[`3489hg33934hujgg${index}`] && (
                   <>
-                    <Input type="text" placeholder="Write your comment" />
+                    <Input type="text" placeholder={t('comment-placeholder')} />
                     <div className="flex justify-end mt-3">
-                      <button onClick={() => toggleOpenReplyInput(`3489hg33934hujgg${index}`)} className=" mr-4">Cancel</button>
-                      <Button text="Reply" isActive={true} className="max-w-[128px] h-8 flex justify-center items-center" />
+                      <button onClick={() => toggleOpenReplyInput(`3489hg33934hujgg${index}`)} className=" mr-4">{t('canclel-button')}</button>
+                      <Button text={t('reply-button')} isActive={true} className="max-w-[128px] h-8 flex justify-center items-center" />
                     </div>
                   </>
                 )}
@@ -125,10 +128,10 @@ const Recipe = () => {
                         />
                         {openReplyAnswearInput[`3489hg33934hujgg1${index}`] && (
                           <div className="ml-14">
-                            <Input type="text" placeholder="Write your comment" defaultValue={`@jhondoe `} />
+                            <Input type="text" placeholder={t('comment-placeholder')} defaultValue={`@jhondoe `} />
                             <div className="flex justify-end mt-3">
-                              <button onClick={() => toggleOpenReplyAnswearInput(`3489hg33934hujgg1${index}`)} className=" mr-4">Cancel</button>
-                              <Button text="Reply" isActive={true} className="max-w-[128px] h-8 flex justify-center items-center" />
+                              <button onClick={() => toggleOpenReplyAnswearInput(`3489hg33934hujgg1${index}`)} className=" mr-4">{t('canclel-button')}</button>
+                              <Button text={t('reply-button')} isActive={true} className="max-w-[128px] h-8 flex justify-center items-center" />
                             </div>
                           </div>
                         )}
