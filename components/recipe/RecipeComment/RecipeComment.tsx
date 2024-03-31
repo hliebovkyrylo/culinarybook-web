@@ -1,6 +1,9 @@
+"use client"
+
 import { ChevronDownIcon, ChevronUpIcon, StarIcon } from "@/icons";
 import Image                         from "next/image";
 import Link                          from "next/link";
+import { useTranslation } from "react-i18next";
 
 interface IRecipeComment {
   username           : string;
@@ -23,6 +26,8 @@ export const RecipeComment = ({
   onClickOpenReplies,
   onClickReply
 }: IRecipeComment) => {
+  const { t } = useTranslation();
+
   return (
     <article className="flex">
       <Link href={`/profile/${userId}`} className="w-12 h-12 mr-2"><Image src={"/assets/testuserimage.jpg"} alt="User photo" className="w-full h-full object-cover rounded-full" width={38} height={38} /></Link>
@@ -47,9 +52,9 @@ export const RecipeComment = ({
             : (
               <ChevronDownIcon className="w-4 icon-color mr-1" />
             )
-          }{numbersOfReplies} replies</button>
+          }{numbersOfReplies} {t('replies-button')}</button>
           )}
-          <button onClick={onClickReply} className="my-2 rounded-xl text-left text-color-666">Reply</button>
+          <button onClick={onClickReply} className="my-2 rounded-xl text-left text-color-666">{t('reply-button')}</button>
         </div>
       </div>
     </article>
