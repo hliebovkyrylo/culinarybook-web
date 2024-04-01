@@ -2,6 +2,9 @@
 
 import { 
   BellIcon, 
+  CheckIcon, 
+  ChevronRightIcon, 
+  EarthIcon, 
   GearIcon, 
   LogoIcon, 
   MoonIcon, 
@@ -10,13 +13,14 @@ import {
 }                                   from "@/icons";
 import Image                        from "next/image";
 import Link                         from "next/link";
-import { useEffect, useState }      from "react";
+import { useState }                 from "react";
 import DropMenu                     from "../../DropMenu/DropMenu";
 import { Button }                   from "@/ui";
 import { useTheme }                 from "next-themes";
 import { DropMenuButton, Settings } from "../..";
 import { Cookies }                  from "react-cookie";
-import { useTranslation } from "react-i18next";
+import { useTranslation }           from "react-i18next";
+import i18next                      from "i18next";
 
 export const Topbar = () => {
   const { t }   = useTranslation();
@@ -25,25 +29,19 @@ export const Topbar = () => {
 
   const [isVisible, setIsVisible]               = useState<boolean>(false);
   const [isOpenedSettings, setIsOpenedSettings] = useState<boolean>(false);
-  const { theme, setTheme }                     = useTheme();
+
+  const [isVisibleLanguage, setIsVisibleLanguage] = useState<boolean>(false);
+
+  const { theme, setTheme } = useTheme();
 
   const onClickOpenMenu = () => {
     setIsVisible(!isVisible);
+    setIsVisibleLanguage(false);
   };
 
-  const [isMounted, setIsMounted] = useState(false);
-
-  const isAuth              = false;
+  const isAuth              = true;
   const isUnread            = true;
   const notificationsNumber = 2;
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
-  if (!isMounted && !isAuth) {
-    return null;
-  }
 
   const handleChangeTheme = () => {
     setTheme(theme === "dark" ? "light" : "dark")
@@ -57,6 +55,10 @@ export const Topbar = () => {
     setIsOpenedSettings(true);
     setIsVisible(false)
   };
+
+  const handleLanguage = () => {
+    setIsVisibleLanguage(!isVisibleLanguage);
+  }
 
   return (
     <>
@@ -96,9 +98,9 @@ export const Topbar = () => {
           ) : (
             <div className="flex items-center">
               <button type="button" onClick={handleChangeTheme} className="mr-6">
-                {theme === "dark" 
-                ? <SunIcon />
-                : <MoonIcon />
+                {theme === "light" 
+                ? <MoonIcon />
+                : <SunIcon /> 
                 }
               </button>
               <Link href={'/sign-in'} className="w-[160px]">
@@ -107,13 +109,44 @@ export const Topbar = () => {
             </div>
           )}
           {isVisible && (
-            <DropMenu>
+            <DropMenu className="w-[242px]">
               <DropMenuButton 
-                icon={theme === 'dark' ? <SunIcon className='mr-1 ' /> : <MoonIcon className='mr-2' />} 
+                icon={theme === 'light' ? <MoonIcon className='mr-2' /> : <SunIcon className='mr-1 ' /> } 
                 text={t('theme')}
                 onClick={handleChangeTheme} 
                 className="pl-3"
               />
+              <div className="relative">
+                <DropMenuButton 
+                  icon={<EarthIcon className="w-4 mr-2 dark:fill-white fill-black" />} 
+                  text={t('change-language')}
+                  textIcon={<ChevronRightIcon className="w-3 fill-[#555555] ml-4" />}
+                  onClick={handleLanguage} 
+                  className="pl-3"
+                />
+                {isVisibleLanguage && (
+                  <DropMenu className="w-40 !-left-40 !-top-2">
+                    <DropMenuButton 
+                      text={'English'}
+                      textIcon={i18next.language === 'en' && <CheckIcon className="w-4 fill-[#555555]" />}
+                      onClick={() => i18next.changeLanguage('en')} 
+                      className="px-3 justify-between"
+                    />
+                    <DropMenuButton 
+                      text={'Українська'}
+                      textIcon={i18next.language === 'uk' && <CheckIcon className="w-4 fill-[#555555]" />}
+                      onClick={() => i18next.changeLanguage('uk')} 
+                      className="px-3 justify-between"
+                    />
+                    <DropMenuButton 
+                      text={'Русский'}
+                      textIcon={i18next.language === 'ru' && <CheckIcon className="w-4 fill-[#555555]" />}
+                      onClick={() => i18next.changeLanguage('ru')} 
+                      className="px-3 justify-between"
+                    />
+                  </DropMenu>
+                )}
+              </div>
               <DropMenuButton 
                 icon={<GearIcon className="dark:fill-white fill-black mr-2" />} 
                 text={t('settings')}

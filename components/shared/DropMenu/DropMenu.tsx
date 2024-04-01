@@ -1,8 +1,8 @@
 "use client"
 
-const DropMenu = ({ children }: { children: React.ReactNode }) => {
+const DropMenu = ({ children, className }: { children: React.ReactNode, className?: string }) => {
   return (
-    <div className="dropmenu">
+    <div className={`dropmenu ${className}`}>
       {children}
     </div>
   )
