@@ -34,3 +34,6 @@ export * from "./XMarkIcon";
 export * from "./ImageIcon";
 export * from "./ArrowSortUpIcon";
 export * from "./ArrowSortDownIcon";
+export * from "./ChevronRightIcon";
+export * from "./EarthIcon";
+export * from "./CheckIcon";
