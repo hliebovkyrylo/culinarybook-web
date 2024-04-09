@@ -33,17 +33,17 @@ export const sidebarLinks = [
 
 export const profileLinks = [
   {
-    icon    : <FileIcon className="fill-[#666] w-4" />,
+    icon    : <FileIcon className="fill-[#666] w-6" />,
     route   : "/profile",
     label   : "recipe-button",
   },
   {
-    icon    : <Bookmark className="fill-[#666] w-4 mr-1"  />,
+    icon    : <Bookmark className="fill-[#666] w-4"  />,
     route   : "/profile/saved",
     label   : "saved-button",
   },
   {
-    icon    : <HeartSolidIcon className="fill-[#666]" />,
+    icon    : <HeartSolidIcon className="fill-[#666] w-6" />,
     route   : "/profile/liked",
     label   : "liked-button",
   },

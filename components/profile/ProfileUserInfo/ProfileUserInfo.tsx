@@ -34,8 +34,8 @@ export const ProfileUserInfo = ({
       <Image className=" absolute -z-50 top-0 left-0 w-full h-full object-cover opacity-20 rounded-t-lg" src={'/assets/testbanner.jpg'} alt="User banner" width={500} height={500} />
       <Image src={image || "/assets/testuserimage.jpg"} alt="User image" className="object-cover rounded-full w-40 h-40 max-[537px]:w-20 max-[537px]:h-20" width={160} height={160} />
       <div className="w-[340px] h-36 flex flex-col justify-around ml-14 max-[537px]:ml-4">
-        <div className="flex items-center">
-          <p className="default-text">@{username}</p> 
+        <div className="flex items-center max-[409px]:justify-start max-[409px]:flex-col">
+          <p className="default-text flex justify-start max-[409px]:w-full">@{username}</p> 
           {(userId !== userid) && (
             <Button text={!isFollowed ? t('follow-button') : t('follow-button-already')} isActive={true} onClick={followActions} className={`!w-40 h-8 flex opacity-70 items-center justify-center ml-4 ${isFollowed && "!bg-[#29292b] !text-white font-normal"}`} />
           )}
