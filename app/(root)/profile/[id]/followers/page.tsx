@@ -1,12 +1,13 @@
 "use client"
 
 import RecipeCard                     from "@/components/cards/RecipeCard/RecipeCard";
-import { FollowWindow, FollowerCard } from "@/components/profile"
+import { FollowWindow, FollowerCard, FollowerCardSkeleton } from "@/components/profile"
 import { Input }                      from "@/ui";
 import { useTranslation } from "react-i18next";
 
 const Followers = () => {
-  const { t } = useTranslation();
+  const { t }     = useTranslation();
+  const isLoading = true;
   return (
     <>
       {[...Array(5)].map(() => (
@@ -27,17 +28,27 @@ const Followers = () => {
         userId="3489hg33934hujgg"
       >
         <Input type="search" placeholder={t('input-username-placeholder')} className="mb-4 border-[1px] border-[#383838]" />
-        {[...Array(12)].map(() => (
-          <FollowerCard 
-            key={'wfwsfgre'}
-            username="jhondoe"
-            userImage=""
-            isFollowed={false}
-            name="Jhon Doe"
-            userId="3489hg33934hujgg"
-            className="mb-3"
-          />
-        ))}
+        {isLoading ? (
+          <>
+            {[...Array(5)].map(() => (
+              <FollowerCardSkeleton className="mb-[10px]" />
+            ))}
+          </>
+        ) : (
+          <>
+            {[...Array(12)].map(() => (
+              <FollowerCard 
+                key={'wfwsfgre'}
+                username="jhondoe"
+                userImage=""
+                isFollowed={false}
+                name="Jhon Doe"
+                userId="3489hg33934hujgg"
+                className="mb-3"
+              />
+            ))}
+          </>
+        )}
       </FollowWindow>
     </>
   )
