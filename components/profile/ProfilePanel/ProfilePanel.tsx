@@ -46,7 +46,7 @@ export const ProfilePanel = ({ userId, className }: { userId: string, className?
           let label = link.label;
 
           return (
-            <Link key={link.label} className={`my-[6px] min-w-[409px]:px-3 profile-link rounded-md flex items-center max-w-[186px] max-[695px]:!w-10 ${isActive && "link-text profile-link-active"}`} href={route}>{link.icon}<p className="max-[695px]:hidden ml-1">{t(label)}</p></Link>
+            <Link key={link.label} className={`${route === `/profile/${userId}/saved` && 'mx-2'} justify-center px-2 my-[6px] min-w-[409px]:px-3 profile-link rounded-md flex items-center max-w-[186px] max-[695px]:!w-10 ${isActive && "link-text profile-link-active"}`} href={route}>{link.icon}<p className="max-[695px]:hidden ml-1">{t(label)}</p></Link>
           );
         })}
       </div>
