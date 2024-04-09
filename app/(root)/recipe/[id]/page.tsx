@@ -1,6 +1,7 @@
 "use client"
 
 import { 
+  PrivateRecipe,
   RecipeComment, 
   RecipeCommentContent, 
   RecipeCommentSkeleton, 
@@ -20,7 +21,10 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import                              'swiper/swiper-bundle.css';
 
 const Recipe = () => {
-  const { t }                   = useTranslation();
+  const { t } = useTranslation();
+
+  const isPublicRecipe = true;
+
   const isLoadingRecipe         = false;
   const isLoadingSteps          = false;
   const isLoadingComments       = false;
@@ -43,6 +47,10 @@ const Recipe = () => {
 
   if (isLoadingRecipe) {
     return <Loader />
+  }
+
+  if (!isPublicRecipe) {
+    return <PrivateRecipe />
   }
   
   return (
