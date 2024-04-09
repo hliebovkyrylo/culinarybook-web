@@ -1,8 +1,14 @@
 "use client"
 
 import { ProfilePanel, ProfileUserInfo } from "@/components/profile";
+import { Loader } from "@/components/shared";
 
 const ProfileLayout = ({ children }: { children: React.ReactNode }) => {
+  const isLoading = false;
+
+  if (isLoading) {
+    return <Loader />
+  }
   return (
     <div className="w-full z-50">
       <ProfileUserInfo

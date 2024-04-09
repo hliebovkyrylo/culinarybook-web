@@ -3,10 +3,13 @@
 import { 
   RecipeComment, 
   RecipeCommentContent, 
+  RecipeCommentSkeleton, 
   RecipeContentCard, 
+  RecipeContentCardSkeleton, 
   RecipeInfo, 
   RecipeRating 
 }                              from "@/components/recipe";
+import { Loader }              from "@/components/shared";
 import { useToggleState }      from "@/hooks/useToggleState";
 import { Button }              from "@/ui";
 import { Input }               from "@/ui/input/Input";
@@ -17,7 +20,11 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import                              'swiper/swiper-bundle.css';
 
 const Recipe = () => {
-  const { t } = useTranslation();
+  const { t }                   = useTranslation();
+  const isLoadingRecipe         = false;
+  const isLoadingSteps          = false;
+  const isLoadingComments       = false;
+  const isLoadingCommentReplies = false;
 
   const [isLiked, setIsLiked] = useState<boolean>(false);
   const [isSaved, setIsSaved] = useState<boolean>(false);
@@ -33,6 +40,10 @@ const Recipe = () => {
   const [openReplies, toggleOpenReplies]                     = useToggleState({});
   const [openReplyInput, toggleOpenReplyInput]               = useToggleState({});
   const [openReplyAnswearInput, toggleOpenReplyAnswearInput] = useToggleState({});
+
+  if (isLoadingRecipe) {
+    return <Loader />
+  }
   
   return (
     <>
@@ -60,14 +71,27 @@ const Recipe = () => {
       <h3 className="link-text font-semibold my-5">{t('title-instructions')}</h3>
       <div className="flex justify-start">
         <Swiper spaceBetween={70} slidesPerView={"auto"} freeMode={true} centeredSlides={false} className="!m-0">
-          {[...Array(12)].map((_, index) => (
-            <SwiperSlide style={{ width: '240px' }} key={'26g432g2354g34'}>
-              <div className="relative">
-                <span className="absolute left-3 top-2 link-text font-semibold z-50">{t('step')} {index + 1}</span>
-                <RecipeContentCard text="dfgasf" className="w-[300px] !pt-10 min-h-[128px]" />
-              </div>
-            </SwiperSlide>
-          ))}
+          {isLoadingSteps ? (
+            <>
+              {[...Array(5)].map(() => (
+                <SwiperSlide style={{ width: '240px' }} key={'26g432g2354g34'}>
+                  <RecipeContentCardSkeleton />
+                </SwiperSlide>
+              ))}
+            </>
+          ) : (
+            <>
+              {[...Array(7)].map((_, index) => (
+                <SwiperSlide style={{ width: '240px' }} key={'26g432g2354g34'}>
+                  <div className="relative">
+                    <span className="absolute left-3 top-2 link-text font-semibold z-50">{t('step')} {index + 1}</span>
+                    <RecipeContentCard text="dfgasf" className="w-[300px] !pt-10 min-h-[128px]" />
+                  </div>
+                </SwiperSlide>
+              ))}
+            </>
+          )}
+          
         </Swiper>
       </div>
       <div className="mt-12">
@@ -92,56 +116,74 @@ const Recipe = () => {
         <Input type="text" className="max-w-[615px] block mt-8" placeholder={t('comment-placeholder')} />
         <Button className="max-w-[234px] cursor-pointer my-8" text={t('create-comment-button')} isActive={true} />
         <RecipeCommentContent>
-          {[...Array(4)].map((_, index) => (
-            <div className="mb-6" key={index}>
-              <RecipeComment 
-                key={index}
-                username="jhondoe"
-                commentText="Awesome recipe."
-                rating={4}
-                userId="3489hg33934hujgg"
-                numbersOfReplies={1}
-                onClickOpenReplies={() => toggleOpenReplies(`3489hg33934hujgg${index}`)}
-                isOpenReplies={openReplies[`3489hg33934hujgg${index}`]}
-                onClickReply={() => toggleOpenReplyInput(`3489hg33934hujgg${index}`)}
-              />
-              <div className="ml-14">
-                {openReplyInput[`3489hg33934hujgg${index}`] && (
-                  <>
-                    <Input type="text" placeholder={t('comment-placeholder')} />
-                    <div className="flex justify-end mt-3">
-                      <button onClick={() => toggleOpenReplyInput(`3489hg33934hujgg${index}`)} className=" mr-4">{t('canclel-button')}</button>
-                      <Button text={t('reply-button')} isActive={true} className="max-w-[128px] h-8 flex justify-center items-center" />
-                    </div>
-                  </>
-                )}
-                {openReplies[`3489hg33934hujgg${index}`] && (
-                  <div className=" my-4">
-                    {[...Array(1)].map(() => (
-                      <div>
-                        <RecipeComment 
-                          key={index}
-                          username="jhondoe"
-                          commentText="how did you do it?"
-                          userId="3489hg33934hujgg1" 
-                          onClickReply={() => toggleOpenReplyAnswearInput(`3489hg33934hujgg1${index}`)}
-                        />
-                        {openReplyAnswearInput[`3489hg33934hujgg1${index}`] && (
-                          <div className="ml-14">
-                            <Input type="text" placeholder={t('comment-placeholder')} defaultValue={`@jhondoe `} />
-                            <div className="flex justify-end mt-3">
-                              <button onClick={() => toggleOpenReplyAnswearInput(`3489hg33934hujgg1${index}`)} className=" mr-4">{t('canclel-button')}</button>
-                              <Button text={t('reply-button')} isActive={true} className="max-w-[128px] h-8 flex justify-center items-center" />
-                            </div>
-                          </div>
+          {isLoadingComments ? (
+            <>
+              {[...Array(5)].map(() => (
+                <RecipeCommentSkeleton className="mb-6" />
+              ))}
+            </> 
+          ) : (
+            <>
+              {[...Array(4)].map((_, index) => (
+                <div className="mb-6" key={index}>
+                  <RecipeComment 
+                    key={index}
+                    username="jhondoe"
+                    commentText="Awesome recipe."
+                    rating={4}
+                    userId="3489hg33934hujgg"
+                    numbersOfReplies={1}
+                    onClickOpenReplies={() => toggleOpenReplies(`3489hg33934hujgg${index}`)}
+                    isOpenReplies={openReplies[`3489hg33934hujgg${index}`]}
+                    onClickReply={() => toggleOpenReplyInput(`3489hg33934hujgg${index}`)}
+                  />
+                  <div className="ml-14">
+                    {openReplyInput[`3489hg33934hujgg${index}`] && (
+                      <>
+                        <Input type="text" placeholder={t('comment-placeholder')} />
+                        <div className="flex justify-end mt-3">
+                          <button onClick={() => toggleOpenReplyInput(`3489hg33934hujgg${index}`)} className=" mr-4">{t('canclel-button')}</button>
+                          <Button text={t('reply-button')} isActive={true} className="max-w-[128px] h-8 flex justify-center items-center" />
+                        </div>
+                      </>
+                    )}
+                    {openReplies[`3489hg33934hujgg${index}`] && (
+                      <div className=" my-4">
+                        {isLoadingCommentReplies ? (
+                          <>
+                            <RecipeCommentSkeleton className="mb-6" />
+                          </>
+                        ) : (
+                          <>
+                            {[...Array(1)].map(() => (
+                              <div>
+                                <RecipeComment 
+                                  key={index}
+                                  username="jhondoe"
+                                  commentText="how did you do it?"
+                                  userId="3489hg33934hujgg1" 
+                                  onClickReply={() => toggleOpenReplyAnswearInput(`3489hg33934hujgg1${index}`)}
+                                />
+                                {openReplyAnswearInput[`3489hg33934hujgg1${index}`] && (
+                                  <div className="ml-14">
+                                    <Input type="text" placeholder={t('comment-placeholder')} defaultValue={`@jhondoe `} />
+                                    <div className="flex justify-end mt-3">
+                                      <button onClick={() => toggleOpenReplyAnswearInput(`3489hg33934hujgg1${index}`)} className=" mr-4">{t('canclel-button')}</button>
+                                      <Button text={t('reply-button')} isActive={true} className="max-w-[128px] h-8 flex justify-center items-center" />
+                                    </div>
+                                  </div>
+                                )}
+                              </div>
+                            ))}
+                          </>
                         )}
                       </div>
-                    ))}
+                    )}
                   </div>
-                )}
-              </div>
-            </div>
-          ))}
+                </div>
+              ))}
+            </>
+          )}
         </RecipeCommentContent>
       </div>
     </>
