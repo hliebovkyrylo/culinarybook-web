@@ -126,5 +126,7 @@
   "change-button": "Изменить пароль",
   "back-home": "Вернуться на главную страницу",
   "title-new-password": "Новый пароль",
-  "change-language": "Поменять язык"
+  "change-language": "Поменять язык",
+  "email-exist-error": "Такая учетная запись уже существует!",
+  "username-exist-error": "Такое имя пользователя уже существует!"
 }
