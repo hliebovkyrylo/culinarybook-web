@@ -127,5 +127,10 @@
   "title-new-password": "Новий пароль",
   "change-language": "Змінити мову",
   "email-exist-error": "Такий обліковий запис вже існує!",
-  "username-exist-error": "Таке ім'я користувача вже існує!"
+  "username-exist-error": "Таке ім'я користувача вже існує!",
+  "wrong-data-error": "Введенні дані недійсні!",
+  "user-not-found-error": "Данний обліковий запис не знайдений!",
+  "invalid-code-error": "Недійсний код!",
+  "expired-code": "Час дії коду минув. Надішліть новий.",
+  "send-new-code": "Надішліть новий код на пошту!"
 }

@@ -8,13 +8,22 @@ export interface ISignUpRequest {
   image   : string;
 };
 
-export interface ISignUpResponse {
+export interface IAuthResponse {
   accessToken: string;
+};
+
+export interface IVerifyAccountRequest {
+  code: string;
+};
+
+export interface ISignInRequest {
+  email   : string;
+  password: string;
 };
 
 export const authApi = api.injectEndpoints({
   endpoints: builder => ({
-    signUp: builder.mutation<ISignUpResponse, ISignUpRequest>({
+    signUp: builder.mutation<IAuthResponse, ISignUpRequest>({
       query: (body) => ({
         method: 'POST',
         url   : '/auth/sign-up',
@@ -26,8 +35,27 @@ export const authApi = api.injectEndpoints({
         method: 'POST',
         url   : '/auth/send-code'
       })
+    }),
+    verifyAccount: builder.mutation<void, IVerifyAccountRequest>({
+      query: (body) => ({
+        method: 'POST',
+        url   :  '/auth/verify-email',
+        body
+      })
+    }),
+    signIn: builder.mutation<IAuthResponse, ISignInRequest>({
+      query: (body) => ({
+        method: 'POST',
+        url   : '/auth/sign-in',
+        body
+      })
     })
   })
 });
 
-export const { useSignUpMutation, useSendCodeMutation } = authApi;
+export const { 
+  useSignUpMutation, 
+  useSendCodeMutation,
+  useVerifyAccountMutation,
+  useSignInMutation
+} = authApi;

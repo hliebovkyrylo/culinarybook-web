@@ -5,15 +5,41 @@ import { Button }                       from "@/ui";
 import { ArrowRightSquare }             from "@/icons";
 import { useTranslation }               from "react-i18next";
 import { useDigitInput }                from "@/hooks/useDigitInput";
+import { useCallback } from "react";
+import { useVerifyAccountMutation } from "@/lib/api/authApi";
+import { RtkError } from "@/typings/error";
+import { useForm } from "react-hook-form";
 
 const VerifyAccount = () => {
   const { t } = useTranslation();
 
   const { digits, inputRefs, handleChange, handleKeyDown } = useDigitInput();
+  const allDigits = digits.concat().toString().replace(/,/g, '');
+
+  const [ verifyAccount ] = useVerifyAccountMutation();
+
+  const { handleSubmit, formState: { errors }, setError } = useForm();
+
+  const onSubmit = useCallback(() => {
+    verifyAccount({ code: allDigits }).unwrap().catch((error: RtkError) => {
+      if (error.data?.code === 'wrong-entered-code') {
+        setError('root', { message: t('invalid-code-error') });
+      }
+
+      if (error.data?.code === 'code-expired') {
+        setError('root', { message: t('expired-code') })
+      }
+
+      if (error.data?.code === 'code-not-found') {
+        setError('root', { message: t('send-new-code') })
+      }
+    });
+  }, [verifyAccount])
 
   return (
     <>
-      <FormLayout title={t('title-verify')} className="w-full max-w-[394px]">
+      <FormLayout onSubmit={handleSubmit(onSubmit)} title={t('title-verify')} className="w-full max-w-[394px]">
+        <p className="text-red-500 text-sm">{errors.root?.message}</p>
         <div className="flex justify-between">
           {digits.map((digit, index) => (
             <AuthNumberInput
@@ -27,6 +53,7 @@ const VerifyAccount = () => {
           ))}
         </div>
         <Button
+        type="submit"
           text={t('verify-button')}
           isActive={digits.every(digit => digit !== '')}
         />

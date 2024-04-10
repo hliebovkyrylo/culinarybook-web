@@ -1,6 +1,5 @@
 "use client"
 
-import { useState }              from "react";
 import { z }                     from "zod";
 import Link                      from "next/link";
 import { 
@@ -11,43 +10,80 @@ import { EyeIcon, SlashEyeIcon } from "@/icons";
 import { Button }                from "@/ui";
 import { useTranslation }        from "react-i18next";
 import { usePasswordVisibility } from "@/hooks/usePasswordVisibility";
+import { useSignInMutation }     from "@/lib/api/authApi";
+import { useForm }               from "react-hook-form";
+import { zodResolver }           from "@hookform/resolvers/zod";
+import { useCallback }           from "react";
+import { RtkError }              from "@/typings/error";
+import { Loader }                from "@/components/shared";
+import { useSelector }           from "react-redux";
+import { IAppState }             from "@/lib/store";
+import { useRouter }             from "next/navigation";
 
 const signInSchema = z.object({
   email   : z.string().email(),
-  password: z.string(),
+  password: z.string().min(8),
 });
 
 export type FormData = z.infer<typeof signInSchema>;
 
 const SignUp = () => {
-  const { t } = useTranslation();
+  const { t }       = useTranslation();
+  const accessToken = useSelector((state: IAppState) => state.auth.accessToken);
 
-  const [emailInput, setEmailInput]       = useState<string>("");
-  const [passwordInput, setPasswordInput] = useState<string>("");
+  const router = useRouter();
 
-  const isFieldsEmpty = emailInput !== "" && passwordInput !== "";
+  const [ signIn, { isLoading: isSignInLoading } ] = useSignInMutation();
 
   const { passwordInputType, togglePasswordVisibility } = usePasswordVisibility();
+  
+  const { handleSubmit, setError, formState: { errors, isValid }, register } = useForm<FormData>({
+    defaultValues: {
+      email   : '',
+      password: '',
+    },
+    resolver: zodResolver(signInSchema)
+  });
+
+  const onSubmit = useCallback(async (values: FormData) => {
+    signIn(values).unwrap().catch((error: RtkError) => {
+      if (error.data.code === 'wrong-data') {
+        setError('email', { message: t('wrong-data-error') })
+      }
+
+      if (error.data.code === 'user-not-found') {
+        setError('email', { message: t('user-not-found-error') })
+      }
+    })
+  }, [signIn]);
+
+  if (isSignInLoading) {
+    return <Loader />
+  }
+
+  if (accessToken) {
+    router.push('/')
+  }
 
   return (
-    <FormLayout title={t('signUp-link')}>
+    <FormLayout onSubmit={handleSubmit(onSubmit)} title={t('signUp-link')}>
       <div className="my-8 max-w-xs">
+        <label className="text-red-500 text-sm">{errors.email?.message}</label>
         <AuthInput
           type="email"
-          errorMessage=""
           color="default"
           placeholder={t('email-placeholder')}
           className="mb-2 max-w-xs"
-          onChangeValue={(event) => setEmailInput(event.target.value)}
+          {...register('email')}
         />
         <div className="relative max-w-xs">
+          <label className="text-red-500 text-sm">{errors.password?.message}</label>
           <AuthInput
             type={passwordInputType}
-            errorMessage=""
             color="default"
             placeholder={t('password-placeholder')}
             className="mb-2 max-w-xs"
-            onChangeValue={(event) => setPasswordInput(event.target.value)}
+            {...register('password')}
           />
           <AuthIconButton 
             firstIcon={<EyeIcon className="icon-eye" />}
@@ -60,7 +96,7 @@ const SignUp = () => {
           <Link className="link-text text-sm" href={"/#"}>{t('forgot-password')}</Link>
         </div>
         <Button
-          isActive={isFieldsEmpty}
+          isActive={isValid}
           text={t('signIn-button')}
           className={"max-w-xs min-w-[260px] mt-3"}
         />

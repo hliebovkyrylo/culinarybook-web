@@ -1,6 +1,6 @@
 import React from "react";
 
-interface IAuthNumberInput {
+interface IAuthNumberInput extends React.InputHTMLAttributes<HTMLInputElement> {
   onKeyDown : (event: React.KeyboardEvent<HTMLInputElement>) => void;
   digit     : string;
   onChange  : (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -11,7 +11,8 @@ export const AuthNumberInput = React.forwardRef<HTMLInputElement, IAuthNumberInp
   onKeyDown, 
   digit, 
   onChange, 
-  className 
+  className,
+  ...props
 }, ref) => {
     return (
       <input 
@@ -21,7 +22,8 @@ export const AuthNumberInput = React.forwardRef<HTMLInputElement, IAuthNumberInp
         maxLength={1} 
         onKeyDown={(event) => onKeyDown(event)}
         value={digit}
-        onChange={(event) => onChange(event)} // Добавлен onChange
+        onChange={(event) => onChange(event)}
+        {...props}
       />
     );
   }

@@ -127,5 +127,10 @@
   "title-new-password": "Enter your new password",
   "change-language": "Change language",
   "email-exist-error": "Such email already exists!",
-  "username-exist-error": "Such username already exist!"
+  "username-exist-error": "Such username already exist!",
+  "wrong-data-error": "The entered data is not valid",
+  "user-not-found-error": "This account was not found!",
+  "invalid-code-error": "Invalid code!",
+  "expired-code": "This code has expired. Send a new one.",
+  "send-new-code": "Send new code!"
 }
