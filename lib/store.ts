@@ -9,7 +9,6 @@ import persistStore        from 'redux-persist/es/persistStore';
 import { authSlice }       from './slices/authSlice';
 import { PersistConfig }   from 'redux-persist';
 import { api }             from './api/index';
-import { authInterceptor } from './middleware/authInterceptor';
 import { WebStorage }      from 'redux-persist/lib/types';
 
 export function createPersistStorage(): WebStorage {
