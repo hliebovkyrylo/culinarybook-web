@@ -5,13 +5,20 @@ import { Button }                       from "@/ui";
 import { ArrowRightSquare }             from "@/icons";
 import { useTranslation }               from "react-i18next";
 import { useDigitInput }                from "@/hooks/useDigitInput";
-import { useCallback } from "react";
-import { useVerifyAccountMutation } from "@/lib/api/authApi";
-import { RtkError } from "@/typings/error";
-import { useForm } from "react-hook-form";
+import { useCallback }                  from "react";
+import { 
+  useSendCodeMutation, 
+  useSignOutMutation, 
+  useVerifyAccountMutation 
+}                                       from "@/lib/api/authApi";
+import { RtkError }                     from "@/typings/error";
+import { useForm }                      from "react-hook-form";
 
 const VerifyAccount = () => {
   const { t } = useTranslation();
+
+  const [ sendCode ] = useSendCodeMutation();
+  const [ signOut ]  = useSignOutMutation();
 
   const { digits, inputRefs, handleChange, handleKeyDown } = useDigitInput();
   const allDigits = digits.concat().toString().replace(/,/g, '');
@@ -19,6 +26,18 @@ const VerifyAccount = () => {
   const [ verifyAccount ] = useVerifyAccountMutation();
 
   const { handleSubmit, formState: { errors }, setError } = useForm();
+
+  const onClickSendCode = () => {
+    sendCode().unwrap().catch((error) => {
+      console.log(error);
+    });
+  };
+
+  const onClickSignOut = () => {
+    signOut().unwrap().catch((error) => {
+      console.log(error);
+    });
+  };
 
   const onSubmit = useCallback(() => {
     verifyAccount({ code: allDigits }).unwrap().catch((error: RtkError) => {
@@ -34,7 +53,7 @@ const VerifyAccount = () => {
         setError('root', { message: t('send-new-code') })
       }
     });
-  }, [verifyAccount])
+  }, [verifyAccount, allDigits])
 
   return (
     <>
@@ -59,10 +78,10 @@ const VerifyAccount = () => {
         />
         <div className="flex mt-4">
           <p className="mr-1">{t('resent-text-confirm')}</p>
-          <button className="link-text">{t('resent-button-confirm')}</button>
+          <button onClick={onClickSendCode} type="button" className="link-text">{t('resent-button-confirm')}</button>
         </div>
       </FormLayout>
-      <button className="absolute left-6 bottom-6 flex items-center text-[#727272]">{t('logout-button-confirm')} <ArrowRightSquare className=" ml-3" /></button>
+      <button type="button" onClick={onClickSignOut} className="absolute left-6 bottom-6 flex items-center text-[#727272]">{t('logout-button-confirm')} <ArrowRightSquare className=" ml-3" /></button>
     </>
   )
 };

@@ -21,6 +21,10 @@ export interface ISignInRequest {
   password: string;
 };
 
+export interface ISignOutResponse {
+  accessToken: null;
+};
+
 export const authApi = api.injectEndpoints({
   endpoints: builder => ({
     signUp: builder.mutation<IAuthResponse, ISignUpRequest>({
@@ -49,6 +53,12 @@ export const authApi = api.injectEndpoints({
         url   : '/auth/sign-in',
         body
       })
+    }),
+    signOut: builder.mutation<ISignOutResponse, void>({
+      queryFn: () => ({
+        data: { accessToken: null }
+      }),
+      invalidatesTags: ['user']
     })
   })
 });
@@ -57,5 +67,6 @@ export const {
   useSignUpMutation, 
   useSendCodeMutation,
   useVerifyAccountMutation,
-  useSignInMutation
+  useSignInMutation,
+  useSignOutMutation
 } = authApi;

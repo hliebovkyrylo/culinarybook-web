@@ -18,13 +18,15 @@ import DropMenu                     from "../../DropMenu/DropMenu";
 import { Button }                   from "@/ui";
 import { useTheme }                 from "next-themes";
 import { DropMenuButton, Settings } from "../..";
-import { Cookies }                  from "react-cookie";
 import { useTranslation }           from "react-i18next";
 import i18next                      from "i18next";
+import { useSignOutMutation }       from "@/lib/api/authApi";
 
 export const Topbar = () => {
   const { t }   = useTranslation();
-  const cookies = new Cookies();
+
+  const [ signOut ] = useSignOutMutation();
+
   const userId  = '3489hg33934hujgg'; 
 
   const [isVisible, setIsVisible]               = useState<boolean>(false);
@@ -48,7 +50,10 @@ export const Topbar = () => {
   };
 
   const onClickSignOut = () => {
-    cookies.remove('accessToken');
+    setIsVisible(false);
+    signOut().unwrap().catch((error) => {
+      console.log(error)
+    });
   };
 
   const onClickOpenSettings = () => {

@@ -25,6 +25,18 @@ export const authSlice = createSlice({
           state.accessToken = payload.accessToken;
         }
       )
+      .addMatcher(
+        authApi.endpoints.signIn.matchFulfilled,
+        (state, { payload }) => {
+          state.accessToken = payload.accessToken;
+        }
+      )
+      .addMatcher(
+        authApi.endpoints.signOut.matchFulfilled,
+        (state, { payload }) => {
+          state.accessToken = payload.accessToken;
+        }
+      )
   }
 });
 
