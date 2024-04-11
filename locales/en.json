@@ -125,5 +125,7 @@
   "change-button": "Change password",
   "back-home": "Back home",
   "title-new-password": "Enter your new password",
-  "change-language": "Change language"
+  "change-language": "Change language",
+  "email-title": "Enter your email",
+  "next-button": "Continue"
 }
