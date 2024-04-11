@@ -132,5 +132,7 @@
   "user-not-found-error": "This account was not found!",
   "invalid-code-error": "Invalid code!",
   "expired-code": "This code has expired. Send a new one.",
-  "send-new-code": "Send new code!"
+  "send-new-code": "Send new code!",
+  "email-title": "Enter your email",
+  "next-button": "Continue"
 }
