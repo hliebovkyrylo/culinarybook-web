@@ -25,6 +25,10 @@ export interface ISignOutResponse {
   accessToken: null;
 };
 
+export interface IForgotPassword {
+  email: string;
+};
+
 export const authApi = api.injectEndpoints({
   endpoints: builder => ({
     signUp: builder.mutation<IAuthResponse, ISignUpRequest>({
@@ -54,6 +58,13 @@ export const authApi = api.injectEndpoints({
         body
       })
     }),
+    forgotPassword: builder.mutation<void, IForgotPassword>({
+      query: (body) => ({
+        method: 'POST',
+        url   : '/auth/forgot-password',
+        body
+      })
+    }),
     signOut: builder.mutation<ISignOutResponse, void>({
       queryFn: () => ({
         data: { accessToken: null }
@@ -68,5 +79,6 @@ export const {
   useSendCodeMutation,
   useVerifyAccountMutation,
   useSignInMutation,
-  useSignOutMutation
+  useSignOutMutation,
+  useForgotPasswordMutation
 } = authApi;

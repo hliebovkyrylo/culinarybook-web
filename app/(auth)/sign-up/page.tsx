@@ -25,7 +25,7 @@ import { useRouter }             from "next/navigation";
 const signUpSchema = z.object({
   email          : z.string().email(),
   username       : z.string().min(2).refine(value => !/\s/.test(value), {
-    message: "Имя пользователя не должно содержать пробелы"
+    message: "The username must not contain spaces"
   }),
   name           : z.string().min(2),
   password       : z.string().min(8),
