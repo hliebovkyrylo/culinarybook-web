@@ -34,6 +34,12 @@ export interface ICanResetPasswordRequest {
   code : string; 
 };
 
+export interface IResetPasswordRequest {
+  password       : string;
+  confirmPassword: string;
+  email          : string;
+};
+
 export const authApi = api.injectEndpoints({
   endpoints: builder => ({
     signUp: builder.mutation<IAuthResponse, ISignUpRequest>({
@@ -79,6 +85,16 @@ export const authApi = api.injectEndpoints({
         }
       })
     }),
+    resetPassword: builder.mutation<void, IResetPasswordRequest>({
+      query: ({ password, confirmPassword, email }) => ({
+        method: 'PATCH',
+        url   : `/auth/reset-password/${email}`,
+        body  : {
+          password,
+          confirmPassword
+        }
+      })
+    }),
     signOut: builder.mutation<ISignOutResponse, void>({
       queryFn: () => ({
         data: { accessToken: null }
@@ -95,5 +111,6 @@ export const {
   useSignInMutation,
   useSignOutMutation,
   useForgotPasswordMutation,
-  useCanResetPasswordMutation
+  useCanResetPasswordMutation,
+  useResetPasswordMutation,
 } = authApi;

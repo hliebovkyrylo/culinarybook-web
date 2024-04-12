@@ -135,5 +135,6 @@
   "send-new-code": "Send new code!",
   "email-title": "Enter your email",
   "next-button": "Continue",
-  "code-sent": "Code sent to your mail!"
+  "code-sent": "Code sent to your mail!",
+  "no-update-access-error": "You do not have access to edit the password"
 }

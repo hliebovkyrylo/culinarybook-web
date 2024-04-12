@@ -12,9 +12,12 @@ import {
 import { RtkError }                     from "@/typings/error";
 import { useForm }                      from "react-hook-form";
 import { Loader }                       from "@/components/shared";
+import { useRouter }                    from "next/navigation";
 
 const VerifyAccount = () => {
   const { t } = useTranslation();
+
+  const router = useRouter();
 
   const [ forgotPassword, { isLoading: isCodeLoading, isSuccess: isSent } ] = useForgotPasswordMutation();
   const [ canResetPassword, { isLoading: isCanResetPasswordLoading } ]      = useCanResetPasswordMutation();
@@ -24,16 +27,18 @@ const VerifyAccount = () => {
   const { digits, inputRefs, handleChange, handleKeyDown } = useDigitInput();
   const allDigits = digits.concat().toString().replace(/,/g, '');
 
-  const userEmail = localStorage.getItem('userEmail') as string;
+  const userEmail = localStorage.getItem('userEmail');
 
   const onClickSendCode = () => {
-    forgotPassword({ email: userEmail }).unwrap().catch((error) => {
+    forgotPassword({ email: userEmail as string }).unwrap().catch((error) => {
       console.log(error);
     });
   };
 
   const onSubmit = useCallback(() => {
-    canResetPassword({ email: userEmail ? userEmail : '', code: allDigits }).unwrap().catch((error: RtkError) => {
+    canResetPassword({ email: userEmail ? userEmail : '', code: allDigits }).unwrap().then(() => {
+      router.push('/reset-password')
+    }).catch((error: RtkError) => {
       if (error.data?.code === 'code-mismatch') {
         setError('root', { message: t('invalid-code-error') });
       }
@@ -50,6 +55,10 @@ const VerifyAccount = () => {
 
   if (isCanResetPasswordLoading || isCodeLoading) {
     return <Loader />;
+  }
+
+  if (userEmail === null) {
+    router.push('/forgot-password');
   }
 
   return (

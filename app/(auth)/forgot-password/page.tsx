@@ -33,6 +33,7 @@ const ForgotPassword = () => {
 
   const onSubmit = useCallback(async (values: FormData) => {
     forgotPassword(values).unwrap().then(() => {
+      localStorage.setItem('userEmail', values.email);
       router.push('/confirm-code');
     }).catch((error: RtkError) => {
       if (error.data.code === 'user-not-found') {
