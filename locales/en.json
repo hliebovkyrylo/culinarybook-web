@@ -134,5 +134,6 @@
   "expired-code": "This code has expired. Send a new one.",
   "send-new-code": "Send new code!",
   "email-title": "Enter your email",
-  "next-button": "Continue"
+  "next-button": "Continue",
+  "code-sent": "Code sent to your mail!"
 }

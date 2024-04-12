@@ -17,7 +17,7 @@ import { useForm }                      from "react-hook-form";
 const VerifyAccount = () => {
   const { t } = useTranslation();
 
-  const [ sendCode ] = useSendCodeMutation();
+  const [ sendCode, { isSuccess: isSent } ] = useSendCodeMutation();
   const [ signOut ]  = useSignOutMutation();
 
   const { digits, inputRefs, handleChange, handleKeyDown } = useDigitInput();
@@ -58,6 +58,9 @@ const VerifyAccount = () => {
   return (
     <>
       <FormLayout onSubmit={handleSubmit(onSubmit)} title={t('title-verify')} className="w-full max-w-[394px]">
+        {isSent && (
+          <p className="text-green-500 text-sm">{t('code-sent')}</p>
+        )}
         <p className="text-red-500 text-sm">{errors.root?.message}</p>
         <div className="flex justify-between">
           {digits.map((digit, index) => (

@@ -93,7 +93,7 @@ const SignUp = () => {
           />
         </div>
         <div>
-          <Link className="link-text text-sm" href={"/#"}>{t('forgot-password')}</Link>
+          <Link className="link-text text-sm" href={"/forgot-password"}>{t('forgot-password')}</Link>
         </div>
         <Button
           isActive={isValid}
