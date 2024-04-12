@@ -13,17 +13,24 @@ import {
 }                                       from "@/lib/api/authApi";
 import { RtkError }                     from "@/typings/error";
 import { useForm }                      from "react-hook-form";
+import { useGetMeQuery }                from "@/lib/api/userApi";
+import { useRouter }                    from "next/navigation";
+import { Loader }                       from "@/components/shared";
 
 const VerifyAccount = () => {
   const { t } = useTranslation();
 
-  const [ sendCode, { isSuccess: isSent } ] = useSendCodeMutation();
-  const [ signOut ]  = useSignOutMutation();
+  const { data: user, isLoading } = useGetMeQuery();
+
+  const router = useRouter();
+
+  const [ sendCode, { isSuccess: isSent } ]          = useSendCodeMutation();
+  const [ signOut, { isLoading: isLoadingSignOut } ] = useSignOutMutation();
 
   const { digits, inputRefs, handleChange, handleKeyDown } = useDigitInput();
   const allDigits = digits.concat().toString().replace(/,/g, '');
 
-  const [ verifyAccount ] = useVerifyAccountMutation();
+  const [ verifyAccount, { isLoading: IsLoadingVerify } ] = useVerifyAccountMutation();
 
   const { handleSubmit, formState: { errors }, setError } = useForm();
 
@@ -34,13 +41,17 @@ const VerifyAccount = () => {
   };
 
   const onClickSignOut = () => {
-    signOut().unwrap().catch((error) => {
+    signOut().unwrap().then(() => {
+      router.push('/');
+    }).catch((error) => {
       console.log(error);
     });
   };
 
   const onSubmit = useCallback(() => {
-    verifyAccount({ code: allDigits }).unwrap().catch((error: RtkError) => {
+    verifyAccount({ code: allDigits }).unwrap().then(() => {
+      router.push('/');
+    }).catch((error: RtkError) => {
       if (error.data?.code === 'wrong-entered-code') {
         setError('root', { message: t('invalid-code-error') });
       }
@@ -54,6 +65,19 @@ const VerifyAccount = () => {
       }
     });
   }, [verifyAccount, allDigits])
+
+  if (isLoading || IsLoadingVerify || isLoadingSignOut) {
+    return <Loader />
+  }
+
+  if (!user) {
+    router.push('/sign-in')
+  }
+
+  if (user && user.isVerified) {
+    router.push('/');
+    return null;
+  }
 
   return (
     <>
