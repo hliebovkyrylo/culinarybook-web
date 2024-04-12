@@ -2,19 +2,72 @@
 
 import { AuthNumberInput, FormLayout }  from "@/components/auth";
 import { Button }                       from "@/ui";
-import { ArrowRightSquare }             from "@/icons";
 import { useTranslation }               from "react-i18next";
 import { useDigitInput }                from "@/hooks/useDigitInput";
+import { useCallback }                  from "react";
+import { 
+  useCanResetPasswordMutation,
+  useForgotPasswordMutation
+}                                       from "@/lib/api/authApi";
+import { RtkError }                     from "@/typings/error";
+import { useForm }                      from "react-hook-form";
+import { Loader }                       from "@/components/shared";
+import { useRouter }                    from "next/navigation";
 
 const VerifyAccount = () => {
   const { t } = useTranslation();
 
+  const router = useRouter();
+
+  const [ forgotPassword, { isLoading: isCodeLoading, isSuccess: isSent } ] = useForgotPasswordMutation();
+  const [ canResetPassword, { isLoading: isCanResetPasswordLoading } ]      = useCanResetPasswordMutation();
+
+  const { handleSubmit, formState: { errors }, setError } = useForm();
+
   const { digits, inputRefs, handleChange, handleKeyDown } = useDigitInput();
+  const allDigits = digits.concat().toString().replace(/,/g, '');
+
+  const userEmail = localStorage.getItem('userEmail');
+
+  const onClickSendCode = () => {
+    forgotPassword({ email: userEmail as string }).unwrap().catch((error) => {
+      console.log(error);
+    });
+  };
+
+  const onSubmit = useCallback(() => {
+    canResetPassword({ email: userEmail ? userEmail : '', code: allDigits }).unwrap().then(() => {
+      router.push('/reset-password')
+    }).catch((error: RtkError) => {
+      if (error.data?.code === 'code-mismatch') {
+        setError('root', { message: t('invalid-code-error') });
+      }
+
+      if (error.data?.code === 'code-expired') {
+        setError('root', { message: t('expired-code') })
+      }
+
+      if (error.data?.code === 'code-not-found') {
+        setError('root', { message: t('send-new-code') })
+      }
+    });
+  }, [canResetPassword, allDigits])
+
+  if (isCanResetPasswordLoading || isCodeLoading) {
+    return <Loader />;
+  }
+
+  if (userEmail === null) {
+    router.push('/forgot-password');
+  }
 
   return (
-    <>
-      <FormLayout title={t('title-confirm')} className="w-full max-w-[394px]">
-        <div className="flex justify-between">
+    <FormLayout onSubmit={handleSubmit(onSubmit)} title={t('title-confirm')} className="w-full max-w-[394px]">
+      {isSent && (
+        <p className="text-green-500 text-sm">{t('code-sent')}</p>
+      )}
+      <p className="text-red-500 text-sm">{errors.root?.message}</p>
+      <div className="flex justify-between">
           {digits.map((digit, index) => (
             <AuthNumberInput
               key={index}
@@ -27,16 +80,15 @@ const VerifyAccount = () => {
           ))}
         </div>
         <Button
-          text="Check code"
+          type="submit"
+          text={t('verify-button')}
           isActive={digits.every(digit => digit !== '')}
         />
         <div className="flex mt-4">
           <p className="mr-1">{t('resent-text-confirm')}</p>
-          <button className="link-text">{t('resent-button-confirm')}</button>
+          <button onClick={onClickSendCode} type="button" className="link-text">{t('resent-button-confirm')}</button>
         </div>
       </FormLayout>
-      <button className="absolute left-6 bottom-6 flex items-center text-[#727272]">{t('logout-button-confirm')}<ArrowRightSquare className=" ml-3" /></button>
-    </>
   )
 };
 

@@ -1,17 +1,16 @@
-interface IButton {
+interface IButton extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   text      : string;
-  onClick  ?: () => void;
-  className?: string; 
+  className?: string;
   isActive  : boolean;
 }
 
 export const Button = ({
   text,
-  onClick,
   className,
-  isActive
+  isActive,
+  ...props
 }: IButton) => {
   return (
-    <button onClick={onClick} disabled={!isActive} className={`${!isActive && "auth-button-disabled"} auth-button font-semibold ${className}`}>{text}</button>
+    <button {...props} disabled={!isActive} className={`${!isActive && "auth-button-disabled"} auth-button font-semibold ${className}`}>{text}</button>
   )
 };

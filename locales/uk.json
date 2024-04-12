@@ -126,6 +126,16 @@
   "back-home": "Повернутися на головну сторінку",
   "title-new-password": "Новий пароль",
   "change-language": "Змінити мову",
+  "email-exist-error": "Такий обліковий запис вже існує!",
+  "username-exist-error": "Таке ім'я користувача вже існує!",
+  "wrong-data-error": "Введенні дані недійсні!",
+  "user-not-found-error": "Данний обліковий запис не знайдений!",
+  "invalid-code-error": "Недійсний код!",
+  "expired-code": "Час дії коду минув. Надішліть новий.",
+  "send-new-code": "Надішліть новий код на пошту!",
   "email-title": "Введіть вашу пошту",
-  "next-button": "Продовжити"
+  "next-button": "Продовжити",
+  "code-sent": "Код відправленний на вашу пошту!",
+  "confirm-new-password-placeholder": "Підтвердіть новий пароль",
+  "no-update-access-error": "Ви не маєте доступа щоб редагувати пароль"
 }
