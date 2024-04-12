@@ -17,6 +17,7 @@ import { useCallback }              from "react";
 import { RtkError }                 from "@/typings/error";
 import { Loader }                   from "@/components/shared";
 import { useRouter }                from "next/navigation";
+import { useGetMeQuery } from "@/lib/api/userApi";
 
 const resetPasswordSchema = z.object({
   password       : z.string().min(8),
@@ -35,6 +36,8 @@ export type FormData = z.infer<typeof resetPasswordSchema>;
 
 const ResetPassword = () => {
   const { t } = useTranslation();
+
+  const { data: user, isLoading } = useGetMeQuery();
 
   const router = useRouter();
 
@@ -67,11 +70,14 @@ const ResetPassword = () => {
 
   const { passwordInputType, confirmPasswordInputType, togglePasswordVisibility, toggleConfirmPasswordVisibility } = usePasswordVisibility();
 
-  if (isResetPasswordLoading) {
+  if (isResetPasswordLoading || isLoading) {
     return <Loader />
   }
 
-  if (userEmail === null) {
+  if (user && user.canResetPassword === false) {
+    router.push('/');
+    return null;
+  } else if (userEmail === null) {
     router.push('/forgot-password');
   }
 

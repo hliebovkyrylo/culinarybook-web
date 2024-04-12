@@ -21,6 +21,8 @@ import { zodResolver }           from "@hookform/resolvers/zod";
 import { RtkError }              from "@/typings/error";
 import { Loader }                from "@/components/shared";
 import { useRouter }             from "next/navigation";
+import { useSelector }           from "react-redux";
+import { IAppState }             from "@/lib/store";
 
 const signUpSchema = z.object({
   email          : z.string().email(),
@@ -44,7 +46,8 @@ const signUpSchema = z.object({
 export type FormData = z.infer<typeof signUpSchema>;
 
 const SignUp = () => {
-  const { t } = useTranslation();
+  const { t }       = useTranslation();
+  const accessToken = useSelector((state: IAppState) => state.auth.accessToken);
 
   const router = useRouter();
 
