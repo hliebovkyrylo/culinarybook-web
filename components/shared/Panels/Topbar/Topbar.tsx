@@ -21,13 +21,18 @@ import { DropMenuButton, Settings } from "../..";
 import { useTranslation }           from "react-i18next";
 import i18next                      from "i18next";
 import { useSignOutMutation }       from "@/lib/api/authApi";
+import { useGetMeQuery } from "@/lib/api/userApi";
+import { useSelector } from "react-redux";
+import { IAppState } from "@/lib/store";
 
 export const Topbar = () => {
   const { t }   = useTranslation();
 
+  const { data: user } = useGetMeQuery();
+
   const [ signOut ] = useSignOutMutation();
 
-  const userId  = '3489hg33934hujgg'; 
+  const isAuth = useSelector((state: IAppState) => state.auth.accessToken)
 
   const [isVisible, setIsVisible]               = useState<boolean>(false);
   const [isOpenedSettings, setIsOpenedSettings] = useState<boolean>(false);
@@ -41,7 +46,8 @@ export const Topbar = () => {
     setIsVisibleLanguage(false);
   };
 
-  const isAuth              = true;
+  const userId  = user?.id;
+
   const isUnread            = true;
   const notificationsNumber = 2;
 
