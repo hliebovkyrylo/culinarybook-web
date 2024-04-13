@@ -1,13 +1,58 @@
-import { IUserMe } from "@/typings/user";
-import { api }     from ".";
+import { IUser, IUserMe } from "@/typings/user";
+import { api }            from ".";
 
-export type IUserResponse = IUserMe;
+export type IUserMeResponse  = IUserMe;
+export type IUserResponse    = IUser;
+export type IUsersResponse   = IUser[];
+
+export interface IUpdateUserRequest {
+  username?: string;
+  name    ?: string;
+  image   ?: string;
+};
+
+export interface IGetUsersRequest {
+  page : number;
+  limit: number;
+};
 
 export const userApi = api.injectEndpoints({
   endpoints: builder => ({
-    getMe: builder.query<IUserResponse, void>({
+    getMe: builder.query<IUserMeResponse, void>({
       query: () => ({
         url: '/user/me'
+      })
+    }),
+    getUser: builder.query<IUserResponse, string>({
+      query: (userId) => ({
+        url: `/user/${userId}`
+      }) 
+    }),
+    getUserByUsername: builder.query<IUserResponse, string>({
+      query: (username) => ({
+        url: `/user?username=${username}`
+      })
+    }),
+    updateUser: builder.mutation<IUserMeResponse, IUpdateUserRequest>({
+      query: (body) => ({
+        url   : '/user/update',
+        method: 'PATCH',
+        body
+      })
+    }),
+    getRecommendedUsers: builder.query<IUsersResponse, IGetUsersRequest>({
+      query: (body) => ({
+        url: `/user/recommended/users?page=${body.page}&limit=${body.limit}`
+      })
+    }),
+    getPopularUsers: builder.query<IUsersResponse, IGetUsersRequest>({
+      query: (body) => ({
+        url: `/user/popular/users?page=${body.page}&limit=${body.limit}`
+      })
+    }),
+    changeAccountType: builder.mutation<void, void>({
+      query: () => ({
+        url: '/user/changeType'
       })
     })
   })
