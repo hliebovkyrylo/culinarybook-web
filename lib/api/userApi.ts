@@ -59,5 +59,10 @@ export const userApi = api.injectEndpoints({
 });
 
 export const { 
-  useGetMeQuery
+  useGetMeQuery,
+  useGetUserQuery,
+  useGetUserByUsernameQuery,
+  useGetRecommendedUsersQuery,
+  useGetPopularUsersQuery,
+  useChangeAccountTypeMutation
 } = userApi;
