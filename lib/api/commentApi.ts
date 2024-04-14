@@ -54,4 +54,13 @@ export const commentApi = api.injectEndpoints({
       })
     }),
   })
-})
+});
+
+export const {
+  useCreateCommentMutation,
+  useCreateCommentReplyMutation,
+  useDeleteCommentMutation,
+  useDeleteCommentReplyMutation,
+  useGetCommentRepliesQuery,
+  useGetCommentsQuery
+} = commentApi;
