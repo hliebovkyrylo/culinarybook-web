@@ -28,5 +28,6 @@ export const likeApi = api.injectEndpoints({
 
 export const {
   useCreateLikeMutation,
-  useRemoveLikeMutation
+  useRemoveLikeMutation,
+  useGetLikeStateQuery
 } = likeApi;
