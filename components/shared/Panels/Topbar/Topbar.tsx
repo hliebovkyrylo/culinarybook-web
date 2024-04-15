@@ -10,30 +10,33 @@ import {
   MoonIcon, 
   SavedIcon, 
   SunIcon 
-}                                   from "@/icons";
-import Image                        from "next/image";
-import Link                         from "next/link";
-import { useState }                 from "react";
-import DropMenu                     from "../../DropMenu/DropMenu";
-import { Button }                   from "@/ui";
-import { useTheme }                 from "next-themes";
-import { DropMenuButton, Settings } from "../..";
-import { useTranslation }           from "react-i18next";
-import i18next                      from "i18next";
-import { useSignOutMutation }       from "@/lib/api/authApi";
-import { useGetMeQuery } from "@/lib/api/userApi";
-import { useSelector } from "react-redux";
-import { IAppState } from "@/lib/store";
+}                                      from "@/icons";
+import Image                           from "next/image";
+import Link                            from "next/link";
+import { useState }                    from "react";
+import DropMenu                        from "../../DropMenu/DropMenu";
+import { Button }                      from "@/ui";
+import { useTheme }                    from "next-themes";
+import { DropMenuButton, Settings }    from "../..";
+import { useTranslation }              from "react-i18next";
+import i18next                         from "i18next";
+import { useSignOutMutation }          from "@/lib/api/authApi";
+import { useGetMeQuery }               from "@/lib/api/userApi";
+import { useSelector }                 from "react-redux";
+import { IAppState }                   from "@/lib/store";
+import { useGetAllNotificationsQuery } from "@/lib/api/notificationApi";
 
 export const Topbar = () => {
-  const { t }   = useTranslation();
+  const { t }  = useTranslation();
+  const isAuth = useSelector((state: IAppState) => state.auth.accessToken)
 
   const { data: user } = useGetMeQuery();
 
+  const { data: notifications } = useGetAllNotificationsQuery();
+
   const [ signOut ] = useSignOutMutation();
 
-  const isAuth = useSelector((state: IAppState) => state.auth.accessToken)
-
+  
   const [isVisible, setIsVisible]               = useState<boolean>(false);
   const [isOpenedSettings, setIsOpenedSettings] = useState<boolean>(false);
 
@@ -48,8 +51,7 @@ export const Topbar = () => {
 
   const userId  = user?.id;
 
-  const isUnread            = true;
-  const notificationsNumber = 2;
+  const isUnread            = notifications && notifications?.length > 0;
 
   const handleChangeTheme = () => {
     setTheme(theme === "dark" ? "light" : "dark")
@@ -92,7 +94,7 @@ export const Topbar = () => {
                 {isUnread && (
                   <>
                     <span className="block absolute top-[3px] right-[-1px] rounded-full w-3 h-3 bg-red-600 animate-ping" />
-                    <span className="block absolute top-[3px] text-white right-[-1px] rounded-full text-xs text-center w-3 h-3 bg-red-600">{notificationsNumber > 10 ? "9+" : notificationsNumber}</span>
+                    <span className="block absolute top-[3px] text-white right-[-1px] rounded-full text-xs text-center w-3 h-3 bg-red-600">{notifications?.length > 10 ? "9+" : notifications?.length}</span>
                   </>
                 )}
               </Link>

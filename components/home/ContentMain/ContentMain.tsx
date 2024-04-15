@@ -1,8 +1,8 @@
-export const ContentMain = (props: { children: React.ReactNode }) => {
+export const ContentMain = ({ children, className }: { children: React.ReactNode, className?: string }) => {
   return (
     <div className="overflow-x-auto">
-      <div className="flex justify-between w-width-1480">
-        {props.children}
+      <div className={`grid ${className} w-width-1480`}>
+        {children}
       </div>
     </div>
   )

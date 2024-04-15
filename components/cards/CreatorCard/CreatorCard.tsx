@@ -30,7 +30,7 @@ const CreatorCard = ({
         <Image className="absolute top-0 -z-10 opacity-10 left-0 w-full h-full object-cover" src={userBanner} alt="User background" width={160} height={160} />
       )}
       <Link href={`/profile/${id}`}>
-        <Image className="rounded-full h-8 object-cover" src={userImage} alt="User image" width={32} height={32} />
+        <Image className="rounded-full h-8 object-cover" src={userImage === '' ? '/assets/defaultAvatar.svg' : userImage} alt="User image" width={32} height={32} />
         <div className="my-4 card__name">{name}</div>
         <div className="flex items-center">
           <UsersIcon />
