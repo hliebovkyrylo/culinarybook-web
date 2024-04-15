@@ -1,5 +1,9 @@
 import { api } from ".";
 
+export interface ILikeResponse {
+  isLiked: boolean;
+};
+
 export const likeApi = api.injectEndpoints({
   endpoints: builder => ({
     createLike: builder.mutation<void, string>({
@@ -14,6 +18,11 @@ export const likeApi = api.injectEndpoints({
         url   : `/like/${likeId}/remove`
       })
     }),
+    getLikeState: builder.query<ILikeResponse, string>({
+      query: (recipeId) => ({
+        url: `/like/recipe/${recipeId}/isLiked`
+      })
+    })
   })
 });
 
