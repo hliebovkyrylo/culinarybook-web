@@ -1,11 +1,11 @@
-import { IRecipe, IStep } from "@/typings/recipe";
-import { api }            from ".";
+import { IRecipe, IRecipePreview, IStep } from "@/typings/recipe";
+import { api }                            from ".";
 
 export type ICreateRecipeRequest = Omit<IRecipe, "id" | "ownerId">;
 export type IUpdateRecipeRequest = Omit<IRecipe, "ownerId">;
 
 export type IRecipeResponse         = IRecipe;
-export type IRecipesPreviewResponse = IRecipesPreviewResponse[];
+export type IRecipesPreviewResponse = IRecipePreview[];
 
 export interface IRecipeQueryRequest {
   page : number;

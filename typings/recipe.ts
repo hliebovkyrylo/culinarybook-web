@@ -1,3 +1,5 @@
+import { IUser } from "./user";
+
 export interface IRecipe {
   id          : string;
   ownerId     : string;
@@ -12,7 +14,7 @@ export interface IRecipe {
 
 export interface IRecipePreview {
   id          : string;
-  ownerId     : string;
+  owner       : IUser;
   title       : string;
   image       : string;
   coockingTime: string;
