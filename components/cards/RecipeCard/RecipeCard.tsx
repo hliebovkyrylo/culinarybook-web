@@ -32,20 +32,37 @@ const RecipeCard = ({
   const { t } = useTranslation()
   const [isHovered, setIsHovered] = useState<boolean>(false);
 
-  const foodTypeImages = {
-    [t('type-food-meat')]: '/assets/meat.jpg',
-    [t('type-food-desert')]: '/assets/dessert.jpg',
-    [t('type-food-fastfood')]: '/assets/fastfood.jpg',
-    [t('type-food-softdrink')]: '/assets/drink.jpg',
-    [t('type-food-alcoholdrink')]: '/assets/alcohol.jpg',
-    [t('type-food-soup')]: '/assets/soup.jpg',
-    [t('type-food-poridge')]: '/assets/porridge.jpg',
-    [t('type-food-salad')]: '/assets/salad.jpg',
-    [t('type-food-national')]: '/assets/salad.jpg',
-    [t('type-food-pasta')]: '/assets/pasta.jpg',
-    [t('type-food-fish')]: '/assets/fish.jpg',
+  const foodTypeImages: {[ key: string ]: string} = {
+    "Meat": '/assets/meat.jpg',
+    "Мясо": '/assets/meat.jpg',
+    "М'ясо": '/assets/meat.jpg',
+    'Dessert': '/assets/dessert.jpg',
+    'Десерт': '/assets/dessert.jpg',
+    'Fast food': '/assets/fastfood.jpg',
+    'Фастфуд': '/assets/fastfood.jpg',
+    'Soft drink': '/assets/drink.jpg',
+    'Безалкогольний напій': '/assets/drink.jpg',
+    'Безалкогольный напиток': '/assets/drink.jpg',
+    'Alcohol drink': '/assets/alcohol.jpg',
+    'Алкогольний напій': '/assets/alcohol.jpg',
+    'Акогольный напиток': '/assets/alcohol.jpg',
+    'Soup': '/assets/soup.jpg',
+    'Суп': '/assets/soup.jpg',
+    'Porridge': '/assets/porridge.jpg',
+    'Каша': '/assets/porridge.jpg',
+    'Salad': '/assets/salad.jpg',
+    'Салат': '/assets/salad.jpg',
+    'National dish': '/assets/national.jpg',
+    'Національна страва': '/assets/national.jpg',
+    'Нацыональное блюдо': '/assets/national.jpg',
+    'Pasta': '/assets/pasta.jpg',
+    'Макаронні': '/assets/pasta.jpg',
+    'Макаронные': '/assets/pasta.jpg',
+    'Fish': '/assets/fish.jpg',
+    'Рыба': '/assets/fish.jpg',
+    'Риба': '/assets/fish.jpg',
   };
-  
+
   let defaultBgImage = foodTypeImages[foodType] || '/assets/meat.jpg';  
 
   return (
@@ -58,6 +75,7 @@ const RecipeCard = ({
             alt="Recipe photo" 
             width={230} 
             height={125} 
+            priority
           />
         </div>
         <div className="flex flex-col px-4 pt-3 pb-6">
@@ -72,7 +90,7 @@ const RecipeCard = ({
             <span className="text-color-666 text-sm">{complexity}</span>
           </div>
           <div className="flex">
-            <Image src={authorImage === "" ? '/assets/defaultAvatar.svg' : authorImage} className="object-cover w-5 h-5 rounded-full mr-2" alt="User photo" width={20} height={20} />
+            <Image priority src={authorImage === "" ? '/assets/defaultAvatar.svg' : authorImage} className="object-cover w-5 h-5 rounded-full mr-2" alt="User photo" width={20} height={20} />
             <span className="text-color-666 text-sm">{authorName}</span>
           </div>
         </div>
