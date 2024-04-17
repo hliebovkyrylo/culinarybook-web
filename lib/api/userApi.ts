@@ -16,6 +16,12 @@ export interface IGetUsersRequest {
   limit: number;
 };
 
+export interface IGetUsersByUsernameRequest {
+  username: string;
+  page    : number;
+  limit   : number;
+};
+
 export const userApi = api.injectEndpoints({
   endpoints: builder => ({
     getMe: builder.query<IUserMeResponse, void>({
@@ -28,9 +34,9 @@ export const userApi = api.injectEndpoints({
         url: `/user/${userId}`
       }) 
     }),
-    getUserByUsername: builder.query<IUserResponse, string>({
-      query: (username) => ({
-        url: `/user?username=${username}`
+    getUserByUsername: builder.query<IUsersResponse, IGetUsersByUsernameRequest>({
+      query: ({ username, page, limit }) => ({
+        url: `/user?username=${username}&page=${page}&limit=${limit}`
       })
     }),
     updateUser: builder.mutation<IUserMeResponse, IUpdateUserRequest>({
