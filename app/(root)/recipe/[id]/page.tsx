@@ -1,5 +1,6 @@
 "use client"
 
+import { renderMetaTags }      from "@/app/meta";
 import { 
   PrivateRecipe,
   RecipeComment, 
@@ -14,6 +15,7 @@ import { Loader }              from "@/components/shared";
 import { useToggleState }      from "@/hooks/useToggleState";
 import { Button }              from "@/ui";
 import { Input }               from "@/ui/input/Input";
+import Head from "next/head";
 import Image                   from "next/image";
 import { useState }            from "react";
 import { useTranslation }      from "react-i18next";
@@ -55,6 +57,10 @@ const Recipe = () => {
   
   return (
     <>
+      {renderMetaTags({ title: "Tasty burger", description: "It's very tasty burger" })}
+      <Head>
+        <title>Burger</title>
+      </Head>
       {isBackgroundApplied && (
         <Image src={'/assets/burger.jpg'} alt="Background image" width={1000} height={1000} className=" absolute top-0 left-0 w-full h-full object-cover -z-10 blur-sm opacity-10" />
       )}

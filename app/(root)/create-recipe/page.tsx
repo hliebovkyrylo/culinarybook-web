@@ -6,64 +6,157 @@ import {
   ImageIcon, 
   LockIcon, 
   SecondMedalIcon, 
+  TrashIcon, 
   UntesilsIcon
-}                             from "@/icons";
+}                                 from "@/icons";
 import { 
-  SelectButton, 
-  SelectContent, 
+  SelectButton, SelectContent, 
   SelectField 
-}                             from "@/components/select";
-import Textarea               from "@/ui/textarea/Textarea";
+}                                 from "@/components/select";
+import Textarea                   from "@/ui/textarea/Textarea";
 import { 
   RecipeCreateCover, 
   RecipeInput, 
   RecipeButton 
-}                             from "@/components/create-recipe";
-import { Button }             from "@/ui";
-import { useDynamicElements } from "@/hooks/useDynamicElements";
-import { useImageUpload }     from "@/hooks/useUploadImage";
-import { useCustomState }     from "@/hooks/useInputsState";
-import { useTranslation }     from "react-i18next";
+}                                 from "@/components/create-recipe";
+import { Button }                 from "@/ui";
+import { useImageUpload }         from "@/hooks/useUploadImage";
+import { useCustomState }         from "@/hooks/useInputsState";
+import { useTranslation }         from "react-i18next";
+import { z }                      from "zod";
+import { 
+  useCreateRecipeMutation, 
+  useCreateStepsMutation 
+}                                 from "@/lib/api/recipeApi";
+import { useForm, useFieldArray } from "react-hook-form";
+import { zodResolver }            from "@hookform/resolvers/zod";
+import { useCallback, useEffect } from "react";
+import { useRouter }              from "next/navigation";
+import { Loader }                 from "@/components/shared";
+import { RtkError }               from "@/typings/error";
+import { useSelector }            from "react-redux";
+import { IAppState }              from "@/lib/store";
+import { renderMetaTags }         from "@/app/meta";
+
+const createRecipeAndStepSchema = z.object({
+  title          : z.string().min(1).max(80),
+  image          : z.string().default(''),
+  coockingTime   : z.string().max(32),
+  complexity     : z.string().min(1),
+  typeOfFood     : z.string().min(1),
+  ingradients    : z.string().min(1).min(1),
+  isPublic       : z.boolean(),
+  applyBackground: z.boolean().default(false),
+  steps          : z.array(z.object({
+    stepNumber     : z.number().min(1),
+    stepDescription: z.string().min(2)
+  }))
+});
+
+export type CreateRecipeAndStepFormData = z.infer<typeof createRecipeAndStepSchema>;
 
 const CreateRecipe = () => {
-  const { t } = useTranslation();
+  const { t }       = useTranslation();
+  const accessToken = useSelector((state: IAppState) => state.auth.accessToken);
+  const router      = useRouter();
 
-  const createElement = (index: number) => (
-    <div className="relative">
-      <span className="absolute left-3 top-2 text-color-custom-yellow font-semibold z-50">{`${t('step')} ${index + 2}`}</span>
-      <Textarea placeholder={t('step-placeholder')} className="!pt-10 min-h-[128px] mr-3 w-full max-w-[300px]" />
-    </div>
-  );
-
-  const { elements, handleClick } = useDynamicElements(createElement);
+  const [ createRecipe, { isLoading: isCreatingRecipe } ] = useCreateRecipeMutation();
+  const [ createSteps, { isLoading: isCreatingSteps } ]   = useCreateStepsMutation();
 
   const { image, inputFileRef, handleImageChange } = useImageUpload();
-
   const { complexity, access, type, bgImage, activeId, onClickSetValue, onClickChangeStates } = useCustomState();
+
+  const { handleSubmit, register, setError, formState: { errors, isValid }, setValue, control } = useForm<CreateRecipeAndStepFormData>({
+    defaultValues: {
+      title          : '',
+      image          : '',
+      coockingTime   : '',
+      complexity     : '',
+      typeOfFood     : '',
+      ingradients    : '',
+      isPublic       : true,
+      applyBackground: false,
+      steps          : [{
+        stepNumber     : 1,
+        stepDescription: ''
+      }]
+    },
+    resolver: zodResolver(createRecipeAndStepSchema)
+  });
+
+  const { fields, append, remove } = useFieldArray<CreateRecipeAndStepFormData, "steps">({
+    control,
+    name: "steps"
+  });
+
+  useEffect(() => {
+    setValue('complexity', complexity);
+    setValue('isPublic', access);
+    setValue('typeOfFood', type);
+    setValue('image', image || '');
+    setValue('applyBackground', bgImage);
+  }, [complexity, access, type, setValue, image, bgImage]);  
+
+  const onSubmit = useCallback(async (values: CreateRecipeAndStepFormData) => {
+    if (isValid) {
+      console.log("sent")
+      createRecipe(values).unwrap().then((recipe) => {
+        const recipeId = recipe.id;
+  
+        createSteps({ recipeId: recipeId, steps: values.steps }).unwrap().then(() => {
+          router.push(`/recipe/${recipeId}`);
+          return null;
+        })
+      }).catch((error: RtkError) => {
+        if (error.data.code === 'too-large-image') {
+          setError('image', { message: t('too-large-error') });
+        }
+      });
+    }
+  }, [createRecipe, image, complexity, access, type, bgImage, createSteps, fields, isValid]); 
+  
+  if (isCreatingRecipe || isCreatingSteps) {
+    return <Loader />;
+  }
+
+  if (!accessToken) {
+    router.push('/sign-in');
+    return null;
+  }
 
   return (
     <>
+      {renderMetaTags({ title: t('meta-create-recipe'), description: "" })}
       <h1 className="head-text">{t('create-recipe')}</h1>
       <input ref={inputFileRef} onChange={handleImageChange} type="file" accept="image/*" hidden />
-      <form className="my-7">
+      <form onSubmit={handleSubmit(onSubmit)} className="my-7">
           <div className="flex max-md:flex-col">
             <RecipeCreateCover 
               recipeImage={image}
               onClick={() => inputFileRef.current?.click()}
+              isError={errors.image ? true : false}
+              errorMessage={errors.image?.message}
             />
             <div className="ml-12 max-md:ml-0 max-md:mt-6">
-              <RecipeInput
-                placeholder={t('recipe-title-placeholder')}
-                type="text"
-                image={<FileIcon className="w-5 h-5" />}
-                className="w-full"
-              />
-              <RecipeInput
-                placeholder={t('cooking-time-placeholder')}
-                type="text"
-                image={<ClockIcon className="w-5 h-5" />}
-                className="w-full"
-              />
+              <p className="text-red-500 text-sm">{errors.title?.message}</p>
+              <div className={'flex mb-3 items-center'}> 
+                <FileIcon className="w-5 h-5" />
+                <RecipeInput
+                  placeholder={t('recipe-title-placeholder')}
+                  type="text"
+                  {...register('title')}
+                />
+              </div>
+              <p className="text-red-500 text-sm">{errors.coockingTime?.message}</p>
+              <div className={'flex mb-3 items-center'}> 
+                <ClockIcon className="w-5 h-5" />
+                <RecipeInput
+                  placeholder={t('cooking-time-placeholder')}
+                  type="text"
+                  {...register('coockingTime')}
+                />
+              </div>
+              <p className="text-red-500 text-sm">{errors.complexity?.message}</p>
               <div className="flex mb-3">
                 <SecondMedalIcon className="w-5 h-5"/>
                 <div className="relative ml-3">
@@ -138,22 +231,42 @@ const CreateRecipe = () => {
               )}
             </div>
           </div>
-          <h3 className="text-color-custom-yellow font-semibold my-5">{t('title-ingradients')}</h3>
-          <Textarea placeholder={t('placeholder-ingradients')} className="w-full max-w-sm min-h-[170px]" />
-          <h3 className="text-color-custom-yellow font-semibold my-5">{t('title-instructions')}</h3>
+          <h3 className="link-text font-semibold my-5">{t('title-ingradients')}</h3>
+          <p className="text-red-500 text-sm">{errors.ingradients?.message}</p>
+          <Textarea {...register('ingradients')} placeholder={t('placeholder-ingradients')} className="w-full max-w-sm min-h-[170px]" />
+          <h3 className="link-text font-semibold my-5">{t('title-instructions')}</h3>
           <div>
-            <div className="relative">
-              <span className="absolute left-3 top-2 text-color-custom-yellow font-semibold z-50">{t('step')} 1</span>
-              <Textarea placeholder={t('step-placeholder')} className="!pt-10 min-h-[128px] mr-3 w-full max-w-[300px]" />
-            </div>
-            {elements}
+            {fields.map((_, index) => (
+              <div key={index}>
+                <p className="text-red-500 text-sm">
+                  {errors.steps?.[index]?.stepDescription?.message}
+                </p>
+                <div className="relative max-w-[300px]">
+                  <span className="absolute left-3 top-2 link-text font-semibold z-50">{`${t('step')} ${index + 1}`}</span>
+                  {index !== 0 && (
+                    <button
+                      className="w-6 absolute right-3 top-2 p-1"
+                      type="button"
+                      onClick={() => remove(index)}
+                    >
+                    <TrashIcon className="fill-color-666" />
+                    </button>
+                  )}
+                  <Textarea
+                    placeholder={t('step-placeholder')}
+                    className="!pt-10 min-h-[128px] mr-3 w-full max-w-[300px]"
+                    {...register(`steps.${index}.stepDescription`)}
+                  />
+                </div>
+              </div>
+            ))}
             <div className="w-full max-w-[300px] flex justify-center">
               <RecipeButton
-                buttonClick={handleClick}
+                buttonClick={() => append({ stepNumber: fields.length + 1, stepDescription: '' })}
               />
             </div>
           </div>
-        <Button text={t('create-button')} className="mt-12 max-w-[234px] cursor-pointer max-md:mb-14" isActive={true} />
+        <Button text={t('create-button')} className="mt-12 max-w-[234px] max-md:mb-14" isActive={isValid} />
       </form>
     </>
   )

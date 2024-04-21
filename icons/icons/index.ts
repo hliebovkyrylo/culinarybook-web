@@ -37,3 +37,4 @@ export * from "./ArrowSortDownIcon";
 export * from "./ChevronRightIcon";
 export * from "./EarthIcon";
 export * from "./CheckIcon";
+export * from "./TrashIcon";

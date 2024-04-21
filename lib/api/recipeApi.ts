@@ -18,12 +18,18 @@ export interface IRecipeQueryTitleRequest {
   limit: number;
 };
 
-export type ICreateStepRequest  = Omit<IStep, "id">;
+export interface ICreateStepRequest {
+  recipeId: string;
+  steps: {
+    stepNumber     : number,
+    stepDescription: string,
+  }[];
+};
 
 export interface IUpdateStepsRequest {
   stepId         : string;
   stepDescription: string;
-}
+};
 
 export type IStepsResponse = IStep[];
 
@@ -64,13 +70,13 @@ export const recipeApi = api.injectEndpoints({
         url: `/recipe/my/visited?page=${body.page}&limit=${body.limit}`
       })
     }),
-    createStep: builder.mutation<void, ICreateStepRequest>({
-      query: ({ recipeId, ...rest }) => ({
+    createSteps: builder.mutation<void, ICreateStepRequest>({
+      query: ({ recipeId, steps }) => ({
         method: 'POST',
         url: `/recipe/${recipeId}/createStep`,
-        body: rest,
+        body: steps,
       })
-    }),
+    }),        
     getSteps: builder.query<IStepsResponse, string>({
       query: (recipeId) => ({
         url: `/recipe/${recipeId}/steps`
@@ -113,7 +119,7 @@ export const recipeApi = api.injectEndpoints({
 
 export const { 
   useCreateRecipeMutation,
-  useCreateStepMutation,
+  useCreateStepsMutation,
   useDeleteRecipeMutation,
   useDeleteStepMutation,
   useGetMyLikedQuery,

@@ -1,17 +1,15 @@
-interface RecipeTextareaProps {
+import { forwardRef } from "react";
+
+interface RecipeTextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   className ?: string;
   placeholder: string;
 }
 
-const Textarea = ({
-  className,
-  placeholder
-}: RecipeTextareaProps) => {
+const Textarea = forwardRef<HTMLTextAreaElement, RecipeTextareaProps>(
+  ({ placeholder, className, ...props }, ref) => {
   return (
-    <div className="relative">
-      <textarea placeholder={placeholder} className={`custom-textarea ${className}`} />
-    </div>
+    <textarea {...props} ref={ref} placeholder={placeholder} className={`custom-textarea ${className}`} />
   )
-};
+});
 
 export default Textarea;

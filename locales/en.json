@@ -136,5 +136,8 @@
   "email-title": "Enter your email",
   "next-button": "Continue",
   "code-sent": "Code sent to your mail!",
-  "no-update-access-error": "You do not have access to edit the password"
+  "no-update-access-error": "You do not have access to edit the password",
+  "too-large-error": "The image is too big! The maximum image size is 1 MB.",
+  "meta-create-recipe": "Create recipe | Recipebook",
+  "meta-create-recipe-description": "Create a recipe to share with everyone or for your own personal storage."
 }

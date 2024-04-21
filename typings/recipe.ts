@@ -1,15 +1,16 @@
 import { IUser } from "./user";
 
 export interface IRecipe {
-  id          : string;
-  ownerId     : string;
-  title       : string;
-  image       : string;
-  coockingTime: string;
-  complexity  : string;
-  typeOfFood  : string;
-  ingradients : string;
-  isPublic    : boolean;
+  id             : string;
+  ownerId        : string;
+  title          : string;
+  image          : string;
+  coockingTime   : string;
+  complexity     : string;
+  typeOfFood     : string;
+  ingradients    : string;
+  isPublic       : boolean;
+  applyBackground: boolean;
 };
 
 export interface IRecipePreview {
