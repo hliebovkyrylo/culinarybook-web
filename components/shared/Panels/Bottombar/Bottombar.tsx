@@ -1,15 +1,22 @@
 "use client"
 
 import { sidebarLinks }   from "@/constants";
+import { useGetMeQuery }  from "@/lib/api/userApi";
 import Link               from "next/link";
 import { usePathname }    from "next/navigation";
 import { useTranslation } from "react-i18next";
+import { Loader }         from "../../Loader";
 
 export const Bottombar = () => {
   const { t }     = useTranslation()
   const pathname  = usePathname();
 
-  const userId = "3489hg33934hujgg"
+  const { data: user, isLoading } = useGetMeQuery();
+  const userId                    = user?.id;
+
+  if (isLoading) {
+    return <Loader className="absolute left-0 top-0" />
+  }
 
   return (
     <footer className="bottombar">

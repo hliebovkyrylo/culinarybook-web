@@ -19,4 +19,5 @@ export interface IUser {
   recipeCount     : number;
   image           : string;
   isVerified      : boolean;
+  isPrivate       : boolean;
 }

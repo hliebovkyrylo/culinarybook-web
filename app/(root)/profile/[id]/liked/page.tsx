@@ -1,31 +1,40 @@
+"use client"
+
 import { RecipeCardSkeleton } from "@/components/cards";
 import RecipeCard             from "@/components/cards/RecipeCard/RecipeCard";
+import { useGetMyLikedQuery } from "@/lib/api/recipeApi";
+import { useTranslation }     from "react-i18next";
 
 const Profile = () => {
-  const isLoading = false;
+  const { t } = useTranslation();
+
+  const { data: recipes, isLoading } = useGetMyLikedQuery();
   return (
     <>
       {isLoading ? (
         <>
           {[...Array(12)].map(() => (
-            <RecipeCardSkeleton className="mb-7" />
+            <RecipeCardSkeleton className="max-[746px]:!w-full mb-7" />
           ))}
         </>
       ) : (
         <>
-          {[...Array(16)].map(() => (
+          {recipes && recipes.length > 0 ? recipes.map((recipe) => (
             <RecipeCard
-              key={'ssgsg'}
-              id="dgfg9034hg348yfg3j0s94"
-              recipeName="Meat pie"
-              recipeImage=""
-              foodType="Meat"
-              cookingTime="10-15 minutes"
-              complexity="Middle"
-              author="Jhon Doe"
+              key={recipe.id}
+              id={recipe.id}
+              recipeName={recipe.title}
+              recipeImage={recipe.image}
+              foodType={recipe.typeOfFood}
+              cookingTime={recipe.coockingTime}
+              complexity={recipe.complexity}
+              authorImage={recipe.owner.image}
+              authorName={recipe.owner.name}
               className="max-[746px]:!w-full mb-7"
             />
-          ))}
+          )) : (
+            <p className="text-color-666 absolute top-[60%]">{t('no-have-liked')}</p>
+          )}
         </>
       )}
     </>

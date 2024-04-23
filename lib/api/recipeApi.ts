@@ -18,6 +18,11 @@ export interface IRecipeQueryTitleRequest {
   limit: number;
 };
 
+export interface IRecipeRequest {
+  userId: string;
+  sortBy: string;
+};
+
 export interface ICreateStepRequest {
   recipeId: string;
   steps: {
@@ -60,9 +65,9 @@ export const recipeApi = api.injectEndpoints({
         url   : `/recipe/${recipeId}/delete`
       })
     }),
-    getMyLiked: builder.query<IRecipesPreviewResponse, IRecipeQueryRequest>({
+    getMyLiked: builder.query<IRecipesPreviewResponse, void>({
       query: (body) => ({
-        url: `/recipe/my/liked?page=${body.page}&limit=${body.limit}`
+        url: '/recipe/my/liked'
       })
     }),
     getMyVisited: builder.query<IRecipesPreviewResponse, IRecipeQueryRequest>({
@@ -94,9 +99,9 @@ export const recipeApi = api.injectEndpoints({
         url   : `/recipe/step/delete/${stepId}`
       })
     }),
-    getMySaved: builder.query<IRecipesPreviewResponse, IRecipeQueryRequest>({
+    getMySaved: builder.query<IRecipesPreviewResponse, void>({
       query: (body) => ({
-        url: `/recipe/saved/get?page=${body.page}&limit=${body.limit}`
+        url: '/recipe/saved/get'
       })
     }),
     getRecommendedRecipes: builder.query<IRecipesPreviewResponse, IRecipeQueryRequest>({
@@ -114,6 +119,11 @@ export const recipeApi = api.injectEndpoints({
         url: `/recipe?title=${body.title}&page=${body.page}&limit=${body.limit}`
       })
     }),
+    getRecipesByUserId: builder.query<IRecipesPreviewResponse, IRecipeRequest>({
+      query: (body) => ({
+        url: `/recipe/${body.userId}/recipes?sortBy=${body.sortBy}`
+      })
+    }),
   })
 });
 
@@ -129,5 +139,6 @@ export const {
   useGetRecipeQuery,
   useGetRecipesByTitleQuery,
   useGetRecommendedRecipesQuery,
-  useGetStepsQuery
+  useGetStepsQuery,
+  useGetRecipesByUserIdQuery
 } = recipeApi;

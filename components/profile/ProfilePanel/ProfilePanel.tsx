@@ -3,41 +3,45 @@
 import { profileLinks }                       from "@/constants"
 import { ArrowSortDownIcon, ArrowSortUpIcon } from "@/icons"
 import Link                                   from "next/link"
-import { usePathname }                        from "next/navigation"
-import { useState }                           from "react"
+import { useParams, usePathname }             from "next/navigation"
 import { useTranslation }                     from "react-i18next"
 
-export const ProfilePanel = ({ userId, className }: { userId: string, className?: string }) => {
+interface IProfilePanel {
+  userId: string,
+  className?: string,
+  sortBy: string,
+  handleChangeSort: () => void;
+}
+
+export const ProfilePanel = ({ 
+  userId, 
+  className,
+  sortBy,
+  handleChangeSort
+}: IProfilePanel) => {
   const { t }    = useTranslation();
   const pathname = usePathname();
 
-  const parts          = pathname.split('/');
-  const pathnameUserId = parts[2];
-
-  const [sortBy, setSortBy] = useState<string>("new");
-
-  const handleChangeSort = () => {
-    setSortBy(sortBy === 'new' ? 'old' : 'new');
-  }
+  const { id } = useParams();
 
   return (
-    <nav className={`w-full flex justify-between py-2 px-3 max-[409px]:dark:bg-[#171818] max-[409px]:bg-bg-c-8 rounded-xl ${className}`}>
+    <nav className={`w-full flex justify-between py-1 px-3 max-[409px]:dark:bg-[#171818] max-[409px]:bg-bg-c-8 rounded-xl ${className}`}>
       <div className="flex w-full max-w-xs max-[695px]:max-w-[200px] justify-between">
         {profileLinks.map((link) => {
           let route = link.route;
 
-          if (route === '/profile') route = `${route}/${userId}`;
+          if (route === '/profile') route = `${route}/${id}`;
 
           if (route === '/profile/liked') {
-            route = `/profile/${userId}/liked`;
-            if (userId !== pathnameUserId) {
+            route = `/profile/${id}/liked`;
+            if (userId !== id) {
               return null;
             }
           }
 
           if (route === '/profile/saved') {
-            route = `/profile/${userId}/saved`;
-            if (userId !== pathnameUserId) {
+            route = `/profile/${id}/saved`;
+            if (userId !== id) {
               return null;
             }
           }
@@ -46,23 +50,26 @@ export const ProfilePanel = ({ userId, className }: { userId: string, className?
           let label = link.label;
 
           return (
-            <Link key={link.label} className={`${route === `/profile/${userId}/saved` && 'mx-2'} justify-center px-2 my-[6px] min-w-[409px]:px-3 profile-link rounded-md flex items-center max-w-[186px] max-[695px]:!w-10 ${isActive && "link-text profile-link-active"}`} href={route}>{link.icon}<p className="max-[695px]:hidden ml-1">{t(label)}</p></Link>
+            <Link key={link.label} className={`${route === `/profile/${userId}/saved` && 'mx-2'} justify-center p-2 my-[6px] min-w-[409px]:px-3 profile-link rounded-xl flex items-center max-w-[186px] max-[695px]:!w-10 ${isActive && "link-text profile-link-active"}`} href={route}>{link.icon}<p className="max-[695px]:hidden ml-1">{t(label)}</p></Link>
           );
         })}
       </div>
-      <button onClick={handleChangeSort}>
-        {sortBy === 'new' ? (
-          <div className="flex">
-            <ArrowSortDownIcon className="w-6 h-6 fill-color-666" />
-            <p className="block text-color-666 ml-3 max-sm:hidden">{t('sort-new-old')}</p>
-          </div>
-        ) : (
-          <div className="flex">
-            <ArrowSortUpIcon className="w-6 h-6 fill-color-666" />
-            <p className="text-color-666 ml-3 max-sm:hidden">{t('sort-old-new')}</p>
-          </div>
-        )}
-      </button>
+      {pathname === `/profile/${id}` && (
+        <button onClick={handleChangeSort}>
+          {sortBy === 'desc' ? (
+            <div className="flex">
+              <ArrowSortDownIcon className="w-6 h-6 fill-color-666" />
+              <p className="block text-color-666 ml-3 max-sm:hidden">{t('sort-new-old')}</p>
+            </div>
+          ) : (
+            <div className="flex">
+              <ArrowSortUpIcon className="w-6 h-6 fill-color-666" />
+              <p className="text-color-666 ml-3 max-sm:hidden">{t('sort-old-new')}</p>
+            </div>
+          )}
+        </button>
+      )}
+
     </nav>
   )
 }

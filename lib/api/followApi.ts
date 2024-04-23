@@ -10,9 +10,13 @@ export interface IGetUsersRequest {
 
 export interface IGetUsersRequestById {
   userId: string;
-  page  : number;
-  limit : number;
+  page  ?: number;
+  limit ?: number;
 };
+
+export interface IGetFollowStateResponse {
+  isFollowed: boolean;
+}
 
 export const followApi = api.injectEndpoints({
   endpoints: builder => ({
@@ -60,6 +64,11 @@ export const followApi = api.injectEndpoints({
         url: `/follow/${body.userId}/followings?page=${body.page}&limit=${body.limit}`
       })
     }),
+    getFollowState: builder.query<IGetFollowStateResponse, string>({
+      query: (userId) => ({
+        url: `/follow/user/${userId}/state`
+      })
+    })
   })
 });
 
@@ -70,5 +79,7 @@ export const {
   useGetMyFollowersQuery,
   useGetMyFollowingsQuery,
   useGetUserFollowersQuery,
-  useGetUserFollowingsQuery
+  useGetUserFollowingsQuery, 
+  useGetFollowStateQuery,
+  useUnfollowMutation
 } = followApi;
