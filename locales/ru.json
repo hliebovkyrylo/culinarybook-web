@@ -49,9 +49,11 @@
   "follow-button": "Подписаться",
   "follow-button-already": "Уже подписан",
   "recipe": "Рецепт",
+  "recipes": "Рецептов",
   "recipe-many": "Рецепта",
   "followers": "Подписчиков",
   "follower": "Подписчик",
+  "following": "Подписка",
   "followings": "Подписки",
   "title-followers": "Подписчики",
   "recipe-button": "Рецепты",
@@ -140,5 +142,10 @@
   "no-update-access-error": "У вас нет доступа, чтобы редактировать пароль",
   "too-large-error": "Изображение слишком большое! Максимальный размер изображения — 1 МБ.",
   "meta-create-recipe": "Создать рецепт | Recipebook",
-  "meta-create-recipe-description": "Создайте рецепт чтобы поделиться им со всеми или для своего личного хранения."
+  "meta-create-recipe-description": "Создайте рецепт чтобы поделиться им со всеми или для своего личного хранения.",
+  "no-have-saved": "Вы не сохранили ни одного рецепта.",
+  "no-have-liked": "Вам не понравился ни один рецепт.",
+  "no-have-recipes": "Рецепты отсуствуют",
+  "confirm-unfollow": "Вы действительно хотите отписаться от пользователя",
+  "unfollow-button": "Отписаться"
 }

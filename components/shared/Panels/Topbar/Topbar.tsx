@@ -17,7 +17,7 @@ import { useState }                    from "react";
 import DropMenu                        from "../../DropMenu/DropMenu";
 import { Button }                      from "@/ui";
 import { useTheme }                    from "next-themes";
-import { DropMenuButton, Settings }    from "../..";
+import { DropMenuButton, Loader, Settings }    from "../..";
 import { useTranslation }              from "react-i18next";
 import i18next                         from "i18next";
 import { useSignOutMutation }          from "@/lib/api/authApi";
@@ -30,7 +30,7 @@ export const Topbar = () => {
   const { t }  = useTranslation();
   const isAuth = useSelector((state: IAppState) => state.auth.accessToken)
 
-  const { data: user } = useGetMeQuery();
+  const { data: user, isLoading, refetch } = useGetMeQuery();
 
   const { data: notifications } = useGetAllNotificationsQuery();
 
@@ -59,7 +59,9 @@ export const Topbar = () => {
 
   const onClickSignOut = () => {
     setIsVisible(false);
-    signOut().unwrap().catch((error) => {
+    signOut().unwrap().then(() => {
+      window.location.reload()
+    }).catch((error) => {
       console.log(error)
     });
   };
@@ -71,6 +73,10 @@ export const Topbar = () => {
 
   const handleLanguage = () => {
     setIsVisibleLanguage(!isVisibleLanguage);
+  }
+
+  if (isLoading) {
+    return <Loader className="absolute left-0 top-0" />
   }
 
   return (
@@ -100,7 +106,7 @@ export const Topbar = () => {
               </Link>
               <button onClick={onClickOpenMenu}>
                 <Image 
-                  src={"/assets/testuserimage.jpg"} 
+                  src={user && user?.image !== '' ? user?.image : '/assets/defaultUsers.svg'} 
                   alt="User photo"
                   width={32}
                   className="object-cover w-8 h-8 rounded-full"

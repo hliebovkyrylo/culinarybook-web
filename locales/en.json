@@ -52,6 +52,7 @@
   "follower": "Follower",
   "followers": "Followers",
   "followings": "Followings",
+  "following": "Following",
   "title-followers": "Followers",
   "recipe-button": "Recipes",
   "saved-button": "Saved",
@@ -139,5 +140,11 @@
   "no-update-access-error": "You do not have access to edit the password",
   "too-large-error": "The image is too big! The maximum image size is 1 MB.",
   "meta-create-recipe": "Create recipe | Recipebook",
-  "meta-create-recipe-description": "Create a recipe to share with everyone or for your own personal storage."
+  "meta-create-recipe-description": "Create a recipe to share with everyone or for your own personal storage.",
+  "no-have-saved": "You haven't saved any recipe.",
+  "no-have-liked": "You haven't liked any recipe.",
+  "no-have-recipes": "No recipes",
+  "confirm-unfollow": "Are you sure you want unfollow user",
+  "unfollow-button": "Unfollow",
+  "recipes": "Recipes"
 }
