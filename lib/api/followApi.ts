@@ -1,7 +1,8 @@
-import { IUser } from "@/typings/user";
-import { api }   from ".";
+import { IUser, IUserFollower } from "@/typings/user";
+import { api }                  from ".";
 
-export type IUserPreviewResponse = IUser[];
+export type IUserPreviewResponse  = IUser[];
+export type IUserFollowerResponse = IUserFollower[];
 
 export interface IGetUsersRequest {
   page : number;
@@ -16,6 +17,10 @@ export interface IGetUsersRequestById {
 
 export interface IGetFollowStateResponse {
   isFollowed: boolean;
+}
+
+export interface IGetFollowRequestStateResponse {
+  isFollowRequestSent: boolean;
 }
 
 export const followApi = api.injectEndpoints({
@@ -44,22 +49,12 @@ export const followApi = api.injectEndpoints({
         url: `/follow/${userId}/cancel-request`
       })
     }),
-    getMyFollowers: builder.query<IUserPreviewResponse, IGetUsersRequest>({
-      query: (body) => ({
-        url: `/follow/getMyFollowers?page=${body.page}&limit=${body.limit}`
-      })
-    }),
-    getUserFollowers: builder.query<IUserPreviewResponse, IGetUsersRequestById>({
+    getUserFollowers: builder.query<IUserFollowerResponse, IGetUsersRequestById>({
       query: (body) => ({
         url: `/follow/${body.userId}/followers?page=${body.page}&limit=${body.limit}`
       })
     }),
-    getMyFollowings: builder.query<IUserPreviewResponse, IGetUsersRequest>({
-      query: (body) => ({
-        url: `/follow/my/followings?page=${body.page}&limit=${body.limit}`
-      })
-    }),
-    getUserFollowings: builder.query<IUserPreviewResponse, IGetUsersRequestById>({
+    getUserFollowings: builder.query<IUserFollowerResponse, IGetUsersRequestById>({
       query: (body) => ({
         url: `/follow/${body.userId}/followings?page=${body.page}&limit=${body.limit}`
       })
@@ -67,6 +62,11 @@ export const followApi = api.injectEndpoints({
     getFollowState: builder.query<IGetFollowStateResponse, string>({
       query: (userId) => ({
         url: `/follow/user/${userId}/state`
+      })
+    }),
+    getFollowRequestState: builder.query<IGetFollowRequestStateResponse, string>({
+      query: (userId) => ({
+        url: `/follow/user/${userId}/follow-request-state`
       })
     })
   })
@@ -76,10 +76,9 @@ export const {
   useCancelFollowRequestMutation,
   useFollowMutation,
   useFollowRequestAnswearMutation,
-  useGetMyFollowersQuery,
-  useGetMyFollowingsQuery,
   useGetUserFollowersQuery,
   useGetUserFollowingsQuery, 
   useGetFollowStateQuery,
-  useUnfollowMutation
+  useUnfollowMutation,
+  useGetFollowRequestStateQuery,
 } = followApi;

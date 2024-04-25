@@ -1,6 +1,7 @@
-import { Button } from "@/ui";
-import Image      from "next/image";
-import Link       from "next/link";
+import { useGetMeQuery }  from "@/lib/api/userApi";
+import { Button }         from "@/ui";
+import Image              from "next/image";
+import Link               from "next/link";
 import { useTranslation } from "react-i18next";
 
 interface IFollowerCard {
@@ -23,6 +24,7 @@ export const FollowerCard = ({
   userId
 }: IFollowerCard) => {
   const { t } = useTranslation();
+  const { data: user } = useGetMeQuery();
   return (
     <article className={`flex justify-between items-center rounded-md px-3 py-2 follower-card-bg ${className}`}>
       <div className="flex">
@@ -34,8 +36,8 @@ export const FollowerCard = ({
           <p>{name}</p>
         </div>
       </div>
-      {!isFollowed && (
-        <Button text={t('follow-button')} className=" max-w-[128px] h-8 flex items-center justify-center" onClick={onClick} isActive={true} />
+      {userId !== user?.id && (
+        <Button text={!isFollowed ? t('follow-button') : t('follow-button-already')} isActive={true} onClick={onClick} className={`!w-36 h-8 flex opacity-70 items-center justify-center ml-4 ${isFollowed && "dark:!bg-[#363638] !bg-[#939396] !text-white font-normal"}`} />
       )}
     </article>
   )

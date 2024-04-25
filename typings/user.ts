@@ -21,3 +21,12 @@ export interface IUser {
   isVerified      : boolean;
   isPrivate       : boolean;
 }
+
+export interface IUserFollower {
+  id              : string;
+  username        : string;
+  name            : string;
+  image           : string;
+  isPrivate       : boolean;
+  isFollowed      : boolean;
+}

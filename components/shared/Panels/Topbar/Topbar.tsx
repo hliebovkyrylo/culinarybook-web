@@ -51,7 +51,7 @@ export const Topbar = () => {
 
   const userId  = user?.id;
 
-  const isUnread            = notifications && notifications?.length > 0;
+  const isUnread = notifications && notifications?.length > 0;
 
   const handleChangeTheme = () => {
     setTheme(theme === "dark" ? "light" : "dark")
@@ -128,7 +128,7 @@ export const Topbar = () => {
             </div>
           )}
           {isVisible && (
-            <DropMenu className="w-[242px]">
+            <DropMenu className="w-[242px] max-[413px]:w-[230px] max-[413px]:!-right-0">
               <DropMenuButton 
                 icon={theme === 'light' ? <MoonIcon className='mr-2' /> : <SunIcon className='mr-1 ' /> } 
                 text={t('theme')}
