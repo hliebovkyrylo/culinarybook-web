@@ -146,5 +146,8 @@
   "no-have-recipes": "No recipes",
   "confirm-unfollow": "Are you sure you want unfollow user",
   "unfollow-button": "Unfollow",
-  "recipes": "Recipes"
+  "recipes": "Recipes",
+  "follow-request": "Cancel request",
+  "cancel-follow-request": "Are you sure you want cancel follow request to user",
+  "cancel-confirm": "Cancel request"
 }

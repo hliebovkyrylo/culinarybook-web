@@ -8,7 +8,9 @@ import {
 }                                         from "@/components/profile";
 import { Confirm, Loader }                from "@/components/shared";
 import { 
+  useCancelFollowRequestMutation,
   useFollowMutation,
+  useGetFollowRequestStateQuery,
   useGetFollowStateQuery,
   useGetUserFollowersQuery, 
   useGetUserFollowingsQuery, 
@@ -31,9 +33,11 @@ const ProfileLayout = ({ children }: { children: React.ReactNode }) => {
   const { data: user, isLoading }                = useGetUserQuery(userId);
   const { data: userMe, isLoading: isMeLoading } = useGetMeQuery();
   
-  const { data: followers, isLoading: isLoadingFollowers, refetch: refetchFollowers }       = useGetUserFollowersQuery({ userId: userId });
-  const { data: followings, isLoading: isLoadingFollowings }                                = useGetUserFollowingsQuery({ userId: userId });
-  const { data: followState, isLoading: isLoadingFollowState, refetch: refetchFollowState } = useGetFollowStateQuery(userId);
+  const { data: followers, isLoading: isLoadingFollowers, refetch: refetchFollowers } = useGetUserFollowersQuery({ userId: userId });
+  const { data: followings, isLoading: isLoadingFollowings }                          = useGetUserFollowingsQuery({ userId: userId });
+
+  const { data: followState, isLoading: isLoadingFollowState, refetch: refetchFollowState }                      = useGetFollowStateQuery(userId);
+  const { data: followRequestState, isLoading: isLoadingFollowRequestState, refetch: refetchFollowRequestState } = useGetFollowRequestStateQuery(userId);
 
   const [sortBy, setSortBy] = useState<string>("desc");
 
@@ -47,37 +51,67 @@ const ProfileLayout = ({ children }: { children: React.ReactNode }) => {
 
   const { data: recipes, isLoading: isLoaidngRecipes } = useGetRecipesByUserIdQuery({ userId: userId, sortBy: sortBy });
   
-  const [ follow ]   = useFollowMutation();
-  const [ unfollow ] = useUnfollowMutation();
+  const [ follow ]              = useFollowMutation();
+  const [ unfollow ]            = useUnfollowMutation();
+  const [ cancelFollowRequest ] = useCancelFollowRequestMutation();
 
   const [followStateButtonText, setFollowStateButtonText] = useState<boolean>(followState?.isFollowed as boolean)
+  const [isRequestSent, setIsRequestSent]                 = useState<boolean>(followRequestState?.isFollowRequestSent as boolean);
 
-  const [isOpenConfirm, setIsOpenConfirm] = useState<boolean>(false);
+  const [isOpenConfirm, setIsOpenConfirm]         = useState<boolean>(false);
+  const [confirmText, setConfirmText]             = useState<string>('');
+  const [confirmButtonText, setConfirmButtonText] = useState<string>('')
+
+  useEffect(() => {
+    setIsRequestSent(followRequestState?.isFollowRequestSent as boolean);
+  }, [followRequestState])
 
   useEffect(() => {
     setFollowStateButtonText(followState?.isFollowed as boolean)
   }, [followState])
 
   const handleFollow = async () => {
-    if (!followState?.isFollowed) {
+    if (!followState?.isFollowed && !user?.isPrivate) {
       setFollowStateButtonText(true);
       setIsOpenConfirm(false);
 
       await follow(userId)
       await refetchFollowers(); 
       await refetchFollowState();
+    } else if (user?.isPrivate && !followState?.isFollowed && !followRequestState?.isFollowRequestSent) {
+      setIsRequestSent(true)
+      await follow(userId)
+
+      await refetchFollowRequestState();
+    } else if (followRequestState?.isFollowRequestSent) {
+      setIsOpenConfirm(true)
+      setConfirmText(`${t('cancel-follow-request')} "${user?.username}"?`)
+      setConfirmButtonText(t('cancel-confirm'))
+
+      await refetchFollowRequestState();
     } else {
       setIsOpenConfirm(true)
+      setConfirmText(`${t('confirm-unfollow')} "${user?.username}"?`)
+      setConfirmButtonText(t('unfollow-button'))
     }
   }
 
   const onClickUnfollow = async () => {
-    setFollowStateButtonText(false);
     setIsOpenConfirm(false);
 
-    await unfollow(userId); 
-    await refetchFollowers(); 
-    await refetchFollowState();
+    if (user?.isPrivate && followRequestState?.isFollowRequestSent) {
+      setIsRequestSent(false);
+      
+
+      await cancelFollowRequest(userId);
+      await refetchFollowRequestState();
+    } else {
+      setFollowStateButtonText(false);
+      
+      await unfollow(userId); 
+      await refetchFollowers(); 
+      await refetchFollowState();
+    }
   }
 
   if 
@@ -87,6 +121,7 @@ const ProfileLayout = ({ children }: { children: React.ReactNode }) => {
     || isLoadingFollowings 
     || isLoaidngRecipes
     || isLoadingFollowState
+    || isLoadingFollowRequestState
   ) {
     return <Loader />
   }
@@ -103,6 +138,7 @@ const ProfileLayout = ({ children }: { children: React.ReactNode }) => {
         name={user?.name || ''}
         followersNumber={followers?.length || 0}
         followingsNumber={followings?.length || 0}
+        isFollowRequestSent={isRequestSent}
         recipesNumber={recipes?.length || 0}
         isFollowed={followStateButtonText}
         followActions={() => handleFollow()}
@@ -127,9 +163,9 @@ const ProfileLayout = ({ children }: { children: React.ReactNode }) => {
       }
       {isOpenConfirm && (
         <Confirm
-          confirmButtonText={'Unfollow'}
-          confirmText={`${t('confirm-unfollow')} "${user?.username}"?`}
+          confirmText={confirmText}
           clickAction={() => onClickUnfollow()}
+          buttonText={confirmButtonText}
           closeConfirm={() => setIsOpenConfirm(false)}
         />
       )}

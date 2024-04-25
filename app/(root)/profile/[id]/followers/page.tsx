@@ -1,31 +1,108 @@
 "use client"
 
-import RecipeCard                     from "@/components/cards/RecipeCard/RecipeCard";
-import { FollowWindow, FollowerCard, FollowerCardSkeleton } from "@/components/profile"
-import { Input }                      from "@/ui";
-import { useTranslation } from "react-i18next";
+import RecipeCard                         from "@/components/cards/RecipeCard/RecipeCard";
+import { 
+  FollowWindow, 
+  FollowerCard, 
+  FollowerCardSkeleton 
+}                                         from "@/components/profile"
+import { Confirm }                        from "@/components/shared";
+import { 
+  useFollowMutation, 
+  useGetUserFollowersQuery, 
+  useUnfollowMutation 
+}                                         from "@/lib/api/followApi";
+import { useGetRecipesByUserIdQuery }     from "@/lib/api/recipeApi";
+import { useGetMeQuery, useGetUserQuery } from "@/lib/api/userApi";
+import { IUserFollower }                  from "@/typings/user";
+import { Input }                          from "@/ui";
+import { useParams, useRouter }           from "next/navigation";
+import { useEffect, useState }            from "react";
+import { useTranslation }                 from "react-i18next";
 
 const Followers = () => {
-  const { t }     = useTranslation();
-  const isLoading = true;
+  const { t }  = useTranslation();
+  const router = useRouter();
+
+  const { id } = useParams();
+  const userId = id as string;
+
+  const { data: user, isLoading: isLoadingUser }                                  = useGetUserQuery(userId);
+  const { data: followers, isLoading: isLoadingUsers, refetch: refetchFollowers } = useGetUserFollowersQuery({ userId: userId });
+  const { data: recipes, isLoading: isLoadingRecipes }                            = useGetRecipesByUserIdQuery({ userId: userId, sortBy: 'desc' });
+
+  const [ follow ]   = useFollowMutation();
+  const [ unfollow ] = useUnfollowMutation();
+
+  const [followStateButtonText, setFollowStateButtonText] = useState<{ [id: string]: boolean }>(
+    followers
+      ? Object.fromEntries(followers.map((follower) => [follower.id, follower.isFollowed]))
+      : {}
+  );
+
+  useEffect(() => {
+    setFollowStateButtonText(Object.fromEntries(followers?.map((follower) => [follower.id, follower.isFollowed]) as (string | boolean)[][]))
+  }, [followers]);
+
+  const [selectedUserId, setSelectedUserId]     = useState<string>("");
+  const [selectedUsername, setSelectedUsername] = useState<string>("");
+
+  const [isOpenConfirm, setIsOpenConfirm] = useState<boolean>(false);
+
+  if (user?.isPrivate) {
+    router.push(`/profile/${userId}`)
+    return null
+  }
+
+  const handleFollow = async (follower: IUserFollower) => {
+    if (follower.isFollowed) {
+      setSelectedUserId(follower.id)
+      setSelectedUsername(follower.username)
+      setIsOpenConfirm(true)
+    } else {
+      setFollowStateButtonText((prevState) => ({
+        ...prevState,
+        [follower.id]: true,
+      }))
+      setIsOpenConfirm(false);
+      
+      await follow(follower.id)
+      await refetchFollowers()
+    }
+  }
+
+  const onClickUnfollow = async (unfollowUserId: string) => {
+    setFollowStateButtonText((prevState) => ({
+      ...prevState,
+      [unfollowUserId]: false,
+    }))
+    setIsOpenConfirm(false);
+
+    await unfollow(unfollowUserId); 
+    await refetchFollowers();
+  }
+
+  const isLoading = isLoadingUsers || isLoadingRecipes || isLoadingUser;
+
   return (
     <>
-      {[...Array(5)].map(() => (
+      {recipes && recipes.map((recipe) => (
         <RecipeCard
-          key={'ssgsg'}
-          id="dgfg9034hg348yfg3j0s94"
-          recipeName="Meat pie"
-          recipeImage=""
-          foodType="Meat"
-          cookingTime="10-15 minutes"
-          complexity="Middle"
-          author="Jhon Doe"
+          key={recipe.id}
+          id={recipe.id}
+          recipeName={recipe.title}
+          recipeImage={recipe.image}
+          foodType={recipe.typeOfFood}
+          cookingTime={recipe.coockingTime}
+          complexity={recipe.complexity}
+          authorImage={recipe.owner.image}
+          authorName={recipe.owner.name}
           className="max-[746px]:!w-full mb-7"
         />
       ))}
       <FollowWindow
         title={t('title-followers')}
-        userId="3489hg33934hujgg"
+        userId={userId}
       >
         <Input type="search" placeholder={t('input-username-placeholder')} className="mb-4 border-[1px] border-[#383838]" />
         {isLoading ? (
@@ -36,20 +113,33 @@ const Followers = () => {
           </>
         ) : (
           <>
-            {[...Array(12)].map(() => (
+            {followers && followers.length > 0 ? followers.map((follower) => (
               <FollowerCard 
-                key={'wfwsfgre'}
-                username="jhondoe"
-                userImage=""
-                isFollowed={false}
-                name="Jhon Doe"
-                userId="3489hg33934hujgg"
+                key={follower.id}
+                username={follower.username}
+                userImage={follower.image}
+                isFollowed={followStateButtonText[follower.id]}
+                name={follower.name}
+                userId={follower.id}
                 className="mb-3"
+                onClick={() => handleFollow(follower)}
               />
-            ))}
+            )) : (
+              <div className="w-full text-[#979797] flex justify-center items-center">
+                <p>No followers</p>
+              </div>
+            )}
           </>
         )}
       </FollowWindow>
+      {isOpenConfirm && (
+        <Confirm
+          confirmText={`${t('confirm-unfollow')} "${selectedUsername}"?`}
+          buttonText={t('unfollow-button') }
+          clickAction={() => onClickUnfollow(selectedUserId)}
+          closeConfirm={() => setIsOpenConfirm(false)}
+        />
+      )}
     </>
   )
 }
