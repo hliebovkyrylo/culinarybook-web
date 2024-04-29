@@ -149,5 +149,6 @@
   "recipes": "Recipes",
   "follow-request": "Cancel request",
   "cancel-follow-request": "Are you sure you want cancel follow request to user",
-  "cancel-confirm": "Cancel request"
+  "cancel-confirm": "Cancel request",
+  "spam-error": "You have posted more than 5 comments with the same text, please change it!"
 }

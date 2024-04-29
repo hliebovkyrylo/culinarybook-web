@@ -1,19 +1,16 @@
-interface IInput {
+import { forwardRef } from "react";
+
+interface IInput extends React.InputHTMLAttributes<HTMLInputElement> {
   type         : string;
-  placeholder  : string;
   className   ?: string;
-  defaultValue?: string;
   value       ?: string;
 }
 
-export const Input = ({
-  type,
-  placeholder,
-  className,
-  defaultValue,
-  value,
-}: IInput) => {
-  return (
-    <input type={type} defaultValue={defaultValue} value={value} placeholder={placeholder} className={`custom-input ${className}`} />
-  )
-}
+export const Input = forwardRef<HTMLInputElement, IInput>(
+  ({ type, className, value, ...props}, ref) => {
+    return (
+      <input type={type} ref={ref} {...props} className={`custom-input ${className}`} />
+    )
+  }
+) 
+  
