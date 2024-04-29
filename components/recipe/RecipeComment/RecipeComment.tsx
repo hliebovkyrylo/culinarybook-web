@@ -1,36 +1,45 @@
 "use client"
 
-import { ChevronDownIcon, ChevronUpIcon, StarIcon } from "@/icons";
+import { ChevronDownIcon, ChevronUpIcon, StarIcon, TrashIcon } from "@/icons";
+import { useGetMeQuery } from "@/lib/api/userApi";
 import Image                         from "next/image";
 import Link                          from "next/link";
 import { useTranslation } from "react-i18next";
 
 interface IRecipeComment {
-  username           : string;
-  userId             : string;
-  numbersOfReplies  ?: number;
-  rating            ?: number;
-  commentText        : string;
-  onClickOpenReplies?: () => void;
-  isOpenReplies     ?: boolean;
-  onClickReply       : () => void;
+  userImage           : string;
+  username            : string;
+  userId              : string;
+  recipeOwnerId       : string;
+  numbersOfReplies    : number;
+  rating             ?: number;
+  commentText         : string;
+  onClickOpenReplies ?: () => void;
+  isOpenReplies      ?: boolean;
+  onClickReply        : () => void;
+  onClickDeleteComment: () => void;
 }
 
 export const RecipeComment = ({
+  userImage,
   username,
   rating,
   userId,
   commentText,
   numbersOfReplies,
   isOpenReplies,
+  recipeOwnerId,
   onClickOpenReplies,
-  onClickReply
+  onClickReply,
+  onClickDeleteComment
 }: IRecipeComment) => {
   const { t } = useTranslation();
 
+  const { data: userMe } = useGetMeQuery();
+
   return (
-    <article className="flex">
-      <Link href={`/profile/${userId}`} className="w-12 h-12 mr-2"><Image src={"/assets/testuserimage.jpg"} alt="User photo" className="w-full h-full object-cover rounded-full" width={38} height={38} /></Link>
+    <article className="flex w-full relative">
+      <Link href={`/profile/${userId}`} className="w-12 h-12 mr-2"><Image src={userImage} alt="User photo" className="w-full h-full object-cover rounded-full" width={38} height={38} /></Link>
       <div className="flex flex-col justify-around">
         <div className="flex">
           <Link href={`/profile/${userId}`}>@{username}</Link>
@@ -44,19 +53,22 @@ export const RecipeComment = ({
         </div>
         <p>{commentText}</p>
         <div className="flex items-center">
-          {numbersOfReplies && numbersOfReplies >= 1 && (
+          {numbersOfReplies > 0 && (
             <button onClick={onClickOpenReplies} className="flex items-center leftsidebar__text !text-base !p-0 mr-6">{isOpenReplies 
-            ? (
-              <ChevronUpIcon className="w-4 icon-color mr-1" />
-            ) 
-            : (
-              <ChevronDownIcon className="w-4 icon-color mr-1" />
-            )
-          }{numbersOfReplies} {t('replies-button')}</button>
+              ? (
+                <ChevronUpIcon className="w-4 icon-color mr-1" />
+              ) 
+              : (
+                <ChevronDownIcon className="w-4 icon-color mr-1" />
+              )
+            }{numbersOfReplies} {t('replies-button')}</button>
           )}
           <button onClick={onClickReply} className="my-2 rounded-xl text-left text-color-666">{t('reply-button')}</button>
         </div>
       </div>
+      {(userMe?.id === userId || userMe?.id === recipeOwnerId) && (
+        <button onClick={onClickDeleteComment} className="absolute right-0"><TrashIcon className="w-4 fill-color-666" /></button>
+      )}
     </article>
   )
 }

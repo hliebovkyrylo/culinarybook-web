@@ -1,7 +1,8 @@
+import { IUser } from "./user";
+
 export interface IComment {
   id            : string;
-  authorImage   : string;
-  authorUsername: string;
+  user          : IUser;
   commentText   : string;
   grade         : number;
   createdAt     : Date;
@@ -10,6 +11,6 @@ export interface IComment {
 export interface ICommentReply {
   id            : string;
   commentText   : string;
-  userId        : string;
+  user          : IUser;
   createdAt     : Date;
 };

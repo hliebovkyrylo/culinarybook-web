@@ -1,5 +1,6 @@
 import { IComment, ICommentReply } from "@/typings/comment";
 import { api }                     from ".";
+import { IUser } from "@/typings/user";
 
 export interface ICreateCommentRequest {
   commentText: string;
@@ -14,6 +15,15 @@ export interface ICreateCommentReplyRequest {
 
 export type ICommentResponse      = IComment;
 export type ICommentReplyResponse = ICommentReply;
+
+export interface IGetCommentsResponse {
+  id            : string;
+  user          : IUser;
+  commentText   : string;
+  grade         : number;
+  createdAt     : Date;
+  commentReply  : ICommentReply[];
+}
 
 export const commentApi = api.injectEndpoints({
   endpoints: builder => ({
@@ -31,12 +41,7 @@ export const commentApi = api.injectEndpoints({
         body: rest
       })
     }),
-    getCommentReplies: builder.query<ICommentReplyResponse, string>({
-      query: (commentId) => ({
-        url: `/comment/${commentId}/getReplies`
-      })
-    }),
-    getComments: builder.query<ICommentResponse[], string>({
+    getComments: builder.query<IGetCommentsResponse[], string>({
       query: (recipeId) => ({
         url: `/comment/getComments/${recipeId}`
       })
@@ -61,6 +66,5 @@ export const {
   useCreateCommentReplyMutation,
   useDeleteCommentMutation,
   useDeleteCommentReplyMutation,
-  useGetCommentRepliesQuery,
   useGetCommentsQuery
 } = commentApi;

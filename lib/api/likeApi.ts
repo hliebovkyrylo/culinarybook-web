@@ -1,7 +1,14 @@
+import { url } from "inspector";
 import { api } from ".";
 
-export interface ILikeResponse {
+export interface ILikeStateResponse {
   isLiked: boolean;
+};
+
+export interface ILikeResponse {
+  id      : string;
+  userId  : string;
+  recipeId: string;
 };
 
 export const likeApi = api.injectEndpoints({
@@ -13,14 +20,19 @@ export const likeApi = api.injectEndpoints({
       })
     }),
     removeLike: builder.mutation<void, string>({
-      query: (likeId) => ({
-        method: 'POST',
-        url   : `/like/${likeId}/remove`
+      query: (recipeId) => ({
+        method: 'DELETE',
+        url   : `/like/${recipeId}/remove`
       })
     }),
-    getLikeState: builder.query<ILikeResponse, string>({
+    getLikeState: builder.query<ILikeStateResponse, string>({
       query: (recipeId) => ({
         url: `/like/recipe/${recipeId}/isLiked`
+      })
+    }),
+    getRecipeLikes: builder.query<ILikeResponse[], string>({
+      query: (recipeId) => ({
+        url: `/like/${recipeId}/getAll`
       })
     })
   })
@@ -29,5 +41,6 @@ export const likeApi = api.injectEndpoints({
 export const {
   useCreateLikeMutation,
   useRemoveLikeMutation,
-  useGetLikeStateQuery
+  useGetLikeStateQuery,
+  useGetRecipeLikesQuery,
 } = likeApi;

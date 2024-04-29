@@ -9,7 +9,9 @@ export const RecipeContentCard = ({
 }: IRecipeContentCard) => {
   return (
     <article className={`recipe-content-card ${className}`}>
-      {text}
+      <pre className="font-montserrat text-base">
+        {text}
+      </pre>
     </article>
   )
 }

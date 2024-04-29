@@ -10,6 +10,9 @@ const config: Config = {
   darkMode: "class",
   theme: {
     extend: {
+      fontFamily: {
+        montserrat: ['Montserrat', 'sans-serif'],
+      },
       width: {
         "width-230" : "230px",
         "width-160" : "160px",

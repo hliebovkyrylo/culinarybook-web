@@ -11,6 +11,7 @@ import {
 import Image from "next/image"
 
 interface IRecipeInfo {
+  recipeImage    : string;
   title          : string;
   coockingTime   : string;
   complexity     : string;
@@ -24,6 +25,7 @@ interface IRecipeInfo {
 }
 
 export const RecipeInfo = ({
+  recipeImage,
   title,
   coockingTime,
   complexity,
@@ -35,9 +37,41 @@ export const RecipeInfo = ({
   likeButtonClick,
   saveButtonClick
 }: IRecipeInfo) => {
+  const foodTypeImages: {[ key: string ]: string} = {
+    "Meat": '/assets/meat.jpg',
+    "Мясо": '/assets/meat.jpg',
+    "М'ясо": '/assets/meat.jpg',
+    'Dessert': '/assets/dessert.jpg',
+    'Десерт': '/assets/dessert.jpg',
+    'Fast food': '/assets/fastfood.jpg',
+    'Фастфуд': '/assets/fastfood.jpg',
+    'Soft drink': '/assets/drink.jpg',
+    'Безалкогольний напій': '/assets/drink.jpg',
+    'Безалкогольный напиток': '/assets/drink.jpg',
+    'Alcohol drink': '/assets/alcohol.jpg',
+    'Алкогольний напій': '/assets/alcohol.jpg',
+    'Акогольный напиток': '/assets/alcohol.jpg',
+    'Soup': '/assets/soup.jpg',
+    'Суп': '/assets/soup.jpg',
+    'Porridge': '/assets/porridge.jpg',
+    'Каша': '/assets/porridge.jpg',
+    'Salad': '/assets/salad.jpg',
+    'Салат': '/assets/salad.jpg',
+    'National dish': '/assets/national.jpg',
+    'Національна страва': '/assets/national.jpg',
+    'Нацыональное блюдо': '/assets/national.jpg',
+    'Pasta': '/assets/pasta.jpg',
+    'Макаронні': '/assets/pasta.jpg',
+    'Макаронные': '/assets/pasta.jpg',
+    'Fish': '/assets/fish.jpg',
+    'Рыба': '/assets/fish.jpg',
+    'Риба': '/assets/fish.jpg',
+  };
+
+  let defaultBgImage = foodTypeImages[typeOfFood] || '/assets/meat.jpg';  
   return (
     <div className="flex max-md:flex-col">
-      <Image src={'/assets/burger.jpg'} alt="Recipe photo" width={608} height={330} className="object-cover w-full max-w-[608px] max-h-[330px] rounded-xl max-md:max-w-[100%]" />
+      <Image src={recipeImage || defaultBgImage} alt="Recipe photo" width={608} height={330} className="object-cover w-full max-w-[608px] max-h-[330px] rounded-xl max-md:max-w-[100%]" />
       <div className="ml-12 max-md:ml-0 max-md:mt-6">
         <div className="flex max-md:justify-between">
           <h1 className="text-3xl font-semibold">{title}</h1>
