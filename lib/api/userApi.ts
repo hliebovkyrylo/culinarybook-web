@@ -6,9 +6,11 @@ export type IUserResponse    = IUser;
 export type IUsersResponse   = IUser[];
 
 export interface IUpdateUserRequest {
-  username?: string;
-  name    ?: string;
-  image   ?: string;
+  username       : string;
+  name           : string;
+  image          : string;
+  backgroundImage: string;
+  isPrivate      : boolean;
 };
 
 export interface IGetUsersRequest {
@@ -70,5 +72,6 @@ export const {
   useGetUserByUsernameQuery,
   useGetRecommendedUsersQuery,
   useGetPopularUsersQuery,
-  useChangeAccountTypeMutation
+  useChangeAccountTypeMutation,
+  useUpdateUserMutation
 } = userApi;

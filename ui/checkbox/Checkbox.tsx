@@ -8,7 +8,7 @@ export const Checkbox = ({
   onClick,
 }: ICheckbox) => {
   return (
-    <button className="checkbox-bg" onClick={onClick}>
+    <button type="button" className="checkbox-bg" onClick={onClick}>
       <span className={`checkbox-item ${isChecked && "checkbox-item-checked "}`} />
     </button>
   )

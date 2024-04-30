@@ -7,6 +7,7 @@ export interface IUserMe {
   image           : string;
   isVerified      : boolean;
   canResetPassword: boolean;
+  isPrivate       : boolean;
 }
 
 export interface IUser {

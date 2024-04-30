@@ -23,7 +23,7 @@ body {
 }
 
 .main-background {
-  @apply dark:bg-bg-c-2 bg-white
+  @apply dark:!bg-bg-c-2 !bg-white
 }
 
 .second-background {

@@ -13,7 +13,7 @@ import {
   useUnfollowMutation 
 }                                     from "@/lib/api/followApi";
 import { useGetRecipesByUserIdQuery } from "@/lib/api/recipeApi";
-import { useGetUserQuery }            from "@/lib/api/userApi";
+import { useGetMeQuery, useGetUserQuery }            from "@/lib/api/userApi";
 import { IUserFollower }              from "@/typings/user";
 import { Input }                      from "@/ui";
 import { useParams, useRouter }       from "next/navigation";
@@ -26,6 +26,8 @@ const Followings = () => {
 
   const { id } = useParams();
   const userId = id as string;
+
+  const { data: userMe, isLoading: isMeLoading } = useGetMeQuery();
 
   const { data: user, isLoading: isLoadingUser }                                         = useGetUserQuery(userId);
   const { data: followings, isLoading: isLoadingFollowings, refetch: refetchFollowings } = useGetUserFollowingsQuery({ userId: userId });
@@ -77,9 +79,9 @@ const Followings = () => {
     await refetchFollowings();
   }
 
-  const isLoading = isLoadingFollowings || isLoadingRecipes;
+  const isLoading = isLoadingFollowings || isLoadingRecipes || isLoadingUser || isMeLoading;
 
-  if (user?.isPrivate) {
+  if (user?.isPrivate && userId !== userMe?.id) {
     router.push(`/profile/${userId}`)
     return null
   }
