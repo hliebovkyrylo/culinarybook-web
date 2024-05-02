@@ -69,6 +69,9 @@
   "comment-type-comment": "прокоментував(-ла) ваш рецепт:",
   "comment-type-following": "підписався(-лась) на вас",
   "comment-type-like": "сподобався ваш рецепт!",
+  "comment-type-save": "зберіг(-ла) ваш рецепт!",
+  "notification-type-reply": "відповів(-ла) на ваш коментар:",
+  "notification-allow-request": "прийняв запит на відстежування",
   "time-recently": "сьогодні",
   "time-one-day": "1 день тому",
   "time-many-day": "дні тому",
@@ -150,5 +153,9 @@
   "follow-request": "Скасувати запит",
   "cancel-follow-request": "Ви впевнені, що хочете скасувати запит на підписку на користувача?",
   "cancel-confirm": "Відмінити запит",
-  "spam-error": "Ви опублікували більше 5 коментарів з однаковим текстом, будь ласка, змініть його!"
+  "spam-error": "Ви опублікували більше 5 коментарів з однаковим текстом, будь ласка, змініть його!",
+  "follow-request-notification": "надіслав запит на підписку",
+  "allow-request": "Дозволити",
+  "refuse-request": "Відмовити",
+  "no-notifications": "Сповіщення відсутні"
 }
