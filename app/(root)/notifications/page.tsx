@@ -2,17 +2,48 @@
 
 import { 
   NotificationCommentMessage, 
+  NotificationCommentReplyMessage, 
   NotificationFollowMessage, 
+  NotificationFollowRequestMessage, 
   NotificationLikeMessage, 
   NotificationMessageSkeleton, 
+  NotificationSaveMessage, 
   NotificationsLayout 
-}                         from "@/components/notifications";
-import Image              from "next/image";
-import { useTranslation } from "react-i18next";
+}                                          from "@/components/notifications";
+import { useFollowRequestAnswearMutation } from "@/lib/api/followApi";
+import { useGetAllNotificationsQuery }     from "@/lib/api/notificationApi";
+import { IAppState }                       from "@/lib/store";
+import { useRouter }                       from "next/navigation";
+import { useTranslation }                  from "react-i18next";
+import { useSelector }                     from "react-redux";
 
 const Notifications = () => {
-  const { t }     = useTranslation()
-  const isLoading = false;
+  const { t }  = useTranslation();
+  const router = useRouter();
+
+  const accessToken = useSelector((state: IAppState) => state.auth.accessToken);
+
+  const { data: notifications, isLoading: isLoadingNotifications, refetch } = useGetAllNotificationsQuery();
+  
+  const [ followRequestAnswear, { isLoading: isLoadingFollowRequest } ] = useFollowRequestAnswearMutation();
+
+  const handleAllowRequest = async (userId: string) => {
+    await followRequestAnswear({ allowed: true, userId: userId });
+    await refetch();
+  };
+
+  const handleRejectRequest = async (userId: string) => {
+    await followRequestAnswear({ allowed: false, userId: userId });
+    await refetch();
+  };
+
+  const isLoading = isLoadingNotifications || isLoadingFollowRequest;
+
+  if (!accessToken) {
+    router.push('/');
+    return null;
+  }
+
   return (
     <NotificationsLayout
       title={t('title-notifications')}
@@ -25,38 +56,86 @@ const Notifications = () => {
         </>
       ) : (
         <>
-          {[...Array(2)].map(() => (
-            <NotificationCommentMessage 
-              key={'23331'}
-              username={"jhondoe"}
-              userImage={<Image src={'/assets/testuserimage.jpg'} className="object-cover rounded-full w-12 h-12 mr-3" alt="User image" width={48} height={48} />}
-              commentText="Very nice recipe!"
-              recipeId="23tgedrr4tg232gyh3h4"
-              recipeImage={<Image src={'/assets/burger.jpg'} className="object-cover rounded-md w-12 h-12" alt="Recipe image" width={48} height={48} />}
-              userId="dfgsdfgr5533453t633g"
-              createdAt={new Date("2024-01-18T13:21:32+00:00")}
-            />
-          ))}
-          {[...Array(1)].map(() => (
-            <NotificationFollowMessage 
-              key={'sdfgs'}
-              username="jhondoe"
-              userImage={<Image src={'/assets/testuserimage.jpg'} className="object-cover rounded-full w-12 h-12 mr-3" alt="User image" width={48} height={48} />}
-              userId="3489hg33934hujgg"
-              createdAt={new Date("2024-02-18T14:21:32+00:00")}
-            />
-          ))}
-          {[...Array(3)].map(() => (
-            <NotificationLikeMessage 
-              key={'sdfsf3'}
-              username="jhondoe"
-              userImage={<Image src={'/assets/testuserimage.jpg'} className="object-cover rounded-full w-12 h-12 mr-3" alt="User image" width={48} height={48} />}
-              recipeId="23tgedrr4tg232gyh3h4"
-              recipeImage={<Image src={'/assets/burger.jpg'} className="object-cover rounded-md w-12 h-12" alt="Recipe image" width={48} height={48} />}
-              userId="dfgsdfgr5533453t633g"
-              createdAt={new Date("2024-02-18T13:21:32+00:00")}
-            />
-          ))}
+          {notifications && notifications.length > 0 ? notifications.map((notification) => {
+            switch (notification.type) {
+              case 'follow':
+                return (
+                  <NotificationFollowMessage 
+                    key={notification.id}
+                    username={notification.notificationCreator.username}
+                    userImage={notification.notificationCreator.image}
+                    userId={notification.notificationCreator.id}
+                    createdAt={notification.createdAt}
+                  />
+                )
+              case 'like': 
+                return (
+                  <NotificationLikeMessage 
+                    key={notification.id}
+                    username={notification.notificationCreator.username}
+                    userImage={notification.notificationCreator.image}
+                    recipeId={notification.recipeId}
+                    recipeImage={notification.recipe.image}
+                    userId={notification.userId}
+                    createdAt={notification.createdAt}
+                  />
+                )
+              case 'comment':
+                return (
+                  <NotificationCommentMessage 
+                    key={notification.id}
+                    username={notification.notificationCreator.username}
+                    userImage={notification.notificationCreator.image}
+                    commentText={notification.notificationData}
+                    recipeId={notification.recipeId}
+                    recipeImage={notification.recipe.image}
+                    userId={notification.userId}
+                    createdAt={notification.createdAt}
+                  />
+                )
+              case 'follow-request':
+                return (
+                  <NotificationFollowRequestMessage 
+                    key={notification.id}
+                    username={notification.notificationCreator.username}
+                    userImage={notification.notificationCreator.image}
+                    userId={notification.userId}
+                    createdAt={notification.createdAt}
+                    onClickAllowRequest={() => handleAllowRequest(notification.notificationCreator.id)}
+                    onClickRejectRequest={() => handleRejectRequest(notification.notificationCreator.id)}
+                  />
+                )
+              case 'save':
+                return (
+                  <NotificationSaveMessage 
+                    key={notification.id}
+                    username={notification.notificationCreator.username}
+                    recipeId={notification.recipeId}
+                    recipeImage={notification.recipe.image}
+                    userImage={notification.notificationCreator.image}
+                    userId={notification.userId}
+                    createdAt={notification.createdAt}
+                  />
+                )
+              case 'comment-reply':
+                return (
+                  <NotificationCommentReplyMessage 
+                    key={notification.id}
+                    username={notification.notificationCreator.username}
+                    userImage={notification.notificationCreator.image}
+                    commentText={notification.notificationData}
+                    recipeId={notification.recipeId}
+                    recipeImage={notification.recipe.image}
+                    userId={notification.userId}
+                    createdAt={notification.createdAt}
+                  />
+                )
+              default:
+                return null;
+            }
+          }) : (
+            <p className="flex justify-center items-center h-full text-[#757575]">{t('no-notifications')}</p>
+          )}
         </>
       )}
     </NotificationsLayout>

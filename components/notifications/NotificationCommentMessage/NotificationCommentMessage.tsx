@@ -3,12 +3,13 @@
 import Link               from "next/link";
 import { useTranslation } from "react-i18next";
 import useFormatDaysAgo   from '@/hooks/useFormatDaysAgo';
+import Image              from "next/image";
 
 interface INotificationCommentMessage {
-  userImage  : React.ReactNode | "";
+  userImage  : string;
   commentText: string;
   username   : string;
-  recipeImage: React.ReactNode | "";
+  recipeImage: string;
   recipeId   : string;
   userId     : string;
   createdAt  : Date;
@@ -31,13 +32,15 @@ export const NotificationCommentMessage = ({
     <article className="w-full min-h-[64px] second-background flex items-center py-2 px-3 rounded-lg mb-2">
       <div className="flex justify-between w-full">
         <div className="flex justify-between">
-          <Link href={`/profile/${userId}`}>{userImage}</Link>
+          <Link className="mr-3 w-12 h-12" href={`/profile/${userId}`}>
+            <Image src={userImage !== '' ? userImage : '/assets/defaulUserImage.jpg'} className="object-cover rounded-full w-12 h-12" alt="User image" width={48} height={48} />
+          </Link>
           <div>
-            <div>
-              <Link href={`/profile/${userId}`}><b>{username}</b></Link>
-              <span className="text-[#959595]"> {t('comment-type-comment')}</span>
+            <div className="max-[516px]:!w-28">
+              <Link className="text-sm" href={`/profile/${userId}`}><b>{username}</b></Link>
+              <span className="text-[#959595] text-sm"> {t('comment-type-comment')}</span>
             </div>
-            <p className="max-w-xs break-words overflow-hidden max-h-48 line-clamp-6">
+            <p className="max-w-xs break-words text-sm overflow-hidden max-h-48 line-clamp-6">
               {commentText}
             </p>
             <div className="flex items-center">
@@ -46,7 +49,9 @@ export const NotificationCommentMessage = ({
             </div>
           </div>
         </div>
-        <Link href={`/recipe/${recipeId}`}>{recipeImage}</Link>
+        <Link className="w-12 h-12" href={`/recipe/${recipeId}`}>
+          <Image src={recipeImage} className="object-cover rounded-md w-12 h-12" alt="Recipe image" width={48} height={48} />
+        </Link>
       </div>
     </article>
   )

@@ -19,8 +19,11 @@ function useFormatDaysAgo() {
 
   const millisecondsInDay = 1000 * 60 * 60 * 24;
 
-  return function formatDaysAgo(createdAt: Date) {
-    const differenceInMilliseconds = currentDate.getTime() - createdAt.getTime();
+  return function formatDaysAgo(createdAt: Date | string) {
+    if (typeof createdAt === 'string') {
+      createdAt = new Date(createdAt);
+    }
+    const differenceInMilliseconds = currentDate.getTime() - createdAt?.getTime();
     const daysDifference           = Math.floor(differenceInMilliseconds / millisecondsInDay);
 
     function formatMonths(months: number) {

@@ -23,6 +23,11 @@ export interface IGetFollowRequestStateResponse {
   isFollowRequestSent: boolean;
 }
 
+export interface IFollowRequestAnsqwear {
+  userId : string;
+  allowed: boolean;
+}
+
 export const followApi = api.injectEndpoints({
   endpoints: builder => ({
     follow: builder.mutation<void, string>({
@@ -31,10 +36,11 @@ export const followApi = api.injectEndpoints({
         url: `/follow/${userId}`
       })
     }),
-    followRequestAnswear: builder.mutation<void, string>({
-      query: (userId) => ({
+    followRequestAnswear: builder.mutation<void, IFollowRequestAnsqwear>({
+      query: ({ userId, ...rest }) => ({
         method: 'POST',
-        url: `/follow/${userId}/follow-request`
+        url: `/follow/${userId}/follow-request`,
+        body: rest
       })
     }),
     unfollow: builder.mutation<void, string>({

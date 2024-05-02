@@ -68,6 +68,9 @@
   "comment-type-comment": "comment your recipe:",
   "comment-type-following": "start's following you",
   "comment-type-like": "liked your recipe!",
+  "comment-type-save": "save your recipe!",
+  "notification-type-reply": "reply your comment:",
+  "notification-allow-request": "allowed to follow",
   "time-recently": "today",
   "time-one-day": "1 day ago",
   "time-many-day": "days ago",
@@ -150,5 +153,9 @@
   "follow-request": "Cancel request",
   "cancel-follow-request": "Are you sure you want cancel follow request to user",
   "cancel-confirm": "Cancel request",
-  "spam-error": "You have posted more than 5 comments with the same text, please change it!"
+  "spam-error": "You have posted more than 5 comments with the same text, please change it!",
+  "follow-request-notification": "sent a follow request",
+  "allow-request": "Allow",
+  "refuse-request": "Refuse",
+  "no-notifications": "No notifications"
 }

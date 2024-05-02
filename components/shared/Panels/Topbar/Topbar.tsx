@@ -24,7 +24,7 @@ import { useSignOutMutation }          from "@/lib/api/authApi";
 import { useGetMeQuery }               from "@/lib/api/userApi";
 import { useSelector }                 from "react-redux";
 import { IAppState }                   from "@/lib/store";
-import { useGetAllNotificationsQuery } from "@/lib/api/notificationApi";
+import { useGetAllNotificationsQuery, useGetUnreadedNotificationsCountQuery } from "@/lib/api/notificationApi";
 
 export const Topbar = () => {
   const { t }  = useTranslation();
@@ -32,7 +32,7 @@ export const Topbar = () => {
 
   const { data: user, isLoading, refetch } = useGetMeQuery();
 
-  const { data: notifications } = useGetAllNotificationsQuery();
+  const { data: unreadedNotificationsCount } = useGetUnreadedNotificationsCountQuery();
 
   const [ signOut ] = useSignOutMutation();
 
@@ -50,8 +50,6 @@ export const Topbar = () => {
   };
 
   const userId  = user?.id;
-
-  const isUnread = notifications && notifications?.length > 0;
 
   const handleChangeTheme = () => {
     setTheme(theme === "dark" ? "light" : "dark")
@@ -97,10 +95,10 @@ export const Topbar = () => {
             <div className="flex items-center">
               <Link href={'/notifications'} className="mr-6 fill-[#6b6b6b] hover:fill-[#808080] transition-all relative">
                 <BellIcon className="w-6" />
-                {isUnread && (
+                {unreadedNotificationsCount && unreadedNotificationsCount.unreadedNotifications > 0 && (
                   <>
                     <span className="block absolute top-[3px] right-[-1px] rounded-full w-3 h-3 bg-red-600 animate-ping" />
-                    <span className="block absolute top-[3px] text-white right-[-1px] rounded-full text-xs text-center w-3 h-3 bg-red-600">{notifications?.length > 10 ? "9+" : notifications?.length}</span>
+                    <span className="block absolute top-[3px] text-white right-[-1px] rounded-full text-xs text-center w-3 h-3 bg-red-600">{unreadedNotificationsCount.unreadedNotifications > 10 ? "9+" : unreadedNotificationsCount.unreadedNotifications}</span>
                   </>
                 )}
               </Link>
