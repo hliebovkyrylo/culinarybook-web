@@ -157,5 +157,9 @@
   "follow-request-notification": "sent a follow request",
   "allow-request": "Allow",
   "refuse-request": "Refuse",
-  "no-notifications": "No notifications"
+  "no-notifications": "No notifications",
+  "update-recipe": "Update recipe",
+  "apply-changes": "Apply changes",
+  "delete-recipe": "Delete recipe",
+  "delete-recipe-text": "Are you sure you want to delete recipe "
 }

@@ -12,8 +12,8 @@ function toBase64(file: File): Promise<string> {
   })
 }
 
-export const useImageUpload = () => {
-  const [image, setImage] = useState<string | null>("");
+export const useImageUpload = (defaultImage?: string) => {
+  const [image, setImage] = useState<string | null>(defaultImage || "");
   const inputFileRef      = useRef<HTMLInputElement | null>(null);
 
   const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {

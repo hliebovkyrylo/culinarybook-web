@@ -26,6 +26,7 @@ export interface IRecipeRequest {
 export interface ICreateStepRequest {
   recipeId: string;
   steps: {
+    id            ?: string,
     stepNumber     : number,
     stepDescription: string,
   }[];
@@ -89,7 +90,8 @@ export const recipeApi = api.injectEndpoints({
     }),
     updateSteps: builder.mutation<IStepsResponse, IUpdateStepsRequest[]>({
       query: (body) => ({
-        url: '/recipe/update/steps',
+        url   : '/recipe/update/steps',
+        method: 'PATCH',
         body
       })
     }),
@@ -140,5 +142,7 @@ export const {
   useGetRecipesByTitleQuery,
   useGetRecommendedRecipesQuery,
   useGetStepsQuery,
-  useGetRecipesByUserIdQuery
+  useGetRecipesByUserIdQuery,
+  useUpdateRecipeMutation,
+  useUpdateStepsMutation,
 } = recipeApi;

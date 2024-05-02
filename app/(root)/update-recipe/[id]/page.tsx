@@ -23,22 +23,28 @@ import { Button }                 from "@/ui";
 import { useImageUpload }         from "@/hooks/useUploadImage";
 import { useCustomState }         from "@/hooks/useInputsState";
 import { useTranslation }         from "react-i18next";
-import { z }                      from "zod";
+import { string, z }                      from "zod";
 import { 
-  useCreateRecipeMutation, 
-  useCreateStepsMutation 
+  useCreateStepsMutation, 
+  useDeleteRecipeMutation, 
+  useDeleteStepMutation, 
+  useGetRecipeQuery,
+  useGetStepsQuery,
+  useUpdateRecipeMutation,
+  useUpdateStepsMutation
 }                                 from "@/lib/api/recipeApi";
 import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver }            from "@hookform/resolvers/zod";
-import { useCallback, useEffect } from "react";
-import { useRouter }              from "next/navigation";
-import { Loader }                 from "@/components/shared";
+import { useCallback, useEffect, useState } from "react";
+import { useParams, useRouter }   from "next/navigation";
+import { Confirm, Loader }                 from "@/components/shared";
 import { RtkError }               from "@/typings/error";
 import { useSelector }            from "react-redux";
 import { IAppState }              from "@/lib/store";
 import { renderMetaTags }         from "@/app/meta";
+import { useToggleState } from "@/hooks/useToggleState";
 
-const createRecipeAndStepSchema = z.object({
+const updateRecipeAndStepSchema = z.object({
   title          : z.string().min(1).max(80),
   image          : z.string().default(''),
   coockingTime   : z.string().max(32),
@@ -48,53 +54,75 @@ const createRecipeAndStepSchema = z.object({
   isPublic       : z.boolean(),
   applyBackground: z.boolean().default(false),
   steps          : z.array(z.object({
+    id             : z.string().optional(),
     stepNumber     : z.number().min(1),
     stepDescription: z.string().min(2)
   }))
 });
 
-export type CreateRecipeAndStepFormData = z.infer<typeof createRecipeAndStepSchema>;
+export type UpdateRecipeAndStepFormData = z.infer<typeof updateRecipeAndStepSchema>;
 
-const CreateRecipe = () => {
+const UpdateRecipe = () => {
+  /*
+    =================================
+    TODO: split the page into modules
+    ================================= 
+  */
   const { t }       = useTranslation();
   const accessToken = useSelector((state: IAppState) => state.auth.accessToken);
   const router      = useRouter();
+  const { id }      = useParams();
+  const recipeId    = id as string;
 
-  const [ createRecipe, { isLoading: isCreatingRecipe } ] = useCreateRecipeMutation();
+  const [ updateRecipe, { isLoading: isUpdatingRecipe } ] = useUpdateRecipeMutation();
   const [ createSteps, { isLoading: isCreatingSteps } ]   = useCreateStepsMutation();
+  const [ updateSteps, { isLoading: isUpdatingSteps } ]   = useUpdateStepsMutation();
 
-  const { image, inputFileRef, handleImageChange } = useImageUpload();
-  const { complexity, access, type, bgImage, activeId, onClickSetValue, onClickChangeStates } = useCustomState({});
+  const [ deleteStep, { isLoading: isLoadingDeleteStep } ]     = useDeleteStepMutation();
+  const [ deleteRecipe, { isLoading: isLoadingDeleteRecipe } ] = useDeleteRecipeMutation();
 
-  const { handleSubmit, register, setError, formState: { errors, isValid }, setValue, control } = useForm<CreateRecipeAndStepFormData>({
+  const { data: recipe, isLoading: isLoadingRecipe } = useGetRecipeQuery(recipeId);
+  const { data: steps, isLoading: isLoadingSteps }   = useGetStepsQuery(recipeId);
+
+  const { image, inputFileRef, handleImageChange }                                            = useImageUpload(recipe?.image);
+  const { complexity, access, type, bgImage, activeId, onClickSetValue, onClickChangeStates } = useCustomState(
+    { 
+      defaultComplexity: recipe?.complexity, 
+      defaultAcess     : recipe?.isPublic, 
+      defaultType      : recipe?.typeOfFood,
+      defaulBgImage    : recipe?.applyBackground 
+    }
+  );
+
+  const { handleSubmit, register, setError, formState: { errors, isValid }, setValue, control } = useForm<UpdateRecipeAndStepFormData>({
     defaultValues: {
-      title          : '',
-      image          : '',
-      coockingTime   : '',
-      complexity     : '',
-      typeOfFood     : '',
-      ingradients    : '',
-      isPublic       : true,
-      applyBackground: false,
-      steps          : [{
-        stepNumber     : 1,
-        stepDescription: ''
-      }]
+      title          : recipe?.title,
+      image          : recipe?.image,
+      coockingTime   : recipe?.coockingTime,
+      complexity     : recipe?.complexity,
+      typeOfFood     : recipe?.typeOfFood,
+      ingradients    : recipe?.ingradients,
+      isPublic       : recipe?.isPublic,
+      applyBackground: recipe?.applyBackground,
+      steps          : steps
     },
-    resolver: zodResolver(createRecipeAndStepSchema)
+    resolver: zodResolver(updateRecipeAndStepSchema)
   });
 
-  const { fields, append, remove } = useFieldArray<CreateRecipeAndStepFormData, "steps">({
+  const [stepsToDelete, setStepsToDelete] = useState<string[]>([]);
+
+  const { fields, append, remove } = useFieldArray<UpdateRecipeAndStepFormData, "steps">({
     control,
     name: "steps"
   });
 
-  const handleRemoveStep = (index: number) => {
-    fields.forEach((step, stepIndex) => {
-      if (step.stepNumber > index) {
-        setValue(`steps.${stepIndex}.stepNumber`, step.stepNumber - 1);
+  const handleDeleteStep = (index: number) => {
+    if (steps) {
+      const step = steps[index];
+      if (step.id) {
+        setStepsToDelete([...stepsToDelete, step.id]);
       }
-    });
+    }
 
     remove(index);
   };
@@ -107,36 +135,74 @@ const CreateRecipe = () => {
     setValue('applyBackground', bgImage);
   }, [complexity, access, type, setValue, image, bgImage]);  
 
-  const onSubmit = useCallback(async (values: CreateRecipeAndStepFormData) => {
+  const onSubmit = useCallback(async (values: UpdateRecipeAndStepFormData) => {
     if (isValid) {
-      createRecipe(values).unwrap().then((recipe) => {
+      updateRecipe({ ...values, id: recipeId }).unwrap().then((recipe) => {
         const recipeId = recipe.id;
   
-        createSteps({ recipeId: recipeId, steps: values.steps }).unwrap().then(() => {
-          router.push(`/recipe/${recipeId}`);
-          return null;
-        })
+        const existingSteps = values.steps.filter((step) => step.id);
+        const newSteps      = values.steps.filter((step) => !step.id);
+  
+        const formattedExistingSteps = existingSteps.map((step) => ({
+          stepId         : step.id!,
+          stepDescription: step.stepDescription
+        }));
+  
+        updateSteps(formattedExistingSteps).unwrap();
+
+        if (newSteps.length > 0) {
+          createSteps({ recipeId, steps: newSteps }).unwrap();
+        }
+
+        if (stepsToDelete.length > 0) {
+          stepsToDelete.forEach(async (stepId) => {
+            deleteStep(stepId).unwrap();
+          });
+        }
+  
+        router.push(`/recipe/${recipeId}`);
+        return null;
       }).catch((error: RtkError) => {
         if (error.data.code === 'too-large-image') {
           setError('image', { message: t('too-large-error') });
         }
       });
     }
-  }, [createRecipe, image, complexity, access, type, bgImage, createSteps, fields, isValid]); 
+  }, [updateRecipe, image, complexity, access, type, bgImage, createSteps, fields, isValid, deleteStep, steps, updateSteps, stepsToDelete]);
+
+  const [isOpenConfirm, setIsOpenConfirm] = useState<boolean>(false);
+
+  const handleDeleteRecipe = async (recipeId: string) => {
+    deleteRecipe(recipeId);
+    router.push('/');
+  };
+
+  const handleOpenConfirm = () => {
+    setIsOpenConfirm(!isOpenConfirm);
+  };
   
-  if (isCreatingRecipe || isCreatingSteps) {
-    return <Loader />;
+  if 
+  (
+    isUpdatingRecipe 
+    || isCreatingSteps 
+    || isUpdatingSteps 
+    || isLoadingDeleteStep 
+    || isLoadingDeleteRecipe 
+    || isLoadingRecipe 
+    || isLoadingSteps
+  ) {
+    return <Loader className="absolute top-0 left-0 z-[1000]" />;
   }
 
   if (!accessToken) {
     router.push('/sign-in');
     return null;
   }
-
+  
   return (
     <>
       {renderMetaTags({ title: t('meta-create-recipe'), description: "" })}
-      <h1 className="head-text">{t('create-recipe')}</h1>
+      <h1 className="head-text">{t('update-recipe')}</h1>
       <input ref={inputFileRef} onChange={handleImageChange} type="file" accept="image/*" hidden />
       <form onSubmit={handleSubmit(onSubmit)} className="my-7">
           <div className="flex max-md:flex-col">
@@ -245,7 +311,7 @@ const CreateRecipe = () => {
           <Textarea {...register('ingradients')} placeholder={t('placeholder-ingradients')} className="w-full max-w-sm min-h-[170px]" />
           <h3 className="link-text font-semibold my-5">{t('title-instructions')}</h3>
           <div>
-            {fields.map((_, index) => (
+            {fields.map((step, index) => (
               <div key={index}>
                 <p className="text-red-500 text-sm">
                   {errors.steps?.[index]?.stepDescription?.message}
@@ -256,7 +322,7 @@ const CreateRecipe = () => {
                     <button
                       className="w-6 absolute right-3 top-2 p-1"
                       type="button"
-                      onClick={() => handleRemoveStep(index)}
+                      onClick={() => handleDeleteStep(index)}
                     >
                     <TrashIcon className="fill-color-666" />
                     </button>
@@ -275,10 +341,21 @@ const CreateRecipe = () => {
               />
             </div>
           </div>
-        <Button text={t('create-button')} className="mt-12 max-w-[234px] max-md:mb-14" isActive={isValid} />
+        <div className="flex max-sm:flex-col-reverse mt-12 max-md:mb-14">
+          <button type="button" onClick={() => handleOpenConfirm()} className="h-10 mr-3 w-48 max-sm:mt-3 border-red-500 border-[1px] px-1 rounded-lg hover:bg-red-500 transition-all">{t('delete-recipe')}</button>
+          <Button text={t('apply-changes')} className="max-w-[234px]" isActive={isValid} />
+        </div>
       </form>
+      {isOpenConfirm && (
+        <Confirm 
+          confirmText={`${t('delete-recipe-text')}"${recipe?.title}"?`} 
+          buttonText={t('delete-recipe')} 
+          clickAction={() => handleDeleteRecipe(recipe?.id as string)} 
+          closeConfirm={() => handleOpenConfirm()} 
+        />
+      )}
     </>
   )
 };
 
-export default CreateRecipe;
+export default UpdateRecipe;
