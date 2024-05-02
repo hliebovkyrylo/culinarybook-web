@@ -157,5 +157,9 @@
   "follow-request-notification": "надіслав запит на підписку",
   "allow-request": "Дозволити",
   "refuse-request": "Відмовити",
-  "no-notifications": "Сповіщення відсутні"
+  "no-notifications": "Сповіщення відсутні",
+  "update-recipe": "Оновити рецепт",
+  "apply-changes": "Зберегти зміни",
+  "delete-recipe": "Видалити рецепт",
+  "delete-recipe-text": "Ви впевнені, що хочете видалити рецепт "
 }

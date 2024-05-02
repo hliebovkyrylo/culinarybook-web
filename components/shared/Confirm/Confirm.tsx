@@ -28,8 +28,8 @@ export const Confirm = ({
       <div className="w-96 h-32 flex flex-col justify-between main-background rounded-xl py-6 px-4" onClick={handleInsideClick}>
         <p className="text-sm text-[#b6b6b6]">{confirmText}</p>
         <div className="flex justify-end">
-          <button onClick={closeConfirm} className="mr-4">{t('canclel-button')}</button>
-          <Button onClick={clickAction} className="!w-40 h-8 flex items-center justify-center" isActive={true} text={buttonText} />
+          <button type="button" onClick={closeConfirm} className="mr-4">{t('canclel-button')}</button>
+          <Button type="button" onClick={clickAction} className="!w-40 h-8 flex items-center justify-center" isActive={true} text={buttonText} />
         </div>
       </div>
     </div>

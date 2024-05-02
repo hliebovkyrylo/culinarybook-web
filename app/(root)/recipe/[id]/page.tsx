@@ -31,6 +31,7 @@ import {
   useGetSaveStateQuery, 
   useRemoveSaveMutation 
 }                                              from "@/lib/api/saveApi";
+import { useGetMeQuery } from "@/lib/api/userApi";
 import { RtkError }                            from "@/typings/error";
 import { Button }                              from "@/ui";
 import { Input }                               from "@/ui/input/Input";
@@ -66,13 +67,15 @@ const Recipe = () => {
   const { id }   = useParams();
   const recipeId = id as string
 
+  const { data: user } = useGetMeQuery();
+
   const { data: recipe, isLoading: isLoadingRecipe }                               = useGetRecipeQuery(recipeId);
   const { data: steps, isLoading: isLoadingSteps }                                 = useGetStepsQuery(recipeId);
   const { data: comments, isLoading: isLoadingComments, refetch: refetchComments } = useGetCommentsQuery(recipeId);
-  const { data: likes, isLoading: isLoadingLikes, refetch: refetchLikes } = useGetRecipeLikesQuery(recipeId);
+  const { data: likes, isLoading: isLoadingLikes, refetch: refetchLikes }          = useGetRecipeLikesQuery(recipeId);
 
   const { data: likeState, refetch: refetchLikeState } = useGetLikeStateQuery(recipeId);
-  const { data: saveState, refetch: refetchSaveState} = useGetSaveStateQuery(recipeId);
+  const { data: saveState, refetch: refetchSaveState}  = useGetSaveStateQuery(recipeId);
 
   const [ createComment, { isLoading: isLoadingCreatingComment } ]              = useCreateCommentMutation();
   const [ deleteComment, { isLoading: isLoadingDeleteComment } ]                = useDeleteCommentMutation();
@@ -221,6 +224,7 @@ const Recipe = () => {
         <Image src={recipe.image} alt="Background image" width={1000} height={1000} className=" absolute top-0 left-0 w-full h-full object-cover -z-10 blur-sm opacity-10" />
       )}
       <RecipeInfo 
+        recipeId={recipe.id}
         recipeImage={recipe.image}
         title={recipe.title}
         coockingTime={recipe.coockingTime}
@@ -232,6 +236,7 @@ const Recipe = () => {
         isSaved={isSaved}
         likeButtonClick={handleLikeClick}
         saveButtonClick={handleSaveClick}
+        isOwner={user?.id === recipe.ownerId}
       />
       <h3 className="link-text font-semibold my-5">{t('title-ingradients')}</h3>
       <RecipeContentCard className="w-full max-w-[364px] min-h-[170px]" text={recipe.ingradients} />

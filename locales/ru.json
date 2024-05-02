@@ -158,5 +158,9 @@
   "follow-request-notification": "прислал запрос на подписку",
   "allow-request": "Разрешить",
   "refuse-request": "Отказать",
-  "no-notifications": "Уведомления отсутствуют"
+  "no-notifications": "Уведомления отсутствуют",
+  "update-recipe": "Обновить рецепт",
+  "apply-changes": "Применить изменения",
+  "delete-recipe": "Удалить рецепт",
+  "delete-recipe-text": "Вы уверены что хотите удалить рецепт "
 }

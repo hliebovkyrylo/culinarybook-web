@@ -2,11 +2,23 @@
 
 import { useState } from 'react';
 
-export const useCustomState = () => {
-  const [complexity, setComplexity] = useState<string>(""); 
-  const [access, setAccess]         = useState<boolean>(true); 
-  const [type, setType]             = useState<string>(""); 
-  const [bgImage, setBgImage]       = useState<boolean>(true);
+interface ICustomState {
+  defaultComplexity?: string;
+  defaultAcess     ?: boolean;
+  defaultType      ?: string;
+  defaulBgImage    ?: boolean;
+}
+
+export const useCustomState = ({
+  defaultComplexity,
+  defaultAcess,
+  defaultType,
+  defaulBgImage
+}: ICustomState) => {
+  const [complexity, setComplexity] = useState<string>(defaultComplexity || ""); 
+  const [access, setAccess]         = useState<boolean>(defaultAcess || true); 
+  const [type, setType]             = useState<string>(defaultType || ""); 
+  const [bgImage, setBgImage]       = useState<boolean>(defaulBgImage || true);
   const [activeId, setActiveId]     = useState<string | null>(null);
 
   const onClickSetValue = (id: string, value: any) => {
