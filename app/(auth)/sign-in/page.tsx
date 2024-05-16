@@ -19,6 +19,7 @@ import { Loader }                from "@/components/shared";
 import { useSelector }           from "react-redux";
 import { IAppState }             from "@/lib/store";
 import { useRouter }             from "next/navigation";
+import { renderMetaTags }        from "@/app/meta";
 
 const signInSchema = z.object({
   email   : z.string().email(),
@@ -33,7 +34,7 @@ const SignUp = () => {
 
   const router = useRouter();
 
-  const [ signIn, { isLoading: isSignInLoading } ] = useSignInMutation();
+  const [ signIn, { isLoading: isSignInLoading, isSuccess } ] = useSignInMutation();
 
   const { passwordInputType, togglePasswordVisibility } = usePasswordVisibility();
   
@@ -46,7 +47,9 @@ const SignUp = () => {
   });
 
   const onSubmit = useCallback(async (values: FormData) => {
-    signIn(values).unwrap().catch((error: RtkError) => {
+    signIn(values).unwrap().then(() => {
+      router.push('/');
+    }).catch((error: RtkError) => {
       if (error.data.code === 'wrong-data') {
         setError('email', { message: t('wrong-data-error') })
       }
@@ -57,7 +60,7 @@ const SignUp = () => {
     })
   }, [signIn]);
 
-  if (isSignInLoading) {
+  if (isSignInLoading || isSuccess) {
     return <Loader />
   }
 
@@ -67,6 +70,7 @@ const SignUp = () => {
 
   return (
     <FormLayout onSubmit={handleSubmit(onSubmit)} title={t('signUp-link')}>
+      {renderMetaTags({ title: `${t('signUp-link')} | Culinarybook`, description: t('meta-sign-in-description') })}
       <div className="my-8 max-w-xs">
         <label className="text-red-500 text-sm">{errors.email?.message}</label>
         <AuthInput

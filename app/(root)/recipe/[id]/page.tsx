@@ -31,18 +31,17 @@ import {
   useGetSaveStateQuery, 
   useRemoveSaveMutation 
 }                                              from "@/lib/api/saveApi";
-import { useGetMeQuery } from "@/lib/api/userApi";
+import { useGetMeQuery }                       from "@/lib/api/userApi";
 import { RtkError }                            from "@/typings/error";
 import { Button }                              from "@/ui";
 import { Input }                               from "@/ui/input/Input";
 import { zodResolver }                         from "@hookform/resolvers/zod";
 import Image                                   from "next/image";
-import { useParams }                           from "next/navigation";
+import { useParams, useRouter }                from "next/navigation";
 import { useCallback, useEffect, useState }    from "react";
 import { useForm }                             from "react-hook-form";
 import { useTranslation }                      from "react-i18next";
 import { Swiper, SwiperSlide }                 from "swiper/react";
-import                                              'swiper/swiper-bundle.css';
 import { z }                                   from "zod";
 
 const createCommentSchema = z.object({
@@ -67,15 +66,17 @@ const Recipe = () => {
   const { id }   = useParams();
   const recipeId = id as string
 
+  const router = useRouter();
+
   const { data: user } = useGetMeQuery();
 
-  const { data: recipe, isLoading: isLoadingRecipe }                               = useGetRecipeQuery(recipeId);
-  const { data: steps, isLoading: isLoadingSteps }                                 = useGetStepsQuery(recipeId);
-  const { data: comments, isLoading: isLoadingComments, refetch: refetchComments } = useGetCommentsQuery(recipeId);
-  const { data: likes, isLoading: isLoadingLikes, refetch: refetchLikes }          = useGetRecipeLikesQuery(recipeId);
+  const { data: recipe, isLoading: isLoadingRecipe }                 = useGetRecipeQuery(recipeId);
+  const { data: steps, isLoading: isLoadingSteps }                   = useGetStepsQuery(recipeId);
+  const { data: comments, isLoading: isLoadingComments, isFetching } = useGetCommentsQuery(recipeId);
+  const { data: likes, isLoading: isLoadingLikes }                   = useGetRecipeLikesQuery(recipeId);
 
-  const { data: likeState, refetch: refetchLikeState } = useGetLikeStateQuery(recipeId);
-  const { data: saveState, refetch: refetchSaveState}  = useGetSaveStateQuery(recipeId);
+  const { data: likeState, isLoading: isLoadingLikeState } = useGetLikeStateQuery(recipeId);
+  const { data: saveState, isLoading: isLoadingSaveState }  = useGetSaveStateQuery(recipeId);
 
   const [ createComment, { isLoading: isLoadingCreatingComment } ]              = useCreateCommentMutation();
   const [ deleteComment, { isLoading: isLoadingDeleteComment } ]                = useDeleteCommentMutation();
@@ -88,48 +89,63 @@ const Recipe = () => {
   const [ removeSave ] = useRemoveSaveMutation();
 
   const [selectedCommentId, setSelectedCommentId] = useState('');
+  const [selectedUserId, setSelectedUserId] = useState('');
 
-  const isPublicRecipe = recipe?.isPublic;
-
-  const [isLiked, setIsLiked] = useState<boolean>(!!likeState?.isLiked);
-  const [isSaved, setIsSaved] = useState<boolean>(!!saveState?.isSaved);
+  const [ isLiked, setIsLiked ] = useState<boolean>(!!likeState?.isLiked);
+  const [ isSaved, setIsSaved ] = useState<boolean>(!!saveState?.isSaved);
+  const [ likesCount, setLikesCount] = useState(likes?.length || 0); 
 
   useEffect(() => {
     setIsLiked(!!likeState?.isLiked);
   }, [likeState])
 
   useEffect(() => {
+    setLikesCount(likes?.length || 0);
+  }, [likes])
+
+  useEffect(() => {
     setIsSaved(!!saveState?.isSaved);
   }, [saveState])
 
   const handleLikeClick = async () => {
-    if (!likeState?.isLiked) {
-      setIsLiked(true);
-
-      await createLike(recipeId);
+    if (!user) {
+      router.push('/sign-in');
     } else {
-      setIsLiked(false);
+      if (!isLiked) {
+        setIsLiked(true);
+        setLikesCount(likesCount + 1);
 
-      await removeLike(recipeId);
+        await createLike(recipeId);
+      } else {
+        setIsLiked(false);
+        setLikesCount(likesCount - 1);
+        
+        await removeLike(recipeId);
+      }
     }
-
-    await refetchLikeState();
-    await refetchLikes();
   };
 
   const handleSaveClick = async () => {
-    if (!saveState?.isSaved) {
-      setIsSaved(true);
-
-      await createSave(recipeId);
+    if (!user) {
+      router.push('/sign-in');
     } else {
-      setIsSaved(false);
-
-      await removeSave(recipeId);
+      if (!isSaved) {
+        setIsSaved(true);
+  
+        await createSave(recipeId);
+      } else {
+        setIsSaved(false);
+  
+        await removeSave(recipeId);
+      }
     }
-
-    await refetchSaveState();
   };
+
+  const [isRecipeOwner, setIsRecipeOwner] = useState(user ? user.id === recipe?.ownerId : false);
+
+  useEffect(() => {
+    setIsRecipeOwner(user?.id === recipe?.ownerId);
+  }, [user, recipe]);
 
   const isBackgroundApplied = recipe?.applyBackground;
   
@@ -161,65 +177,67 @@ const Recipe = () => {
   };
 
   const onSubmitCreateComment = useCallback(async (values: CreateCommentFormData) => {
-    await createComment({ ...values, recipeId: recipeId }).unwrap().then(() => {
-      reset();
-      setRating(0);
-
-      refetchComments();
-    }).catch((error: RtkError) => {
-      if (error.data.code === 'same-text') {
-        setError('commentText', { message: t('spam-error') });
-      }
-    });
-  }, [createComment, reset]);
+    if (!user) {
+      router.push('/sign-in');
+    } else {
+      await createComment({ ...values, recipeId: recipeId }).unwrap().then(() => {
+        reset();
+        setRating(0);
+        setOpenInputId('');
+      }).catch((error: RtkError) => {
+        if (error.data.code === 'same-text') {
+          setError('commentText', { message: t('spam-error') });
+        }
+      });
+    }
+  }, [createComment, reset, user]);
 
   const onClickDeleteComment = async (commentId: string) => {
     await deleteComment(commentId);
-
-    await refetchComments();
   }
 
   const onClickDeleteCommentReply = async (commentReplyId: string) => {
     await deleteCommentReply(commentReplyId);
-
-    await refetchComments();
   }
 
   const onSubmitCreateCommentReply = useCallback(async (values: CreateCommentReplyFormData) => {
-    createCommentReply({ ...values, commentId: selectedCommentId }).unwrap().then(() => {
-      resetReply();
+    if (!user) {
+      router.push('/sign-in');
+    } else {
+      createCommentReply({ ...values, commentId: selectedCommentId, userId: selectedUserId }).unwrap().then(() => {
+        resetReply();
+        setOpenInputId('');
+      })
+    }
+  }, [createCommentReply, selectedCommentId, user])
 
-      refetchComments();
-    })
-  }, [createCommentReply, selectedCommentId])
-
-  const [openReplies, toggleOpenReplies]       = useToggleState({});
+  const [openReplies, toggleOpenReplies] = useToggleState({});
 
   const [openInputId, setOpenInputId] = useState<string>();
 
-  const handleOpenInput = (openCommentId: string, createCommentId: string) => {
+  const handleOpenInput = (openCommentId: string, createCommentId: string, userId: string) => {
     setSelectedCommentId(createCommentId);
     setOpenInputId(openCommentId);
+    setSelectedUserId(userId);
   };
 
   const handleOpenReplies = (commentId: string) => {
     toggleOpenReplies(commentId);
   };
 
-  if (isLoadingRecipe || isLoadingLikes || isLoadingComments) {
+  if (isLoadingRecipe || isLoadingLikes || isLoadingLikeState || isLoadingSaveState) {
     return <Loader />
   }
 
-  const isLoadingAllComments       = isLoadingComments || isLoadingCreatingComment || isLoadingDeleteComment ;
-  const isLoadingAllCommentReplies =  isLoadingCreatingCommentsReplies || isLoadingDeletingCommentReply;
+  const isLoadingAllComments = isLoadingComments || isLoadingCreatingComment || isLoadingDeleteComment || isFetching || isLoadingCreatingCommentsReplies || isLoadingDeletingCommentReply;
 
-  if (!isPublicRecipe) {
+  if (!recipe?.isPublic) {
     return <PrivateRecipe />
   }
   
   return (
     <>
-      {renderMetaTags({ title: recipe.title, description: recipe.ingradients })}
+      {renderMetaTags({ title: `${recipe.title} | Recipebook`, description: recipe.ingradients })}
       {isBackgroundApplied && (
         <Image src={recipe.image} alt="Background image" width={1000} height={1000} className=" absolute top-0 left-0 w-full h-full object-cover -z-10 blur-sm opacity-10" />
       )}
@@ -230,23 +248,23 @@ const Recipe = () => {
         coockingTime={recipe.coockingTime}
         complexity={recipe.complexity}
         typeOfFood={recipe.typeOfFood}
-        numbersOfLikes={likes?.length || 0}
-        averageGrade={comments ? comments.reduce((sum, comment) => sum + comment.grade, 0) / comments.length : 0}
+        numbersOfLikes={likesCount}
+        averageGrade={comments && comments?.length > 0 ? comments.reduce((sum, comment) => sum + comment.grade, 0) / comments.length : 0}
         isLiked={isLiked}
         isSaved={isSaved}
         likeButtonClick={handleLikeClick}
         saveButtonClick={handleSaveClick}
-        isOwner={user?.id === recipe.ownerId}
+        isOwner={isRecipeOwner}
       />
       <h3 className="link-text font-semibold my-5">{t('title-ingradients')}</h3>
       <RecipeContentCard className="w-full max-w-[364px] min-h-[170px]" text={recipe.ingradients} />
       <h3 className="link-text font-semibold my-5">{t('title-instructions')}</h3>
       <div className="flex justify-start">
-        <Swiper spaceBetween={70} slidesPerView={"auto"} freeMode={true} centeredSlides={false} className="!m-0">
+        <Swiper spaceBetween={12} slidesPerView={"auto"} freeMode={true} centeredSlides={false} className="!m-0">
           {isLoadingSteps ? (
             <>
-              {[...Array(5)].map(() => (
-                <SwiperSlide style={{ width: '240px' }} key={'26g432g2354g34'}>
+              {[...Array(5)].map((_, index) => (
+                <SwiperSlide style={{ width: '300px' }} key={index + 10}>
                   <RecipeContentCardSkeleton />
                 </SwiperSlide>
               ))}
@@ -254,7 +272,7 @@ const Recipe = () => {
           ) : (
             <>
               {steps && steps.map((step, index) => (
-                <SwiperSlide style={{ width: '240px' }} key={'26g432g2354g34'}>
+                <SwiperSlide style={{ width: '300px' }} key={index}>
                   <div className="relative">
                     <span className="absolute left-3 top-2 link-text font-semibold z-50">{t('step')} {index + 1}</span>
                     <RecipeContentCard text={step.stepDescription} className="w-[300px] !pt-10 min-h-[128px]" />
@@ -315,7 +333,7 @@ const Recipe = () => {
                       numbersOfReplies={comment.commentReply.length}
                       onClickOpenReplies={() => handleOpenReplies(comment.id)}
                       isOpenReplies={openReplies[comment.id]}
-                      onClickReply={() => {handleOpenInput(comment.id, comment.id), setReplyValue('commentText', '')}}
+                      onClickReply={() => {handleOpenInput(comment.id, comment.id, comment.user.id), setReplyValue('commentText', '')}}
                       onClickDeleteComment={() => onClickDeleteComment(comment.id)}
                     />
                     <div className="ml-14">
@@ -330,39 +348,31 @@ const Recipe = () => {
                       )}
                       {openReplies[comment.id] && (
                         <div className="my-4">
-                          {isLoadingAllCommentReplies ? (
-                            <>
-                              <RecipeCommentSkeleton className="mb-6" />
-                            </>
-                          ) : (
-                            <>
-                              {comment.commentReply.map((commentReply) => {
-                                return (
-                                  <div key={commentReply.id}>
-                                    <RecipeComment 
-                                      userImage={commentReply.user.image}
-                                      recipeOwnerId={recipe.ownerId}
-                                      numbersOfReplies={0}
-                                      username={commentReply.user.username}
-                                      commentText={commentReply.commentText}
-                                      userId={commentReply.user.id}
-                                      onClickReply={() => {handleOpenInput(commentReply.id, comment.id), setReplyValue('commentText', `@${commentReply.user.username} `);}}
-                                      onClickDeleteComment={() => onClickDeleteCommentReply(commentReply.id)}
-                                    />
-                                    {openInputId === commentReply.id && (
-                                      <form onSubmit={handleSubmitReply(onSubmitCreateCommentReply)} className="ml-14">
-                                        <Input {...registerReply('commentText')} type="text" placeholder={t('comment-placeholder')} />
-                                        <div className="flex justify-end mt-3">
-                                          <button onClick={() => setOpenInputId('')} className="mr-4">{t('canclel-button')}</button>
-                                          <Button text={t('reply-button')} isActive={isValidReply} className="max-w-[128px] h-8 flex justify-center items-center" />
-                                        </div>
-                                      </form>
-                                    )}
-                                  </div>
-                                )
-                              })}
-                            </>
-                          )}
+                          {comment.commentReply.map((commentReply) => {
+                            return (
+                              <div key={commentReply.id}>
+                                <RecipeComment 
+                                  userImage={commentReply.user.image}
+                                  recipeOwnerId={recipe.ownerId}
+                                  numbersOfReplies={0}
+                                  username={commentReply.user.username}
+                                  commentText={commentReply.commentText}
+                                  userId={commentReply.user.id}
+                                  onClickReply={() => {handleOpenInput(commentReply.id, comment.id, commentReply.user.id), setReplyValue('commentText', `@${commentReply.user.username} `) }}
+                                  onClickDeleteComment={() => onClickDeleteCommentReply(commentReply.id)}
+                                />
+                                {openInputId === commentReply.id && (
+                                  <form onSubmit={handleSubmitReply(onSubmitCreateCommentReply)} className="ml-14">
+                                    <Input {...registerReply('commentText')} type="text" placeholder={t('comment-placeholder')} />
+                                    <div className="flex justify-end mt-3">
+                                      <button onClick={() => setOpenInputId('')} className="mr-4">{t('canclel-button')}</button>
+                                      <Button text={t('reply-button')} isActive={isValidReply} className="max-w-[128px] h-8 flex justify-center items-center" />
+                                    </div>
+                                  </form>
+                                )}
+                              </div>
+                            )
+                          })}
                         </div>
                       )}
                     </div>

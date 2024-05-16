@@ -2,7 +2,7 @@
 
 import { SearchButtons, SearchField, SearchLayout } from "@/components/search";
 import { GlassIcon }                                from "@/icons";
-import { usePathname } from "next/navigation";
+import { usePathname }                              from "next/navigation";
 import { useTranslation }                           from "react-i18next";
 
 const SearchPageLayout = ({ children }: { children: React.ReactNode }) => {

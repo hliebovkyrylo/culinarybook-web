@@ -13,6 +13,7 @@ import { RtkError }                     from "@/typings/error";
 import { useForm }                      from "react-hook-form";
 import { Loader }                       from "@/components/shared";
 import { useRouter }                    from "next/navigation";
+import { renderMetaTags } from "@/app/meta";
 
 const VerifyAccount = () => {
   const { t } = useTranslation();
@@ -20,7 +21,7 @@ const VerifyAccount = () => {
   const router = useRouter();
 
   const [ forgotPassword, { isLoading: isCodeLoading, isSuccess: isSent } ] = useForgotPasswordMutation();
-  const [ canResetPassword, { isLoading: isCanResetPasswordLoading } ]      = useCanResetPasswordMutation();
+  const [ canResetPassword, { isLoading: isCanResetPasswordLoading, isSuccess } ]      = useCanResetPasswordMutation();
 
   const { handleSubmit, formState: { errors }, setError } = useForm();
 
@@ -53,7 +54,7 @@ const VerifyAccount = () => {
     });
   }, [canResetPassword, allDigits])
 
-  if (isCanResetPasswordLoading || isCodeLoading) {
+  if (isCanResetPasswordLoading || isCodeLoading || isSuccess) {
     return <Loader />;
   }
 
@@ -63,6 +64,7 @@ const VerifyAccount = () => {
 
   return (
     <FormLayout onSubmit={handleSubmit(onSubmit)} title={t('title-confirm')} className="w-full max-w-[394px]">
+      {renderMetaTags({ title: `${t('title-confirm')} | Culinarybook` })}
       {isSent && (
         <p className="text-green-500 text-sm">{t('code-sent')}</p>
       )}

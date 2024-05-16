@@ -11,6 +11,7 @@ export interface ICreateCommentRequest {
 export interface ICreateCommentReplyRequest {
   commentText: string;
   commentId  : string;
+  userId     : string;
 };
 
 export type ICommentResponse      = IComment;
@@ -32,31 +33,36 @@ export const commentApi = api.injectEndpoints({
         method: 'POST',
         url: `/comment/create/${recipeId}`,
         body: rest
-      })
+      }),
+      invalidatesTags: ['user', 'recipe']
     }),
     createCommentReply: builder.mutation<ICommentReplyResponse, ICreateCommentReplyRequest>({
-      query: ({ commentId, ...rest }) => ({
+      query: ({ commentId, userId, ...rest }) => ({
         method: 'POST',
-        url: `/comment/${commentId}/reply`,
+        url: `/comment/${commentId}/reply/to/user/${userId}`,
         body: rest
-      })
+      }),
+      invalidatesTags: ['user', 'recipe']
     }),
     getComments: builder.query<IGetCommentsResponse[], string>({
       query: (recipeId) => ({
         url: `/comment/getComments/${recipeId}`
-      })
+      }),
+      providesTags: ['user', 'recipe']
     }),
     deleteComment: builder.mutation<void, string>({
       query: (commentId) => ({
         method: 'DELETE',
         url: `/comment/${commentId}/delete`
-      })
+      }),
+      invalidatesTags: ['user', 'recipe']
     }),
     deleteCommentReply: builder.mutation<void, string>({
       query: (commentReplyId) => ({
         method: 'DELETE',
         url: `/comment/reply/${commentReplyId}/delete`
-      })
+      }),
+      invalidatesTags: ['user', 'recipe']
     }),
   })
 });

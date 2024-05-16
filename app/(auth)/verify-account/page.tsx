@@ -16,6 +16,7 @@ import { useForm }                      from "react-hook-form";
 import { useGetMeQuery }                from "@/lib/api/userApi";
 import { useRouter }                    from "next/navigation";
 import { Loader }                       from "@/components/shared";
+import { renderMetaTags }               from "@/app/meta";
 
 const VerifyAccount = () => {
   const { t } = useTranslation();
@@ -30,7 +31,7 @@ const VerifyAccount = () => {
   const { digits, inputRefs, handleChange, handleKeyDown } = useDigitInput();
   const allDigits = digits.concat().toString().replace(/,/g, '');
 
-  const [ verifyAccount, { isLoading: IsLoadingVerify } ] = useVerifyAccountMutation();
+  const [ verifyAccount, { isLoading: IsLoadingVerify, isSuccess } ] = useVerifyAccountMutation();
 
   const { handleSubmit, formState: { errors }, setError } = useForm();
 
@@ -66,7 +67,7 @@ const VerifyAccount = () => {
     });
   }, [verifyAccount, allDigits])
 
-  if (isLoading || IsLoadingVerify || isLoadingSignOut) {
+  if (isLoading || IsLoadingVerify || isLoadingSignOut || isSuccess || isLoadingSignOut) {
     return <Loader />
   }
 
@@ -81,6 +82,7 @@ const VerifyAccount = () => {
 
   return (
     <>
+      {renderMetaTags({ title: `${t('title-verify')} | Culinarybook` })}
       <FormLayout onSubmit={handleSubmit(onSubmit)} title={t('title-verify')} className="w-full max-w-[394px]">
         {isSent && (
           <p className="text-green-500 text-sm">{t('code-sent')}</p>
@@ -99,7 +101,7 @@ const VerifyAccount = () => {
           ))}
         </div>
         <Button
-        type="submit"
+          type="submit"
           text={t('verify-button')}
           isActive={digits.every(digit => digit !== '')}
         />

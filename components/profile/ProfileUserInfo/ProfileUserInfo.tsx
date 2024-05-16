@@ -1,7 +1,9 @@
+import { IAppState } from "@/lib/store";
 import { Button }         from "@/ui";
 import Image              from "next/image";
 import Link               from "next/link";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 
 interface IProfileUserInfo {
   username           : string;
@@ -32,7 +34,8 @@ export const ProfileUserInfo = ({
   followActions,
   backgroundImage
 }: IProfileUserInfo) => {
-  const { t } = useTranslation();
+  const { t }       = useTranslation();
+  const accessToken = useSelector((state: IAppState) => state.auth.accessToken);
 
   return (
     <section className="flex relative py-3 px-2">
@@ -48,9 +51,9 @@ export const ProfileUserInfo = ({
           )}
         </div>
         <div className="flex justify-between">
-          <p className="default-text text-center"><span className="link-text max-[537px]:!text-sm max-[537px]:block">{recipesNumber}</span> {recipesNumber > 1 || recipesNumber === 0 ? t('recipes') : t('recipe')}</p>
-          <Link href={`/profile/${userId}/followers`} className="default-text max-[537px]:!text-sm text-center"><span className="link-text max-[537px]:block">{followersNumber}</span> {followersNumber > 1 || followersNumber === 0 ? t('followers') : t('follower')}</Link>
-          <Link href={`/profile/${userId}/followings`} className="default-text max-[537px]:!text-sm text-center"><span className="link-text max-[537px]:block">{followingsNumber}</span> {followingsNumber > 1 || followingsNumber === 0 ? t('followings') : t('following')}</Link>
+          <p className="default-text max-[537px]:!text-sm text-center"><span className="link-text max-[537px]:block">{recipesNumber}</span> {recipesNumber > 1 || recipesNumber === 0 ? t('recipes') : t('recipe')}</p>
+          <Link href={accessToken ? `/profile/${userId}/followers` : '/sign-in'} className="default-text max-[537px]:!text-sm text-center"><span className="link-text max-[537px]:block">{followersNumber}</span> {followersNumber > 1 || followersNumber === 0 ? t('followers') : t('follower')}</Link>
+          <Link href={accessToken ? `/profile/${userId}/followings` : '/sign-in'} className="default-text max-[537px]:!text-sm text-center"><span className="link-text max-[537px]:block">{followingsNumber}</span> {followingsNumber > 1 || followingsNumber === 0 ? t('followings') : t('following')}</Link>
         </div>
         <p className="default-text">{name}</p>
       </div>

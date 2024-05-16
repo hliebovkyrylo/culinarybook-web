@@ -1,5 +1,6 @@
 "use client"
 
+import { renderMetaTags }      from "@/app/meta";
 import { RecipeCardSkeleton }  from "@/components/cards";
 import RecipeCard              from "@/components/cards/RecipeCard/RecipeCard";
 import { 
@@ -11,17 +12,20 @@ import { IAppState }           from "@/lib/store";
 import { IRecipePreview }      from "@/typings/recipe";
 import { useSearchParams }     from "next/navigation";
 import { useEffect, useState } from "react";
+import { useTranslation }      from "react-i18next";
 import { useSelector }         from "react-redux";
 
 const Search = () => {
+  const { t } = useTranslation();
+
   const searchParams = useSearchParams();
   const accessToken  = useSelector((state: IAppState) => state.auth.accessToken);
 
   const search = searchParams.get("title");
 
-  const [pageFindedRecipes, setPageFindedRecipes] = useState(1);
+  const [pageFindedRecipes, setPageFindedRecipes]           = useState(1);
   const [pageRecommendedRecipes, setPageRecommendedRecipes] = useState(1);
-  const [pagePopularRecipes, setPagePopularRecipes] = useState(1);
+  const [pagePopularRecipes, setPagePopularRecipes]         = useState(1);
 
   const [findedRecipes, setFindedRecipes]           = useState<IRecipePreview[]>([]);
   const [recommendedRecipes, setRecommendedRecipes] = useState<IRecipePreview[]>([]);
@@ -105,6 +109,7 @@ const Search = () => {
 
   return (
     <>
+      {renderMetaTags({ title: `${t('search-recipe-meta-title')} | Culinarybook`, description: t('search-recipe-meta-description') })}
       <div className="grid grid-cols-4 max-lg:grid-cols-3 max-[746px]:grid-cols-1 mb-8 max-2xl:!mb-16 relative">
         {isLoading ? (
           <>

@@ -79,7 +79,7 @@ const RecipeCard = ({
           />
         </div>
         <div className="flex flex-col px-4 pt-3 pb-6">
-          <span className="card__name">{recipeName}</span>
+          <span className="card__name w-full text-ellipsis whitespace-nowrap overflow-hidden">{recipeName}</span>
           <span className="text-color-666 text-sm my-2">{foodType}</span>
           <div className="flex">
             <ClockIcon className="mr-2" />

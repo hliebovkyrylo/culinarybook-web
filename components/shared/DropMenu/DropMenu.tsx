@@ -1,8 +1,11 @@
-"use client"
+interface IDropMenu extends React.HTMLAttributes<HTMLDivElement> {
+  children: React.ReactNode;
+  className?: string;
+}
 
-const DropMenu = ({ children, className }: { children: React.ReactNode, className?: string }) => {
+const DropMenu = ({ children, className, ...props }: IDropMenu) => {
   return (
-    <div className={`dropmenu ${className}`}>
+    <div className={`dropmenu ${className}`} {...props}>
       {children}
     </div>
   )

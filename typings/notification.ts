@@ -4,7 +4,7 @@ import { IUser }   from "./user";
 export interface INotification {
   id                   : string;
   type                 : string;
-  notificationData     : string;
+  noficationData       : string;
   isRead               : boolean;
   userId               : string;
   notificationCreatorId: string;

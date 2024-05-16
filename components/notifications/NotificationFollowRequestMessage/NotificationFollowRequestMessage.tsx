@@ -1,6 +1,6 @@
 import useFormatDaysAgo   from "@/hooks/useFormatDaysAgo";
 import { Button }         from "@/ui";
-import Image from "next/image";
+import Image              from "next/image";
 import Link               from "next/link";
 import { useTranslation } from "react-i18next";
 
@@ -27,7 +27,7 @@ export const NotificationFollowRequestMessage = ({
     <article className="w-full min-h-[64px] second-background flex items-center py-2 px-3 rounded-lg mb-2">
       <div className="flex justify-between flex-wrap w-full max-[600px]:flex-col max-[600px]:items-start">
         <div className="flex justify-between">
-          <Link className="mr-3" href={`/profile/${userId}`}><Image className="object-cover rounded-full w-12 h-12" src={userImage} alt="User image" width={48} height={48} /></Link>
+          <Link className="mr-3" href={`/profile/${userId}`}><Image className="object-cover rounded-full w-12 h-12" src={userImage || '/assets/defaulUserImage.jpg'} alt="User image" width={48} height={48} /></Link>
           <div>
             <div>
               <Link className="text-sm" href={`/profile/${userId}`}><b>{username}</b></Link>

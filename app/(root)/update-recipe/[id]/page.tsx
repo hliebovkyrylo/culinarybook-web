@@ -23,7 +23,7 @@ import { Button }                 from "@/ui";
 import { useImageUpload }         from "@/hooks/useUploadImage";
 import { useCustomState }         from "@/hooks/useInputsState";
 import { useTranslation }         from "react-i18next";
-import { string, z }                      from "zod";
+import { z }                      from "zod";
 import { 
   useCreateStepsMutation, 
   useDeleteRecipeMutation, 
@@ -42,7 +42,6 @@ import { RtkError }               from "@/typings/error";
 import { useSelector }            from "react-redux";
 import { IAppState }              from "@/lib/store";
 import { renderMetaTags }         from "@/app/meta";
-import { useToggleState } from "@/hooks/useToggleState";
 
 const updateRecipeAndStepSchema = z.object({
   title          : z.string().min(1).max(80),
@@ -94,16 +93,21 @@ const UpdateRecipe = () => {
     }
   );
 
+  if (!recipe) {
+    router.push(`/recipe/${recipeId}`);
+    return null;
+  }
+
   const { handleSubmit, register, setError, formState: { errors, isValid }, setValue, control } = useForm<UpdateRecipeAndStepFormData>({
     defaultValues: {
-      title          : recipe?.title,
-      image          : recipe?.image,
-      coockingTime   : recipe?.coockingTime,
-      complexity     : recipe?.complexity,
-      typeOfFood     : recipe?.typeOfFood,
-      ingradients    : recipe?.ingradients,
-      isPublic       : recipe?.isPublic,
-      applyBackground: recipe?.applyBackground,
+      title          : recipe.title,
+      image          : recipe.image,
+      coockingTime   : recipe.coockingTime,
+      complexity     : recipe.complexity,
+      typeOfFood     : recipe.typeOfFood,
+      ingradients    : recipe.ingradients,
+      isPublic       : recipe.isPublic,
+      applyBackground: recipe.applyBackground,
       steps          : steps
     },
     resolver: zodResolver(updateRecipeAndStepSchema)

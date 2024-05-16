@@ -3,12 +3,24 @@
 import { RecipeCardSkeleton } from "@/components/cards";
 import RecipeCard             from "@/components/cards/RecipeCard/RecipeCard";
 import { useGetMySavedQuery } from "@/lib/api/recipeApi";
+import { IAppState }          from "@/lib/store";
+import { useRouter }          from "next/navigation";
 import { useTranslation }     from "react-i18next";
+import { useSelector }        from "react-redux";
 
 const Profile = () => {
-  const { t } = useTranslation();
+  const { t }       = useTranslation();
+  const accessToken = useSelector((state: IAppState) => state.auth.accessToken);
 
   const { data: recipes, isLoading } = useGetMySavedQuery();
+
+  const router = useRouter();
+
+  if (!accessToken) {
+    router.push('/sign-in');
+    return null;
+  }
+
   return (
     <>
       {isLoading ? (

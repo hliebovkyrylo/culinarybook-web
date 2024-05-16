@@ -23,6 +23,7 @@ import { Loader }                from "@/components/shared";
 import { useRouter }             from "next/navigation";
 import { useSelector }           from "react-redux";
 import { IAppState }             from "@/lib/store";
+import { renderMetaTags } from "@/app/meta";
 
 const signUpSchema = z.object({
   email          : z.string().email(),
@@ -51,8 +52,8 @@ const SignUp = () => {
 
   const router = useRouter();
 
-  const [ signUp, { isLoading: isSignUpLoading } ]     = useSignUpMutation();
-  const [ sendCode, { isLoading: isSendCodeLoading } ] = useSendCodeMutation();
+  const [ signUp, { isLoading: isSignUpLoading, isSuccess } ]                        = useSignUpMutation();
+  const [ sendCode, { isLoading: isSendCodeLoading, isSuccess: isSuccessCodeSent } ] = useSendCodeMutation();
 
   const { handleSubmit, setError, formState: { errors, isValid }, register } = useForm<FormData>({
     defaultValues: {
@@ -86,12 +87,17 @@ const SignUp = () => {
       })    
   }, [signUp, sendCode, setError]);
   
-  if (isSignUpLoading || isSendCodeLoading) {
+  if (isSignUpLoading || isSendCodeLoading || isSuccess || isSuccessCodeSent) {
     return <Loader />
+  }
+
+  if (accessToken) {
+    router.push('/');
   }
 
   return (
     <FormLayout onSubmit={handleSubmit(onSubmit)} title={t('title-signup')}>
+      {renderMetaTags({ title: `${t('title-signup')} | Culinarybook`, description: t('meta-sign-up-description') })}
       <div className="my-8 max-w-xs">
         <label className="text-red-500 text-sm">{errors.email?.message}</label>
         <AuthInput

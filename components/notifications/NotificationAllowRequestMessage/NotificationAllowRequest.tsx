@@ -6,8 +6,6 @@ import { useTranslation } from "react-i18next";
 interface INotificationAllowRequestMessage {
   userImage  : string;
   username   : string;
-  recipeImage: string;
-  recipeId   : string;
   userId     : string;
   createdAt  : Date;
 }
@@ -15,8 +13,6 @@ interface INotificationAllowRequestMessage {
 export const NotificationAllowRequest = ({
   userImage,
   username,
-  recipeImage,
-  recipeId,
   userId,
   createdAt,
 }: INotificationAllowRequestMessage) => {
@@ -41,9 +37,6 @@ export const NotificationAllowRequest = ({
             </div>
           </div>
         </div>
-        <Link href={`/recipe/${recipeId}`}>
-          <Image src={recipeImage !== '' ? recipeImage : '/assets/no-image.png'} className="object-cover rounded-md w-12 h-12" alt="Recipe image" width={48} height={48} />
-        </Link>
       </div>
     </article>
   )

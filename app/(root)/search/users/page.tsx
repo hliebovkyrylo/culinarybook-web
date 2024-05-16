@@ -1,5 +1,6 @@
 "use client"
 
+import { renderMetaTags }      from "@/app/meta";
 import { CreatorCardSkeleton } from "@/components/cards";
 import CreatorCard             from "@/components/cards/CreatorCard/CreatorCard";
 import { 
@@ -11,9 +12,12 @@ import { IAppState }           from "@/lib/store";
 import { IUser }               from "@/typings/user";
 import { useSearchParams }     from "next/navigation";
 import { useEffect, useState } from "react";
+import { useTranslation }      from "react-i18next";
 import { useSelector }         from "react-redux";
 
 const Search = () => {
+  const { t } = useTranslation();
+
   const searchParams = useSearchParams();
   const accessToken  = useSelector((state: IAppState) => state.auth.accessToken);
 
@@ -93,6 +97,8 @@ const Search = () => {
       } else {
         setIsLoadingMore(false);
       }
+    } else {
+      setIsLoadingMore(false);
     }
   };
 
@@ -105,6 +111,7 @@ const Search = () => {
 
   return (
     <div className="grid grid-cols-5 max-lg:grid-cols-3 max-[746px]:grid-cols-1 max-[746px]:justify-items-center">
+      {renderMetaTags({ title: `${t('search-user-meta-title')} | Culinarybook`, description: t('search-user-meta-description') })}
       {isLoading ? (
         <>
           {[...Array(20)].map(() => (
