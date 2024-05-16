@@ -76,12 +76,12 @@ export const RecipeInfo = ({
 
   let defaultBgImage = foodTypeImages[typeOfFood] || '/assets/meat.jpg';  
   return (
-    <div className="flex max-md:flex-col">
+    <div className="flex max-xl:flex-col">
       <Image src={recipeImage || defaultBgImage} alt="Recipe photo" width={608} height={330} className="object-cover w-full max-w-[608px] max-h-[330px] rounded-xl max-md:max-w-[100%]" />
       <div className="ml-12 w-full max-md:ml-0 max-md:mt-6">
         <div className="flex justify-between items-center">
           <div className="flex items-center max-md:justify-between">
-            <h1 className="text-3xl font-semibold">{title}</h1>
+            <h1 className="text-3xl font-semibold text-ellipsis overflow-hidden whitespace-nowrap max-w-[680px] max-2xl:max-w-[60vw]">{title}</h1>
             <div className="flex items-center">
               <button onClick={likeButtonClick} className="ml-7 mr-3 max-md:mr-1 max-md:ml-4">{
                 isLiked 

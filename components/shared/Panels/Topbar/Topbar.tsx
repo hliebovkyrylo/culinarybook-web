@@ -13,7 +13,7 @@ import {
 }                                      from "@/icons";
 import Image                           from "next/image";
 import Link                            from "next/link";
-import { useState }                    from "react";
+import { useEffect, useState }                    from "react";
 import DropMenu                        from "../../DropMenu/DropMenu";
 import { Button }                      from "@/ui";
 import { useTheme }                    from "next-themes";
@@ -24,18 +24,19 @@ import { useSignOutMutation }          from "@/lib/api/authApi";
 import { useGetMeQuery }               from "@/lib/api/userApi";
 import { useSelector }                 from "react-redux";
 import { IAppState }                   from "@/lib/store";
-import { useGetAllNotificationsQuery, useGetUnreadedNotificationsCountQuery } from "@/lib/api/notificationApi";
+import { io }                          from "socket.io-client";
+import { baseUrl }                     from "@/lib/api";
+import { usePathname } from "next/navigation";
 
 export const Topbar = () => {
-  const { t }  = useTranslation();
-  const isAuth = useSelector((state: IAppState) => state.auth.accessToken)
+  const { t }       = useTranslation();
+  const accessToken = useSelector((state: IAppState) => state.auth.accessToken)
 
-  const { data: user, isLoading, refetch } = useGetMeQuery();
+  const pathname = usePathname();
 
-  const { data: unreadedNotificationsCount } = useGetUnreadedNotificationsCountQuery();
+  const { data: user, isLoading } = useGetMeQuery();
 
   const [ signOut ] = useSignOutMutation();
-
   
   const [isVisible, setIsVisible]               = useState<boolean>(false);
   const [isOpenedSettings, setIsOpenedSettings] = useState<boolean>(false);
@@ -43,6 +44,39 @@ export const Topbar = () => {
   const [isVisibleLanguage, setIsVisibleLanguage] = useState<boolean>(false);
 
   const { theme, setTheme } = useTheme();
+
+  const [ unreadedNotificationsCount, setUnreadedNotificaionsCount ] = useState<number>(0);
+
+  useEffect(() => {
+    const socket = io(baseUrl, {
+      extraHeaders: {
+        authorization: accessToken || '',
+      },
+    });
+
+    if (user) {
+      socket.emit('userConnect', user.id); 
+      socket.emit('getUnreadedNotifications', user.id);
+
+      socket.on('unreadedNotifications', (unreadedNotifications) => {
+        setUnreadedNotificaionsCount(unreadedNotifications);
+      });
+
+      socket.on("notification", () => {
+        setUnreadedNotificaionsCount(unreadedNotificationsCount + 1);
+      });
+
+      socket.on('removeNotification', () => {
+        setUnreadedNotificaionsCount(unreadedNotificationsCount - 1);
+      });
+    }
+  }, [user])
+
+  useEffect(() => {
+    if (pathname === '/notifications') {
+      setUnreadedNotificaionsCount(0);
+    }
+  }, [pathname]);
 
   const onClickOpenMenu = () => {
     setIsVisible(!isVisible);
@@ -73,6 +107,23 @@ export const Topbar = () => {
     setIsVisibleLanguage(!isVisibleLanguage);
   }
 
+  const handleOutsideClick = () => {
+    setIsVisible(false);
+    setIsVisibleLanguage(false);
+  };
+
+  const handleInsideClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    event.stopPropagation();
+  };
+
+  useEffect(() => {
+    window.addEventListener('click', handleOutsideClick);
+
+    return () => {
+      window.removeEventListener('click', handleOutsideClick);
+    };
+  }, []);
+
   if (isLoading) {
     return <Loader className="absolute left-0 top-0" />
   }
@@ -82,7 +133,7 @@ export const Topbar = () => {
       {isOpenedSettings && (
         <Settings closeSettings={() => setIsOpenedSettings(false)} />
       )}
-      <nav className="topbar">
+      <nav className="topbar" onClick={handleOutsideClick}>
         <div className="flex justify-between w-full items-center">
           <span className="max-lg:hidden"/>
           <Link href={'/'}>
@@ -91,26 +142,28 @@ export const Topbar = () => {
               <span className={"pl-4 text-lg link-text max-sm:hidden"}>Recipebook</span>
             </div>
           </Link>
-          {isAuth ? (
+          {accessToken ? (
             <div className="flex items-center">
               <Link href={'/notifications'} className="mr-6 fill-[#6b6b6b] hover:fill-[#808080] transition-all relative">
                 <BellIcon className="w-6" />
-                {unreadedNotificationsCount && unreadedNotificationsCount.unreadedNotifications > 0 && (
+                {unreadedNotificationsCount > 0 && (
                   <>
                     <span className="block absolute top-[3px] right-[-1px] rounded-full w-3 h-3 bg-red-600 animate-ping" />
-                    <span className="block absolute top-[3px] text-white right-[-1px] rounded-full text-xs text-center w-3 h-3 bg-red-600">{unreadedNotificationsCount.unreadedNotifications > 10 ? "9+" : unreadedNotificationsCount.unreadedNotifications}</span>
+                    <span className="block absolute top-[3px] text-white right-[-1px] rounded-full text-xs text-center w-3 h-3 bg-red-600">{unreadedNotificationsCount > 10 ? "9+" : unreadedNotificationsCount}</span>
                   </>
                 )}
               </Link>
-              <button onClick={onClickOpenMenu}>
-                <Image 
-                  src={user && user?.image !== '' ? user?.image : '/assets/defaultUsers.svg'} 
-                  alt="User photo"
-                  width={32}
-                  className="object-cover w-8 h-8 rounded-full"
-                  height={32}
-                />
-              </button>
+              <div className="flex items-center" onClick={handleInsideClick}>
+                <button onClick={onClickOpenMenu}>
+                  <Image 
+                    src={user && user.image !== '' ? user.image : '/assets/defaulUserImage.jpg'} 
+                    alt="User photo"
+                    width={32}
+                    className="object-cover w-8 h-8 rounded-full"
+                    height={32}
+                  />
+                </button>
+              </div>
             </div>
           ) : (
             <div className="flex items-center">
@@ -126,7 +179,7 @@ export const Topbar = () => {
             </div>
           )}
           {isVisible && (
-            <DropMenu className="w-[242px] max-[413px]:w-[230px] max-[413px]:!-right-0">
+            <DropMenu className="w-[242px] max-[413px]:w-[230px] max-[413px]:!-right-0" onClick={handleInsideClick}>
               <DropMenuButton 
                 icon={theme === 'light' ? <MoonIcon className='mr-2' /> : <SunIcon className='mr-1 ' /> } 
                 text={t('theme')}

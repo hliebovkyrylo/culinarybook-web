@@ -1,24 +1,25 @@
 "use client"
 
-import RecipeCard                         from "@/components/cards/RecipeCard/RecipeCard";
+import RecipeCard                                from "@/components/cards/RecipeCard/RecipeCard";
 import { 
   FollowWindow, 
   FollowerCard, 
   FollowerCardSkeleton 
-}                                         from "@/components/profile"
-import { Confirm }                        from "@/components/shared";
+}                                                from "@/components/profile"
+import { Confirm }                               from "@/components/shared";
 import { 
   useFollowMutation, 
+  useGetFollowStateQuery, 
   useGetUserFollowersQuery, 
   useUnfollowMutation 
-}                                         from "@/lib/api/followApi";
-import { useGetRecipesByUserIdQuery }     from "@/lib/api/recipeApi";
-import { useGetMeQuery, useGetUserQuery } from "@/lib/api/userApi";
-import { IUserFollower }                  from "@/typings/user";
-import { Input }                          from "@/ui";
-import { useParams, useRouter }           from "next/navigation";
-import { useEffect, useState }            from "react";
-import { useTranslation }                 from "react-i18next";
+}                                                from "@/lib/api/followApi";
+import { useGetRecipesByUserIdQuery }            from "@/lib/api/recipeApi";
+import { useGetMeQuery, useGetUserQuery }        from "@/lib/api/userApi";
+import { IUserFollower }                         from "@/typings/user";
+import { Input }                                 from "@/ui";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState }                   from "react";
+import { useTranslation }                        from "react-i18next";
 
 const Followers = () => {
   const { t }  = useTranslation();
@@ -27,8 +28,14 @@ const Followers = () => {
   const { id } = useParams();
   const userId = id as string;
 
+  const [searchFollowers, setSearchFollowers] = useState<string>("");
+
+  const { data: userMe } = useGetMeQuery();
+
+  const { data: followState, isLoading: isLoadingFollowState } = useGetFollowStateQuery(userId);
+
   const { data: user, isLoading: isLoadingUser }                                  = useGetUserQuery(userId);
-  const { data: followers, isLoading: isLoadingUsers, refetch: refetchFollowers } = useGetUserFollowersQuery({ userId: userId });
+  const { data: followers, isLoading: isLoadingUsers, refetch: refetchFollowers } = useGetUserFollowersQuery({ userId: userId, username: searchFollowers as string });
   const { data: recipes, isLoading: isLoadingRecipes }                            = useGetRecipesByUserIdQuery({ userId: userId, sortBy: 'desc' });
 
   const [ follow ]   = useFollowMutation();
@@ -41,18 +48,23 @@ const Followers = () => {
   );
 
   useEffect(() => {
-    setFollowStateButtonText(Object.fromEntries(followers?.map((follower) => [follower.id, follower.isFollowed]) as (string | boolean)[][]))
-  }, [followers]);
+    if (followers) {
+      setFollowStateButtonText(Object.fromEntries(followers?.map((follower) => [follower.id, follower.isFollowed]) as (string | boolean)[][]))
+    }
+  }, [followers, searchFollowers]);
+
+  useEffect(() => {
+    if (searchFollowers) {
+      router.push(`?username=${searchFollowers}`);
+    } else {
+      router.push(`/profile/${userId}/followers`)
+    }
+  }, [searchFollowers])
 
   const [selectedUserId, setSelectedUserId]     = useState<string>("");
   const [selectedUsername, setSelectedUsername] = useState<string>("");
 
   const [isOpenConfirm, setIsOpenConfirm] = useState<boolean>(false);
-
-  if (user?.isPrivate) {
-    router.push(`/profile/${userId}`)
-    return null
-  }
 
   const handleFollow = async (follower: IUserFollower) => {
     if (follower.isFollowed) {
@@ -82,7 +94,12 @@ const Followers = () => {
     await refetchFollowers();
   }
 
-  const isLoading = isLoadingUsers || isLoadingRecipes || isLoadingUser;
+  const isLoading = isLoadingUsers || isLoadingRecipes || isLoadingUser || isLoadingFollowState;
+
+  if (user?.isPrivate && (userId !== userMe?.id) && !userMe && !followState?.isFollowed) {
+    router.push(`/profile/${userId}`)
+    return null
+  }
 
   return (
     <>
@@ -104,7 +121,7 @@ const Followers = () => {
         title={t('title-followers')}
         userId={userId}
       >
-        <Input type="search" placeholder={t('input-username-placeholder')} className="mb-4 border-[1px] border-[#383838]" />
+        <Input type="search" onChange={e => setSearchFollowers(e.target.value)} placeholder={t('input-username-placeholder')} className="mb-4 border-[1px] border-[#383838]" />
         {isLoading ? (
           <>
             {[...Array(5)].map(() => (

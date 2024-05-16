@@ -21,6 +21,8 @@ export interface IUser {
   image           : string;
   isVerified      : boolean;
   isPrivate       : boolean;
+  followersCount  : number;
+  followingsCount : number;
 }
 
 export interface IUserFollower {

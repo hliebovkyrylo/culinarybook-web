@@ -1,5 +1,6 @@
 "use client"
 
+import { renderMetaTags }            from "@/app/meta";
 import { AuthInput, FormLayout }     from "@/components/auth";
 import { Loader }                    from "@/components/shared";
 import { useForgotPasswordMutation } from "@/lib/api/authApi";
@@ -22,7 +23,7 @@ const ForgotPassword = () => {
   const { t }  = useTranslation();
   const router = useRouter();
 
-  const [ forgotPassword, { isLoading: isSendCodeLoading } ] = useForgotPasswordMutation();
+  const [ forgotPassword, { isLoading: isSendCodeLoading, isSuccess } ] = useForgotPasswordMutation();
 
   const { handleSubmit, setError, formState: { errors, isValid }, register } = useForm<FormData>({
     defaultValues: {
@@ -42,12 +43,13 @@ const ForgotPassword = () => {
     })
   }, [forgotPassword]);
 
-  if (isSendCodeLoading) {
+  if (isSendCodeLoading || isSuccess) {
     return <Loader />
   }
 
   return (
     <FormLayout onSubmit={handleSubmit(onSubmit)} title={t('email-title')}>
+      {renderMetaTags({ title: `${t('forgot-passwor-meta')} | Culinarybook` })}
       <div className="my-8 max-w-xs">
         <label className="text-red-500 text-sm">{errors.email?.message}</label>
         <AuthInput

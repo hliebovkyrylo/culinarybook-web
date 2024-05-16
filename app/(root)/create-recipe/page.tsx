@@ -135,7 +135,7 @@ const CreateRecipe = () => {
 
   return (
     <>
-      {renderMetaTags({ title: t('meta-create-recipe'), description: "" })}
+      {renderMetaTags({ title: `${t('create-recipe')} | Culinarybook`, description: t('meta-create-recipe-description') })}
       <h1 className="head-text">{t('create-recipe')}</h1>
       <input ref={inputFileRef} onChange={handleImageChange} type="file" accept="image/*" hidden />
       <form onSubmit={handleSubmit(onSubmit)} className="my-7">

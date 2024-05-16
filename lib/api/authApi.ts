@@ -40,6 +40,12 @@ export interface IResetPasswordRequest {
   email          : string;
 };
 
+export interface IChangePasswordRequest {
+  oldPassword       : string;
+  newPassword       : string;
+  confirmNewPassword: string;
+}
+
 export const authApi = api.injectEndpoints({
   endpoints: builder => ({
     signUp: builder.mutation<IAuthResponse, ISignUpRequest>({
@@ -47,34 +53,39 @@ export const authApi = api.injectEndpoints({
         method: 'POST',
         url   : '/auth/sign-up',
         body
-      })
+      }),
+      invalidatesTags: ['user', 'recipe']
     }),
     sendCode: builder.mutation<string, void>({
       query: () => ({
         method: 'POST',
         url   : '/auth/send-code'
-      })
+      }),
+      invalidatesTags: ['user', 'recipe']
     }),
     verifyAccount: builder.mutation<void, IVerifyAccountRequest>({
       query: (body) => ({
         method: 'POST',
         url   :  '/auth/verify-email',
         body
-      })
+      }),
+      invalidatesTags: ['user', 'recipe']
     }),
     signIn: builder.mutation<IAuthResponse, ISignInRequest>({
       query: (body) => ({
         method: 'POST',
         url   : '/auth/sign-in',
         body
-      })
+      }),
+      invalidatesTags: ['user', 'recipe']
     }),
     forgotPassword: builder.mutation<void, IForgotPasswordRequest>({
       query: (body) => ({
         method: 'POST',
         url   : '/auth/forgot-password',
         body
-      })
+      }),
+      invalidatesTags: ['user', 'recipe']
     }),
     canResetPassword: builder.mutation<void, ICanResetPasswordRequest>({
       query: ({ email, code }) => ({
@@ -83,7 +94,8 @@ export const authApi = api.injectEndpoints({
         body  : {
           code,
         }
-      })
+      }),
+      invalidatesTags: ['user', 'recipe']
     }),
     resetPassword: builder.mutation<void, IResetPasswordRequest>({
       query: ({ password, confirmPassword, email }) => ({
@@ -93,13 +105,21 @@ export const authApi = api.injectEndpoints({
           password,
           confirmPassword
         }
+      }),
+      invalidatesTags: ['user', 'recipe']
+    }),
+    changePassword: builder.mutation<void, IChangePasswordRequest>({
+      query: (body) => ({
+        method: 'PATCH',
+        url: '/auth/change-password',
+        body
       })
     }),
     signOut: builder.mutation<ISignOutResponse, void>({
       queryFn: () => ({
         data: { accessToken: null }
       }),
-      invalidatesTags: ['user']
+      invalidatesTags: ['user', 'recipe']
     })
   })
 });
@@ -113,4 +133,5 @@ export const {
   useForgotPasswordMutation,
   useCanResetPasswordMutation,
   useResetPasswordMutation,
+  useChangePasswordMutation
 } = authApi;

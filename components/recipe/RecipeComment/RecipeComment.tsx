@@ -1,9 +1,14 @@
 "use client"
 
-import { ChevronDownIcon, ChevronUpIcon, StarIcon, TrashIcon } from "@/icons";
-import { useGetMeQuery } from "@/lib/api/userApi";
-import Image                         from "next/image";
-import Link                          from "next/link";
+import { 
+  ChevronDownIcon, 
+  ChevronUpIcon, 
+  StarIcon, 
+  TrashIcon 
+}                         from "@/icons";
+import { useGetMeQuery }  from "@/lib/api/userApi";
+import Image              from "next/image";
+import Link               from "next/link";
 import { useTranslation } from "react-i18next";
 
 interface IRecipeComment {
@@ -39,7 +44,7 @@ export const RecipeComment = ({
 
   return (
     <article className="flex w-full relative">
-      <Link href={`/profile/${userId}`} className="w-12 h-12 mr-2"><Image src={userImage} alt="User photo" className="w-full h-full object-cover rounded-full" width={38} height={38} /></Link>
+      <Link href={`/profile/${userId}`} className="w-12 h-12 mr-2"><Image src={userImage !== '' ? userImage : '/assets/defaulUserImage.jpg'} alt="User photo" className="w-full h-full object-cover rounded-full" width={38} height={38} /></Link>
       <div className="flex flex-col justify-around">
         <div className="flex">
           <Link href={`/profile/${userId}`}>@{username}</Link>

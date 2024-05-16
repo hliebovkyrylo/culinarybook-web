@@ -17,23 +17,27 @@ export const likeApi = api.injectEndpoints({
       query: (recipeId) => ({
         method: 'POST',
         url   : `/like/create/${recipeId}`
-      })
+      }),
+      invalidatesTags: ['recipe']
     }),
     removeLike: builder.mutation<void, string>({
       query: (recipeId) => ({
         method: 'DELETE',
         url   : `/like/${recipeId}/remove`
-      })
+      }),
+      invalidatesTags: ['recipe']
     }),
     getLikeState: builder.query<ILikeStateResponse, string>({
       query: (recipeId) => ({
         url: `/like/recipe/${recipeId}/isLiked`
-      })
+      }),
+      providesTags: ['recipe']
     }),
     getRecipeLikes: builder.query<ILikeResponse[], string>({
       query: (recipeId) => ({
         url: `/like/${recipeId}/getAll`
-      })
+      }),
+      providesTags: ['recipe']
     })
   })
 });

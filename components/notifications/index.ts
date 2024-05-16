@@ -6,3 +6,4 @@ export * from "./NotificationMessageSkeleton";
 export * from "./NotificationFollowRequestMessage";
 export * from "./NotificationSaveMessage";
 export * from "./NotificationCommentReplyMessage";
+export * from "./NotificationAllowRequestMessage";

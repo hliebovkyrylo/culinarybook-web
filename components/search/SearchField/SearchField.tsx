@@ -20,15 +20,11 @@ export const SearchField = ({
   const [search, setSearch] = useState("");
 
   useEffect(() => {
-    const delayDebounceFn = setTimeout(() => {
-      if (search) {
-        router.push(`/search/${routeType}?${searchType}=` + search);
-      } else {
-        router.push(`/search/${routeType}`)
-      }
-    }, 300);
-
-    return () => clearTimeout(delayDebounceFn);
+    if (search) {
+      router.push(`/search/${routeType}?${searchType}=` + search);
+    } else {
+      router.push(`/search/${routeType}`)
+    }
   }, [search, routeType]);
   return (
     <div className="relative">

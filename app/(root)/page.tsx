@@ -22,6 +22,8 @@ import {
   useGetPopularUsersQuery, 
   useGetRecommendedUsersQuery 
 }                                 from "@/lib/api/userApi";
+import { Swiper, SwiperSlide }    from "swiper/react";
+import { renderMetaTags }         from "../meta";
 
 const Home = () => {
   const { t }       = useTranslation();
@@ -43,6 +45,7 @@ const Home = () => {
 
   return (
     <>
+      {renderMetaTags({ title: `${t('title')} | Culinarybook`, description: t('app-description') })}
       {isLoading ? (
         <Loader className="!-z-10 absolute top-0 left-0 blur-[2px]" />
       ) : (
@@ -50,63 +53,77 @@ const Home = () => {
       )}
       <h1 className='head-text'>{t('title')}</h1>
       <ContentHeader
-        title={t('recipes-headText')}
+        title={accessToken ? t('recipes-headText') : t('second-recipes-headText')}
         linkText={t('link')}
         linkHref={`/search/recipes`}
         className="mt-6"
       />
       <div className="mt-3 mb-28">
-        <ContentMain className="grid-cols-6 w-width-1480">
-          {isLoading ? (
-            <>
-              {[...Array(6)].map(() => (
-                <RecipeCardSkeleton />
-              ))}
-            </>
-          ) : (
-            <>
-              {recipes && recipes.map((recipe) => (
-                <Recipecard
-                  key={recipe.id}
-                  id={recipe.id}
-                  recipeName={recipe.title}
-                  recipeImage={recipe.image}
-                  foodType={recipe.typeOfFood}
-                  cookingTime={recipe.coockingTime}
-                  complexity={recipe.complexity}
-                  authorImage={recipe.owner.image}
-                  authorName={recipe.owner.name}
-                />
-              ))}
-            </>
-          )}
+        <ContentMain>
+          <Swiper spaceBetween={18} slidesPerView={"auto"} freeMode={true} centeredSlides={false} className="!m-0">
+            {isLoading ? (
+              <>
+                {[...Array(6)].map((_, index) => (
+                  <SwiperSlide style={{ width: '230px' }} key={index}>
+                    <RecipeCardSkeleton />
+                  </SwiperSlide>
+                ))}
+              </>
+            ) : (
+              <>
+                {recipes && recipes.length > 0 ? recipes.map((recipe) => (
+                  <SwiperSlide style={{ width: '230px' }} key={recipe.id}>
+                    <Recipecard
+                      id={recipe.id}
+                      recipeName={recipe.title}
+                      recipeImage={recipe.image}
+                      foodType={recipe.typeOfFood}
+                      cookingTime={recipe.coockingTime}
+                      complexity={recipe.complexity}
+                      authorImage={recipe.owner.image}
+                      authorName={recipe.owner.name}
+                    />
+                  </SwiperSlide>
+                )) : (
+                  <p className="h-[297px] flex opacity-50 w-full justify-center items-center">{t('nothing-found')}</p>
+                )}
+              </>
+            )}
+          </Swiper>
         </ContentMain>
         <ContentHeader
-          title={t('users-headText')}
+          title={accessToken ? t('users-headText') : t('second-users-headText')}
           className="mt-9 mb-3"
         />
-        <ContentMain className={`grid-cols-8`}>
-          {isLoading ? (
-            <>
-              {[...Array(8)].map(() => (
-                <CreatorCardSkeleton />
-              ))}
-            </>
-          ) : (
-            <>  
-              {users && users.map((user) => (
-                <CreatorCard
-                  key={user.id}
-                  id={user.id}
-                  userImage={user.image}
-                  name={user.name}
-                  followers={user.followerCount}
-                  recipes={user.recipeCount}
-                  userBanner={user.backgroundImage}
-                />
-              ))}
-            </>
-          )}
+        <ContentMain>
+        <Swiper spaceBetween={8} slidesPerView={"auto"} freeMode={true} centeredSlides={false} className="!m-0">
+            {isLoading ? (
+              <>
+                {[...Array(8)].map((_, index) => (
+                  <SwiperSlide style={{ width: '178px' }} key={index}>
+                    <CreatorCardSkeleton />
+                  </SwiperSlide>
+                ))}
+              </>
+            ) : (
+              <>  
+                {users && users.length > 0 ? users.map((user) => (
+                  <SwiperSlide style={{ width: '178px' }} key={user.id}>
+                    <CreatorCard
+                      id={user.id}
+                      userImage={user.image}
+                      name={user.name}
+                      followers={user.followerCount}
+                      recipes={user.recipeCount}
+                      userBanner={user.backgroundImage}
+                    />
+                  </SwiperSlide>
+                )) : (
+                  <p className="flex h-40 opacity-50 w-full justify-center items-center">{t('nothing-found')}</p>
+                )}
+              </>
+            )}
+          </Swiper>
         </ContentMain>
       </div>
     </>

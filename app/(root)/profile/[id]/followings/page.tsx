@@ -1,36 +1,41 @@
 "use client"
 
-import RecipeCard                     from "@/components/cards/RecipeCard/RecipeCard"
+import RecipeCard                         from "@/components/cards/RecipeCard/RecipeCard"
 import { 
   FollowWindow, 
   FollowerCard, 
   FollowerCardSkeleton 
-}                                     from "@/components/profile"
-import { Confirm }                    from "@/components/shared";
+}                                         from "@/components/profile"
+import { Confirm }                        from "@/components/shared";
 import { 
   useFollowMutation, 
+  useGetFollowStateQuery, 
   useGetUserFollowingsQuery, 
   useUnfollowMutation 
-}                                     from "@/lib/api/followApi";
-import { useGetRecipesByUserIdQuery } from "@/lib/api/recipeApi";
-import { useGetMeQuery, useGetUserQuery }            from "@/lib/api/userApi";
-import { IUserFollower }              from "@/typings/user";
-import { Input }                      from "@/ui";
-import { useParams, useRouter }       from "next/navigation";
-import { useEffect, useState }        from "react";
-import { useTranslation }             from "react-i18next";
+}                                         from "@/lib/api/followApi";
+import { useGetRecipesByUserIdQuery }     from "@/lib/api/recipeApi";
+import { useGetMeQuery, useGetUserQuery } from "@/lib/api/userApi";
+import { IUserFollower }                  from "@/typings/user";
+import { Input }                          from "@/ui";
+import { useParams, useRouter }           from "next/navigation";
+import { useEffect, useState }            from "react";
+import { useTranslation }                 from "react-i18next";
 
 const Followings = () => {
-  const { t } = useTranslation();
+  const { t }  = useTranslation();
   const router = useRouter();
 
   const { id } = useParams();
   const userId = id as string;
 
-  const { data: userMe, isLoading: isMeLoading } = useGetMeQuery();
+  const { data: userMe } = useGetMeQuery();
+
+  const { data: followState, isLoading: isLoadingFollowState } = useGetFollowStateQuery(userId);
+
+  const [searchFollowings, setSearchFollowings] = useState<string>("");
 
   const { data: user, isLoading: isLoadingUser }                                         = useGetUserQuery(userId);
-  const { data: followings, isLoading: isLoadingFollowings, refetch: refetchFollowings } = useGetUserFollowingsQuery({ userId: userId });
+  const { data: followings, isLoading: isLoadingFollowings, refetch: refetchFollowings } = useGetUserFollowingsQuery({ userId: userId, username: searchFollowings });
   const { data: recipes, isLoading: isLoadingRecipes }                                   = useGetRecipesByUserIdQuery({ userId: userId, sortBy: 'desc' });
 
   const [ follow ]   = useFollowMutation();
@@ -43,8 +48,18 @@ const Followings = () => {
   );
 
   useEffect(() => {
-    setFollowStateButtonText(Object.fromEntries(followings?.map((following) => [following.id, following.isFollowed]) as (string | boolean)[][]))
-  }, [followings]);
+    if (searchFollowings) {
+      setFollowStateButtonText(Object.fromEntries(followings?.map((following) => [following.id, following.isFollowed]) as (string | boolean)[][]))
+    }
+  }, [followings, searchFollowings]);
+
+  useEffect(() => {
+    if (searchFollowings) {
+      router.push(`?username=${searchFollowings}`);
+    } else {
+      router.push(`/profile/${userId}/followings`)
+    }
+  }, [searchFollowings])
 
   const [selectedUserId, setSelectedUserId] = useState<string>("");
 
@@ -79,12 +94,13 @@ const Followings = () => {
     await refetchFollowings();
   }
 
-  const isLoading = isLoadingFollowings || isLoadingRecipes || isLoadingUser || isMeLoading;
+  const isLoading = isLoadingFollowings || isLoadingRecipes || isLoadingUser || isLoadingFollowState;
 
-  if (user?.isPrivate && userId !== userMe?.id) {
+  if (user?.isPrivate && (userId !== userMe?.id) && !userMe && !followState?.isFollowed) {
     router.push(`/profile/${userId}`)
     return null
   }
+
   return (
     <>
       {recipes && recipes.map((recipe) => (
@@ -105,7 +121,7 @@ const Followings = () => {
         title={t('followings')}
         userId={userId}
       >
-        <Input type="search" placeholder={t('input-username-placeholder')} className="mb-4 border-[1px] border-[#383838]" />
+        <Input type="search" onChange={e => setSearchFollowings(e.target.value)} placeholder={t('input-username-placeholder')} className="mb-4 border-[1px] border-[#383838]" />
         {isLoading ? (
           <>
             {[...Array(5)].map(() => (

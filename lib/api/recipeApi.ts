@@ -46,85 +46,100 @@ export const recipeApi = api.injectEndpoints({
         url   : '/recipe/create',
         method: 'POST',
         body
-      })
+      }),
+      invalidatesTags: ['recipe']
     }),
     getRecipe: builder.query<IRecipeResponse, string>({
       query: (recipeId) => ({
         url: `/recipe/${recipeId}`
-      })
+      }),
+      providesTags: ['recipe']
     }),
     updateRecipe: builder.mutation<IRecipeResponse, IUpdateRecipeRequest>({
       query: ({ id, ...rest }) => ({
         method: 'PATCH', 
         url   : `/recipe/${id}/update`,
         body  : rest
-      })
+      }),
+      invalidatesTags: ['recipe']
     }),
     deleteRecipe: builder.mutation<void, string>({
       query: (recipeId) => ({
         method: 'DELETE',
         url   : `/recipe/${recipeId}/delete`
-      })
+      }),
+      invalidatesTags: ['recipe']
     }),
     getMyLiked: builder.query<IRecipesPreviewResponse, void>({
       query: (body) => ({
         url: '/recipe/my/liked'
-      })
+      }),
+      providesTags: ['user', 'recipe']
     }),
     getMyVisited: builder.query<IRecipesPreviewResponse, IRecipeQueryRequest>({
       query: (body) => ({
         url: `/recipe/my/visited?page=${body.page}&limit=${body.limit}`
-      })
+      }),
+      providesTags: ['user', 'recipe']
     }),
     createSteps: builder.mutation<void, ICreateStepRequest>({
       query: ({ recipeId, steps }) => ({
         method: 'POST',
         url: `/recipe/${recipeId}/createStep`,
         body: steps,
-      })
+      }),
+      invalidatesTags: ['recipe']
     }),        
     getSteps: builder.query<IStepsResponse, string>({
       query: (recipeId) => ({
         url: `/recipe/${recipeId}/steps`
-      })
+      }),
+      providesTags: ['recipe']
     }),
     updateSteps: builder.mutation<IStepsResponse, IUpdateStepsRequest[]>({
       query: (body) => ({
         url   : '/recipe/update/steps',
         method: 'PATCH',
         body
-      })
+      }),
+      invalidatesTags: ['recipe']
     }),
     deleteStep: builder.mutation<void, string>({
       query: (stepId) => ({
         method: 'DELETE', 
         url   : `/recipe/step/delete/${stepId}`
-      })
+      }),
+      invalidatesTags: ['recipe']
     }),
     getMySaved: builder.query<IRecipesPreviewResponse, void>({
       query: (body) => ({
         url: '/recipe/saved/get'
-      })
+      }),
+      providesTags: ['user', 'recipe']
     }),
     getRecommendedRecipes: builder.query<IRecipesPreviewResponse, IRecipeQueryRequest>({
       query: (body) => ({
         url: `/recipe/recommended/recipes?page=${body.page}&limit=${body.limit}`
-      })
+      }),
+      providesTags: ['user', 'recipe']
     }),
     getPopularRecipes: builder.query<IRecipesPreviewResponse, IRecipeQueryRequest>({
       query: (body) => ({
         url: `/recipe/popular/recipes?page=${body.page}&limit=${body.limit}`
-      })
+      }),
+      providesTags: ['user', 'recipe']
     }),
     getRecipesByTitle: builder.query<IRecipesPreviewResponse, IRecipeQueryTitleRequest>({
       query: (body) => ({
         url: `/recipe?title=${body.title}&page=${body.page}&limit=${body.limit}`
-      })
+      }),
+      providesTags: ['recipe']
     }),
     getRecipesByUserId: builder.query<IRecipesPreviewResponse, IRecipeRequest>({
       query: (body) => ({
         url: `/recipe/${body.userId}/recipes?sortBy=${body.sortBy}`
-      })
+      }),
+      providesTags: ['user', 'recipe']
     }),
   })
 });

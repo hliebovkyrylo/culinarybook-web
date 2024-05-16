@@ -17,7 +17,8 @@ import { useCallback }              from "react";
 import { RtkError }                 from "@/typings/error";
 import { Loader }                   from "@/components/shared";
 import { useRouter }                from "next/navigation";
-import { useGetMeQuery } from "@/lib/api/userApi";
+import { useGetMeQuery }            from "@/lib/api/userApi";
+import { renderMetaTags } from "@/app/meta";
 
 const resetPasswordSchema = z.object({
   password       : z.string().min(8),
@@ -41,7 +42,7 @@ const ResetPassword = () => {
 
   const router = useRouter();
 
-  const [ resetPassword, { isLoading: isResetPasswordLoading } ] = useResetPasswordMutation();
+  const [ resetPassword, { isLoading: isResetPasswordLoading, isSuccess } ] = useResetPasswordMutation();
 
   const { handleSubmit, register, setError, formState: { errors, isValid } } = useForm<FormData>({
     defaultValues: {
@@ -70,7 +71,7 @@ const ResetPassword = () => {
 
   const { passwordInputType, confirmPasswordInputType, togglePasswordVisibility, toggleConfirmPasswordVisibility } = usePasswordVisibility();
 
-  if (isResetPasswordLoading || isLoading) {
+  if (isResetPasswordLoading || isLoading || isSuccess) {
     return <Loader />
   }
 
@@ -78,7 +79,7 @@ const ResetPassword = () => {
     router.push('/');
     return null;
   } else if (userEmail === null) {
-    router.push('/forgot-password');
+    router.push('/sign-in');
   }
 
   return (
@@ -87,6 +88,7 @@ const ResetPassword = () => {
       className="min-w-[243px]"
       onSubmit={handleSubmit(onSubmit)}
     >
+      {renderMetaTags({ title: `${t('title-new-password')} | Culinarybook` })}
       <div className="my-6 min-w-[283px]">
         <p className="text-red-500 text-sm">{errors.password?.message}</p>
         <div className="relative">

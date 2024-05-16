@@ -30,13 +30,24 @@ const ProfileLayout = ({ children }: { children: React.ReactNode }) => {
 
   const router = useRouter();
 
-  const { data: user, isLoading }                = useGetUserQuery(userId);
-  const { data: userMe, isLoading: isMeLoading } = useGetMeQuery();
+  const { data: user, isLoading } = useGetUserQuery(userId);
+  const { data: userMe }          = useGetMeQuery();
   
-  const { data: followers, isLoading: isLoadingFollowers, refetch: refetchFollowers } = useGetUserFollowersQuery({ userId: userId });
-  const { data: followings, isLoading: isLoadingFollowings }                          = useGetUserFollowingsQuery({ userId: userId });
+  const { data: followers, isLoading: isLoadingFollowers }   = useGetUserFollowersQuery({ userId: userId });
+  const { data: followings, isLoading: isLoadingFollowings } = useGetUserFollowingsQuery({ userId: userId });
 
-  const { data: followState, isLoading: isLoadingFollowState, refetch: refetchFollowState }                      = useGetFollowStateQuery(userId);
+  const [ numberOfFollowers, setNumberOfFollowers ]   = useState(user?.followersCount || 0);
+  const [ numberOfFollowings, setNumberOfFollowings ] = useState(user?.followingsCount || 0);
+  
+  useEffect(() => {
+    setNumberOfFollowers(user?.followersCount || 0);
+  }, [followers, user]);
+
+  useEffect(() => {
+    setNumberOfFollowings(user?.followingsCount || 0);
+  }, [followings, user]);
+
+  const { data: followState, isLoading: isLoadingFollowState }                                                   = useGetFollowStateQuery(userId);
   const { data: followRequestState, isLoading: isLoadingFollowRequestState, refetch: refetchFollowRequestState } = useGetFollowRequestStateQuery(userId);
 
   const [sortBy, setSortBy] = useState<string>("desc");
@@ -71,52 +82,56 @@ const ProfileLayout = ({ children }: { children: React.ReactNode }) => {
   }, [followState])
 
   const handleFollow = async () => {
-    if (!followState?.isFollowed && !user?.isPrivate) {
-      setFollowStateButtonText(true);
-      setIsOpenConfirm(false);
-
-      await follow(userId)
-      await refetchFollowers(); 
-      await refetchFollowState();
-    } else if (user?.isPrivate && !followState?.isFollowed && !followRequestState?.isFollowRequestSent) {
-      setIsRequestSent(true)
-      await follow(userId)
-
-      await refetchFollowRequestState();
-    } else if (followRequestState?.isFollowRequestSent) {
-      setIsOpenConfirm(true)
-      setConfirmText(`${t('cancel-follow-request')} "${user?.username}"?`)
-      setConfirmButtonText(t('cancel-confirm'))
-
-      await refetchFollowRequestState();
+    if (!userMe) {
+      router.push('/sign-in');
     } else {
-      setIsOpenConfirm(true)
-      setConfirmText(`${t('confirm-unfollow')} "${user?.username}"?`)
-      setConfirmButtonText(t('unfollow-button'))
+      if (!followState?.isFollowed && !user?.isPrivate) {
+        setFollowStateButtonText(true);
+        setIsOpenConfirm(false);
+  
+        setNumberOfFollowers(numberOfFollowers + 1);
+        await follow(userId)
+      } else if (user?.isPrivate && !followState?.isFollowed && !followRequestState?.isFollowRequestSent) {
+        setIsRequestSent(true)
+        await follow(userId)
+  
+        await refetchFollowRequestState();
+      } else if (followRequestState?.isFollowRequestSent) {
+        setIsOpenConfirm(true)
+        setConfirmText(`${t('cancel-follow-request')} "${user?.username}"?`)
+        setConfirmButtonText(t('cancel-confirm'))
+  
+        await refetchFollowRequestState();
+      } else {
+        setIsOpenConfirm(true)
+        setConfirmText(`${t('confirm-unfollow')} "${user?.username}"?`)
+        setConfirmButtonText(t('unfollow-button'))
+      }
     }
   }
 
   const onClickUnfollow = async () => {
-    setIsOpenConfirm(false);
-
-    if (user?.isPrivate && followRequestState?.isFollowRequestSent) {
-      setIsRequestSent(false);
-      
-
-      await cancelFollowRequest(userId);
-      await refetchFollowRequestState();
+    if (!userMe) {
+      router.push('/sign-in');
     } else {
-      setFollowStateButtonText(false);
-      
-      await unfollow(userId); 
-      await refetchFollowers(); 
-      await refetchFollowState();
+      setIsOpenConfirm(false);
+
+      if (user?.isPrivate && followRequestState?.isFollowRequestSent) {
+        setIsRequestSent(false);
+
+        await cancelFollowRequest(userId);
+        await refetchFollowRequestState();
+      } else {
+        setFollowStateButtonText(false);
+        setNumberOfFollowers(numberOfFollowers - 1);
+        
+        await unfollow(userId); 
+      }
     }
   }
 
   if 
-  (    isLoading 
-    || isMeLoading 
+  (    isLoading
     || isLoadingFollowers 
     || isLoadingFollowings 
     || isLoaidngRecipes
@@ -126,18 +141,18 @@ const ProfileLayout = ({ children }: { children: React.ReactNode }) => {
     return <Loader />
   }
 
-  const isPrivateAccount = user?.isPrivate && userMe?.id !== user.id;
+  const isPrivateAccount = user?.isPrivate && userMe?.id !== user.id && !followState?.isFollowed;
 
   return (
     <div className="w-full z-50 flex flex-col h-full">
-      {renderMetaTags({ title: `${user?.name} | Recipebook` })}
+      {renderMetaTags({ title: `${user?.name} | Culinarybook`, description: `${user?.name} ${t('meta-profile-description')}` })}
       <ProfileUserInfo
         username={user?.username || ""}
         userId={userId}
         image={user?.image}
         name={user?.name || ''}
-        followersNumber={followers?.length || 0}
-        followingsNumber={followings?.length || 0}
+        followersNumber={numberOfFollowers}
+        followingsNumber={numberOfFollowings}
         isFollowRequestSent={isRequestSent}
         recipesNumber={recipes?.length || 0}
         isFollowed={followStateButtonText}

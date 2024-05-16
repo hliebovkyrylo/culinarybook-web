@@ -29,39 +29,46 @@ export const userApi = api.injectEndpoints({
     getMe: builder.query<IUserMeResponse, void>({
       query: () => ({
         url: '/user/me'
-      })
+      }),
+      providesTags: ['user']
     }),
     getUser: builder.query<IUserResponse, string>({
       query: (userId) => ({
         url: `/user/${userId}`
-      }) 
+      }),
+      providesTags: ['user']
     }),
     getUserByUsername: builder.query<IUsersResponse, IGetUsersByUsernameRequest>({
       query: ({ username, page, limit }) => ({
         url: `/user?username=${username}&page=${page}&limit=${limit}`
-      })
+      }),
+      providesTags: ['user']
     }),
     updateUser: builder.mutation<IUserMeResponse, IUpdateUserRequest>({
       query: (body) => ({
         url   : '/user/update',
         method: 'PATCH',
         body
-      })
+      }),
+      invalidatesTags: ['user']
     }),
     getRecommendedUsers: builder.query<IUsersResponse, IGetUsersRequest>({
       query: (body) => ({
         url: `/user/recommended/users?page=${body.page}&limit=${body.limit}`
-      })
+      }),
+      providesTags: ['user']
     }),
     getPopularUsers: builder.query<IUsersResponse, IGetUsersRequest>({
       query: (body) => ({
         url: `/user/popular/users?page=${body.page}&limit=${body.limit}`
-      })
+      }),
+      providesTags: ['user']
     }),
     changeAccountType: builder.mutation<void, void>({
       query: () => ({
         url: '/user/changeType'
-      })
+      }),
+      invalidatesTags: ['user']
     })
   })
 });

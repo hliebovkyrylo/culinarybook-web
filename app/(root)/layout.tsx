@@ -9,6 +9,7 @@ import i18n                                from "../../i18n";
 import { Provider }                        from "react-redux";
 import { PersistGate }                     from "redux-persist/integration/react";
 import { persistor, store }                from "@/lib/store";
+import                                          'swiper/swiper-bundle.css';
 
 const poppins = Montserrat({ weight: ['400', '500', '700', '800'], subsets: ['cyrillic', 'latin'] })
 

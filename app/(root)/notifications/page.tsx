@@ -1,6 +1,8 @@
 "use client"
 
+import { renderMetaTags }                  from "@/app/meta";
 import { 
+  NotificationAllowRequest,
   NotificationCommentMessage, 
   NotificationCommentReplyMessage, 
   NotificationFollowMessage, 
@@ -10,44 +12,82 @@ import {
   NotificationSaveMessage, 
   NotificationsLayout 
 }                                          from "@/components/notifications";
+import { baseUrl }                         from "@/lib/api";
 import { useFollowRequestAnswearMutation } from "@/lib/api/followApi";
-import { useGetAllNotificationsQuery }     from "@/lib/api/notificationApi";
+import { useGetMeQuery }                   from "@/lib/api/userApi";
 import { IAppState }                       from "@/lib/store";
-import { useRouter }                       from "next/navigation";
+import { INotification }                   from "@/typings/notification";
+import { useEffect, useState }             from "react";
 import { useTranslation }                  from "react-i18next";
 import { useSelector }                     from "react-redux";
+import io                                  from "socket.io-client";
 
 const Notifications = () => {
-  const { t }  = useTranslation();
-  const router = useRouter();
+  const { t }       = useTranslation();
+  const accessToken = useSelector((state: IAppState) => state.auth.accessToken)
 
-  const accessToken = useSelector((state: IAppState) => state.auth.accessToken);
+  const { data: user, isLoading: isLoadingUser } = useGetMeQuery();
 
-  const { data: notifications, isLoading: isLoadingNotifications, refetch } = useGetAllNotificationsQuery();
+  const [ notifications, setNotifications ] = useState<INotification[]>([]);
+
+  const [ isLoadingNotification, setIsLoadingNotifications ] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (!user) {
+      return () => null;
+    }
+    
+    const socket = io(baseUrl, {
+      extraHeaders: {
+        authorization: accessToken || '',
+      },
+    });
+
+    socket.emit('userConnect', user.id); 
+    socket.emit('getNotifications', user.id);
+
+    socket.on("notification", (notification: any) => {
+      setNotifications((currentNotifications) => [notification, ...currentNotifications]);
+    });
+
+    socket.on('removeNotification', (notificationId) => {
+      setNotifications((currentNotifications) => currentNotifications.filter(notification => notification.id !== notificationId));
+    });
+
+    socket.on('loading_start', () => {
+      setIsLoadingNotifications(true);
+    });
+
+    socket.on('notifications', (notifications) => {
+      setNotifications(notifications);
+    });
+
+    socket.on('loading_end', () => {
+      setIsLoadingNotifications(false);
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, [user]);
   
   const [ followRequestAnswear, { isLoading: isLoadingFollowRequest } ] = useFollowRequestAnswearMutation();
 
   const handleAllowRequest = async (userId: string) => {
     await followRequestAnswear({ allowed: true, userId: userId });
-    await refetch();
   };
 
   const handleRejectRequest = async (userId: string) => {
     await followRequestAnswear({ allowed: false, userId: userId });
-    await refetch();
   };
 
-  const isLoading = isLoadingNotifications || isLoadingFollowRequest;
-
-  if (!accessToken) {
-    router.push('/');
-    return null;
-  }
+  const isLoading = isLoadingFollowRequest || isLoadingUser || isLoadingNotification;
 
   return (
     <NotificationsLayout
       title={t('title-notifications')}
     >
+      {renderMetaTags({ title: `${t('title-notifications')} | Culinarybook` })}
       {isLoading ? (
         <>
           {[...Array(9)].map(() => (
@@ -57,7 +97,7 @@ const Notifications = () => {
       ) : (
         <>
           {notifications && notifications.length > 0 ? notifications.map((notification) => {
-            switch (notification.type) {
+            switch (notification?.type) {
               case 'follow':
                 return (
                   <NotificationFollowMessage 
@@ -76,7 +116,7 @@ const Notifications = () => {
                     userImage={notification.notificationCreator.image}
                     recipeId={notification.recipeId}
                     recipeImage={notification.recipe.image}
-                    userId={notification.userId}
+                    userId={notification.notificationCreator.id}
                     createdAt={notification.createdAt}
                   />
                 )
@@ -86,7 +126,7 @@ const Notifications = () => {
                     key={notification.id}
                     username={notification.notificationCreator.username}
                     userImage={notification.notificationCreator.image}
-                    commentText={notification.notificationData}
+                    commentText={notification.noficationData}
                     recipeId={notification.recipeId}
                     recipeImage={notification.recipe.image}
                     userId={notification.userId}
@@ -123,10 +163,20 @@ const Notifications = () => {
                     key={notification.id}
                     username={notification.notificationCreator.username}
                     userImage={notification.notificationCreator.image}
-                    commentText={notification.notificationData}
+                    commentText={notification.noficationData}
                     recipeId={notification.recipeId}
                     recipeImage={notification.recipe.image}
                     userId={notification.userId}
+                    createdAt={notification.createdAt}
+                  />
+                )
+              case 'follow-allowed':
+                return (
+                  <NotificationAllowRequest 
+                    key={notification.id}
+                    username={notification.notificationCreator.username}
+                    userImage={notification.notificationCreator.image}
+                    userId={notification.notificationCreator.id}
                     createdAt={notification.createdAt}
                   />
                 )

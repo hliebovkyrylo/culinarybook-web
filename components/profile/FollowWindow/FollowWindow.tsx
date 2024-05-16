@@ -9,7 +9,7 @@ export const FollowWindow = ({ children, title, userId }: { children: React.Reac
 
 
   const handleOutsideClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    router.back();
+    router.push(`/profile/${userId}`);
   };
 
   const handleInsideClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
