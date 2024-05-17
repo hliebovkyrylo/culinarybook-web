@@ -1,5 +1,3 @@
-"use client"
-
 import { renderMetaTags }            from "@/pages/meta";
 import { AuthInput, FormLayout }     from "@/components/auth";
 import { Loader }                    from "@/components/shared";
@@ -10,8 +8,10 @@ import { zodResolver }               from "@hookform/resolvers/zod";
 import { useRouter }                 from "next/navigation";
 import { useCallback }               from "react";
 import { useForm }                   from "react-hook-form";
-import { useTranslation }            from "react-i18next";
+import { useTranslation }            from "next-i18next";
 import { z }                         from "zod";
+import { GetStaticPropsContext }     from "next";
+import { serverSideTranslations }    from "next-i18next/serverSideTranslations";
 
 const forgotPasswordSchema = z.object({
   email: z.string().email()
@@ -19,8 +19,16 @@ const forgotPasswordSchema = z.object({
 
 export type FormData = z.infer<typeof forgotPasswordSchema>;
 
+export async function getStaticProps({ locale }: GetStaticPropsContext) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale as string, ['common'])),
+    },
+  }
+}
+
 const ForgotPassword = () => {
-  const { t }  = useTranslation();
+  const { t }  = useTranslation('common');
   const router = useRouter();
 
   const [ forgotPassword, { isLoading: isSendCodeLoading, isSuccess } ] = useForgotPasswordMutation();

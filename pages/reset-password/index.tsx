@@ -1,5 +1,3 @@
-"use client"
-
 import { 
   AuthIconButton, 
   AuthInput, 
@@ -7,7 +5,7 @@ import {
 }                                   from "@/components/auth";
 import { EyeIcon, SlashEyeIcon }    from "@/icons";
 import { Button }                   from "@/ui";
-import { useTranslation }           from "react-i18next";
+import { useTranslation }           from "next-i18next";
 import { usePasswordVisibility }    from "@/hooks/usePasswordVisibility";
 import { z }                        from "zod";
 import { useResetPasswordMutation } from "@/lib/api/authApi";
@@ -18,7 +16,9 @@ import { RtkError }                 from "@/typings/error";
 import { Loader }                   from "@/components/shared";
 import { useRouter }                from "next/navigation";
 import { useGetMeQuery }            from "@/lib/api/userApi";
-import { renderMetaTags } from "@/pages/meta";
+import { renderMetaTags }           from "@/pages/meta";
+import { GetStaticPropsContext }    from "next";
+import { serverSideTranslations }   from "next-i18next/serverSideTranslations";
 
 const resetPasswordSchema = z.object({
   password       : z.string().min(8),
@@ -35,8 +35,16 @@ const resetPasswordSchema = z.object({
 
 export type FormData = z.infer<typeof resetPasswordSchema>;
 
+export async function getStaticProps({ locale }: GetStaticPropsContext) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale as string, ['common'])),
+    },
+  }
+}
+
 const ResetPassword = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation('common');
 
   const { data: user, isLoading } = useGetMeQuery();
 

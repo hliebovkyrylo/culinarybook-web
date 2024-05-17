@@ -1,5 +1,3 @@
-"use client"
-
 import { renderMetaTags }            from "@/pages/meta";
 import { 
   AuthIconButton, 
@@ -21,9 +19,11 @@ import Link                          from "next/link";
 import { useRouter }                 from "next/navigation";
 import { useCallback }               from "react";
 import { useForm }                   from "react-hook-form";
-import { useTranslation }            from "react-i18next";
+import { useTranslation }            from "next-i18next";
 import { useSelector }               from "react-redux";
 import { z }                         from "zod";
+import { GetStaticPropsContext }     from "next";
+import { serverSideTranslations }    from "next-i18next/serverSideTranslations";
 
 const changePasswordSchema = z.object({
   oldPassword       : z.string().min(8),
@@ -41,8 +41,16 @@ const changePasswordSchema = z.object({
 
 export type FormData = z.infer<typeof changePasswordSchema>;
 
+export async function getStaticProps({ locale }: GetStaticPropsContext) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale as string, ['common'])),
+    },
+  }
+}
+
 const ChangePassword = () => {
-  const { t }  = useTranslation();
+  const { t }  = useTranslation('common');
   const router = useRouter();
 
   const accessToken = useSelector((state: IAppState) => state.auth.accessToken);

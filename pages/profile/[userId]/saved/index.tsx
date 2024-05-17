@@ -1,15 +1,23 @@
-"use client"
+import { RecipeCardSkeleton }     from "@/components/cards";
+import RecipeCard                 from "@/components/cards/RecipeCard/RecipeCard";
+import { useGetMySavedQuery }     from "@/lib/api/recipeApi";
+import { IAppState }              from "@/lib/store";
+import { GetStaticPropsContext }  from "next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { useRouter }              from "next/navigation";
+import { useTranslation }         from "react-i18next";
+import { useSelector }            from "react-redux";
 
-import { RecipeCardSkeleton } from "@/components/cards";
-import RecipeCard             from "@/components/cards/RecipeCard/RecipeCard";
-import { useGetMySavedQuery } from "@/lib/api/recipeApi";
-import { IAppState }          from "@/lib/store";
-import { useRouter }          from "next/navigation";
-import { useTranslation }     from "react-i18next";
-import { useSelector }        from "react-redux";
+export async function getStaticProps({ locale }: GetStaticPropsContext) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale as string, ['common'])),
+    },
+  }
+}
 
 const Profile = () => {
-  const { t }       = useTranslation();
+  const { t }       = useTranslation('common');
   const accessToken = useSelector((state: IAppState) => state.auth.accessToken);
 
   const { data: recipes, isLoading } = useGetMySavedQuery();

@@ -1,19 +1,27 @@
-"use client"
-
-import { renderMetaTags }      from "@/pages/meta";
-import { CreatorCardSkeleton } from "@/components/cards";
-import CreatorCard             from "@/components/cards/CreatorCard/CreatorCard";
+import { renderMetaTags }         from "@/pages/meta";
+import { CreatorCardSkeleton }    from "@/components/cards";
+import CreatorCard                from "@/components/cards/CreatorCard/CreatorCard";
 import { 
   useGetPopularUsersQuery, 
   useGetRecommendedUsersQuery, 
   useGetUserByUsernameQuery 
-}                              from "@/lib/api/userApi";
-import { IAppState }           from "@/lib/store";
-import { IUser }               from "@/typings/user";
-import { useSearchParams }     from "next/navigation";
-import { useEffect, useState } from "react";
-import { useTranslation }      from "react-i18next";
-import { useSelector }         from "react-redux";
+}                                 from "@/lib/api/userApi";
+import { IAppState }              from "@/lib/store";
+import { IUser }                  from "@/typings/user";
+import { useSearchParams }        from "next/navigation";
+import { useEffect, useState }    from "react";
+import { useTranslation }         from "next-i18next";
+import { useSelector }            from "react-redux";
+import { GetStaticPropsContext }  from "next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+
+export async function getStaticProps({ locale }: GetStaticPropsContext) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale as string, ['common'])),
+    },
+  }
+}
 
 const Search = () => {
   const { t } = useTranslation();

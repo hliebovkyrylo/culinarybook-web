@@ -1,5 +1,3 @@
-"use client"
-
 import { renderMetaTags }                      from "@/pages/meta";
 import { 
   PrivateRecipe,
@@ -40,9 +38,11 @@ import Image                                   from "next/image";
 import { useParams, useRouter }                from "next/navigation";
 import { useCallback, useEffect, useState }    from "react";
 import { useForm }                             from "react-hook-form";
-import { useTranslation }                      from "react-i18next";
+import { useTranslation }                      from "next-i18next";
 import { Swiper, SwiperSlide }                 from "swiper/react";
 import { z }                                   from "zod";
+import { GetStaticPropsContext }               from "next";
+import { serverSideTranslations }              from "next-i18next/serverSideTranslations";
 
 const createCommentSchema = z.object({
   commentText: z.string().min(1),
@@ -56,13 +56,21 @@ const createCommentReplySchema = z.object({
 export type CreateCommentFormData      = z.infer<typeof createCommentSchema>;
 export type CreateCommentReplyFormData = z.infer<typeof createCommentReplySchema>;
 
+export async function getStaticProps({ locale }: GetStaticPropsContext) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale as string, ['common'])),
+    },
+  }
+}
+
 const Recipe = () => {
   /*
     =================================
     TODO: split the page into modules
     ================================= 
   */
-  const { t }    = useTranslation();
+  const { t }    = useTranslation('common');
   const { id }   = useParams();
   const recipeId = id as string
 

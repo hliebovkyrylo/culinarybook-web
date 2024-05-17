@@ -1,11 +1,21 @@
 import { RecipeCardSkeleton }         from "@/components/cards";
 import RecipeCard                     from "@/components/cards/RecipeCard/RecipeCard";
 import { useGetRecipesByUserIdQuery } from "@/lib/api/recipeApi";
-import { useParams, useSearchParams } from "next/navigation";
-import { useTranslation }             from "react-i18next";
+import { GetStaticPropsContext }      from "next";
+import { serverSideTranslations }     from "next-i18next/serverSideTranslations";
+import { useSearchParams }            from "next/navigation";
+import { useTranslation }             from "next-i18next";
+
+export async function getStaticProps({ locale }: GetStaticPropsContext) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale as string, ['common'])),
+    },
+  }
+}
 
 const Profile = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation('common');
 
   const id = "6616a09cc5d792a792f999b5";
   const userId = id as string;

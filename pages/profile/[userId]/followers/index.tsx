@@ -1,28 +1,36 @@
-"use client"
-
-import RecipeCard                                from "@/components/cards/RecipeCard/RecipeCard";
+import RecipeCard                         from "@/components/cards/RecipeCard/RecipeCard";
 import { 
   FollowWindow, 
   FollowerCard, 
   FollowerCardSkeleton 
-}                                                from "@/components/profile"
-import { Confirm }                               from "@/components/shared";
+}                                         from "@/components/profile"
+import { Confirm }                        from "@/components/shared";
 import { 
   useFollowMutation, 
   useGetFollowStateQuery, 
   useGetUserFollowersQuery, 
   useUnfollowMutation 
-}                                                from "@/lib/api/followApi";
-import { useGetRecipesByUserIdQuery }            from "@/lib/api/recipeApi";
-import { useGetMeQuery, useGetUserQuery }        from "@/lib/api/userApi";
-import { IUserFollower }                         from "@/typings/user";
-import { Input }                                 from "@/ui";
-import { useParams, useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState }                   from "react";
-import { useTranslation }                        from "react-i18next";
+}                                         from "@/lib/api/followApi";
+import { useGetRecipesByUserIdQuery }     from "@/lib/api/recipeApi";
+import { useGetMeQuery, useGetUserQuery } from "@/lib/api/userApi";
+import { IUserFollower }                  from "@/typings/user";
+import { Input }                          from "@/ui";
+import { useParams, useRouter }           from "next/navigation";
+import { useEffect, useState }            from "react";
+import { useTranslation }                 from "next-i18next";
+import { GetStaticPropsContext }          from "next";
+import { serverSideTranslations }         from "next-i18next/serverSideTranslations";
+
+export async function getStaticProps({ locale }: GetStaticPropsContext) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale as string, ['common'])),
+    },
+  }
+}
 
 const Followers = () => {
-  const { t }  = useTranslation();
+  const { t }  = useTranslation('common');
   const router = useRouter();
 
   const { id } = useParams();

@@ -1,5 +1,3 @@
-"use client"
-
 import { AuthNumberInput, FormLayout }  from "@/components/auth";
 import { Button }                       from "@/ui";
 import { useTranslation }               from "react-i18next";
@@ -13,10 +11,20 @@ import { RtkError }                     from "@/typings/error";
 import { useForm }                      from "react-hook-form";
 import { Loader }                       from "@/components/shared";
 import { useRouter }                    from "next/navigation";
-import { renderMetaTags } from "@/pages/meta";
+import { renderMetaTags }               from "@/pages/meta";
+import { GetStaticPropsContext }        from "next";
+import { serverSideTranslations }       from "next-i18next/serverSideTranslations";
+
+export async function getStaticProps({ locale }: GetStaticPropsContext) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale as string, ['common'])),
+    },
+  }
+}
 
 const VerifyAccount = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation('common');
 
   const router = useRouter();
 

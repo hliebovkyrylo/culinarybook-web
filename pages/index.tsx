@@ -6,7 +6,6 @@ import Recipecard                 from "@/components/cards/RecipeCard/RecipeCard
 import CreatorCard                from "@/components/cards/CreatorCard/CreatorCard";
 import Image                      from "next/image";
 import { Loader }                 from "@/components/shared";
-import { useTranslation }         from "react-i18next";
 import { 
   CreatorCardSkeleton, 
   RecipeCardSkeleton 
@@ -22,9 +21,20 @@ import {
 }                                 from "@/lib/api/userApi";
 import { Swiper, SwiperSlide }    from "swiper/react";
 import { renderMetaTags }         from "./meta";
+import { useTranslation }         from 'next-i18next'
+import { GetStaticPropsContext } from 'next'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+
+export async function getStaticProps({ locale }: GetStaticPropsContext) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale as string, ['common'])),
+    },
+  }
+}
 
 const Home = () => {
-  const { t }       = useTranslation();
+  const { t }       = useTranslation('common');
   const accessToken = useSelector((state: IAppState) => state.auth.accessToken);
 
   const { data: recommendedRecipes, isLoading: isLoadingRecommendedRecipes } = useGetRecommendedRecipesQuery({ page: 1, limit: 6 });

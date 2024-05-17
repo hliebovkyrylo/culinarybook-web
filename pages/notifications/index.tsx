@@ -1,5 +1,3 @@
-"use client"
-
 import { renderMetaTags }                  from "@/pages/meta";
 import { 
   NotificationAllowRequest,
@@ -18,12 +16,22 @@ import { useGetMeQuery }                   from "@/lib/api/userApi";
 import { IAppState }                       from "@/lib/store";
 import { INotification }                   from "@/typings/notification";
 import { useEffect, useState }             from "react";
-import { useTranslation }                  from "react-i18next";
+import { useTranslation }                  from "next-i18next";
 import { useSelector }                     from "react-redux";
 import io                                  from "socket.io-client";
+import { GetStaticPropsContext }           from "next";
+import { serverSideTranslations }          from "next-i18next/serverSideTranslations";
+
+export async function getStaticProps({ locale }: GetStaticPropsContext) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale as string, ['common'])),
+    },
+  }
+}
 
 const Notifications = () => {
-  const { t }       = useTranslation();
+  const { t }       = useTranslation('common');
   const accessToken = useSelector((state: IAppState) => state.auth.accessToken)
 
   const { data: user, isLoading: isLoadingUser } = useGetMeQuery();

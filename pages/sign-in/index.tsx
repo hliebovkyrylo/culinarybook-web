@@ -1,25 +1,25 @@
-"use client"
-
-import { z }                     from "zod";
-import Link                      from "next/link";
+import { z }                      from "zod";
+import Link                       from "next/link";
 import { 
   AuthIconButton, 
   AuthInput, 
-  FormLayout}                    from "@/components/auth";
-import { EyeIcon, SlashEyeIcon } from "@/icons";
-import { Button }                from "@/ui";
-import { useTranslation }        from "react-i18next";
-import { usePasswordVisibility } from "@/hooks/usePasswordVisibility";
-import { useSignInMutation }     from "@/lib/api/authApi";
-import { useForm }               from "react-hook-form";
-import { zodResolver }           from "@hookform/resolvers/zod";
-import { useCallback }           from "react";
-import { RtkError }              from "@/typings/error";
-import { Loader }                from "@/components/shared";
-import { useSelector }           from "react-redux";
-import { IAppState }             from "@/lib/store";
-import { useRouter }             from "next/navigation";
-import { renderMetaTags }        from "@/pages/meta";
+  FormLayout}                     from "@/components/auth";
+import { EyeIcon, SlashEyeIcon }  from "@/icons";
+import { Button }                 from "@/ui";
+import { useTranslation }         from "next-i18next";
+import { usePasswordVisibility }  from "@/hooks/usePasswordVisibility";
+import { useSignInMutation }      from "@/lib/api/authApi";
+import { useForm }                from "react-hook-form";
+import { zodResolver }            from "@hookform/resolvers/zod";
+import { useCallback }            from "react";
+import { RtkError }               from "@/typings/error";
+import { Loader }                 from "@/components/shared";
+import { useSelector }            from "react-redux";
+import { IAppState }              from "@/lib/store";
+import { useRouter }              from "next/navigation";
+import { renderMetaTags }         from "@/pages/meta";
+import { GetStaticPropsContext }  from "next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 const signInSchema = z.object({
   email   : z.string().email(),
@@ -28,8 +28,16 @@ const signInSchema = z.object({
 
 export type FormData = z.infer<typeof signInSchema>;
 
+export async function getStaticProps({ locale }: GetStaticPropsContext) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale as string, ['common'])),
+    },
+  }
+}
+
 const SignUp = () => {
-  const { t }       = useTranslation();
+  const { t }       = useTranslation('common');
   const accessToken = useSelector((state: IAppState) => state.auth.accessToken);
 
   const router = useRouter();

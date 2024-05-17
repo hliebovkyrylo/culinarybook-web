@@ -8,22 +8,22 @@ import {
   SecondMedalIcon, 
   TrashIcon, 
   UntesilsIcon
-}                                 from "@/icons";
+}                                           from "@/icons";
 import { 
   SelectButton, SelectContent, 
   SelectField 
-}                                 from "@/components/select";
-import Textarea                   from "@/ui/textarea/Textarea";
+}                                           from "@/components/select";
+import Textarea                             from "@/ui/textarea/Textarea";
 import { 
   RecipeCreateCover, 
   RecipeInput, 
   RecipeButton 
-}                                 from "@/components/create-recipe";
-import { Button }                 from "@/ui";
-import { useImageUpload }         from "@/hooks/useUploadImage";
-import { useCustomState }         from "@/hooks/useInputsState";
-import { useTranslation }         from "react-i18next";
-import { z }                      from "zod";
+}                                           from "@/components/create-recipe";
+import { Button }                           from "@/ui";
+import { useImageUpload }                   from "@/hooks/useUploadImage";
+import { useCustomState }                   from "@/hooks/useInputsState";
+import { useTranslation }                   from "next-i18next";
+import { z }                                from "zod";
 import { 
   useCreateStepsMutation, 
   useDeleteRecipeMutation, 
@@ -32,16 +32,18 @@ import {
   useGetStepsQuery,
   useUpdateRecipeMutation,
   useUpdateStepsMutation
-}                                 from "@/lib/api/recipeApi";
-import { useForm, useFieldArray } from "react-hook-form";
-import { zodResolver }            from "@hookform/resolvers/zod";
+}                                           from "@/lib/api/recipeApi";
+import { useForm, useFieldArray }           from "react-hook-form";
+import { zodResolver }                      from "@hookform/resolvers/zod";
 import { useCallback, useEffect, useState } from "react";
-import { useParams, useRouter }   from "next/navigation";
-import { Confirm, Loader }                 from "@/components/shared";
-import { RtkError }               from "@/typings/error";
-import { useSelector }            from "react-redux";
-import { IAppState }              from "@/lib/store";
-import { renderMetaTags }         from "@/pages/meta";
+import { useParams, useRouter }             from "next/navigation";
+import { Confirm, Loader }                  from "@/components/shared";
+import { RtkError }                         from "@/typings/error";
+import { useSelector }                      from "react-redux";
+import { IAppState }                        from "@/lib/store";
+import { renderMetaTags }                   from "@/pages/meta";
+import { GetStaticPropsContext }            from "next";
+import { serverSideTranslations }           from "next-i18next/serverSideTranslations";
 
 const updateRecipeAndStepSchema = z.object({
   title          : z.string().min(1).max(80),
@@ -61,13 +63,21 @@ const updateRecipeAndStepSchema = z.object({
 
 export type UpdateRecipeAndStepFormData = z.infer<typeof updateRecipeAndStepSchema>;
 
+export async function getStaticProps({ locale }: GetStaticPropsContext) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale as string, ['common'])),
+    },
+  }
+}
+
 const UpdateRecipe = () => {
   /*
     =================================
     TODO: split the page into modules
     ================================= 
   */
-  const { t }       = useTranslation();
+  const { t }       = useTranslation('common');
   const accessToken = useSelector((state: IAppState) => state.auth.accessToken);
   const router      = useRouter();
   const { id }      = useParams();

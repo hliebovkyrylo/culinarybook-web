@@ -1,5 +1,3 @@
-"use client"
-
 import {
   ClockIcon, 
   FileIcon, 
@@ -22,7 +20,7 @@ import {
 import { Button }                 from "@/ui";
 import { useImageUpload }         from "@/hooks/useUploadImage";
 import { useCustomState }         from "@/hooks/useInputsState";
-import { useTranslation }         from "react-i18next";
+import { useTranslation }         from "next-i18next";
 import { z }                      from "zod";
 import { 
   useCreateRecipeMutation, 
@@ -37,6 +35,8 @@ import { RtkError }               from "@/typings/error";
 import { useSelector }            from "react-redux";
 import { IAppState }              from "@/lib/store";
 import { renderMetaTags }         from "@/pages/meta";
+import { GetStaticPropsContext }  from "next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 const createRecipeAndStepSchema = z.object({
   title          : z.string().min(1).max(80),
@@ -55,8 +55,16 @@ const createRecipeAndStepSchema = z.object({
 
 export type CreateRecipeAndStepFormData = z.infer<typeof createRecipeAndStepSchema>;
 
+export async function getStaticProps({ locale }: GetStaticPropsContext) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale as string, ['common'])),
+    },
+  }
+}
+
 const CreateRecipe = () => {
-  const { t }       = useTranslation();
+  const { t }       = useTranslation('common');
   const accessToken = useSelector((state: IAppState) => state.auth.accessToken);
   const router      = useRouter();
 

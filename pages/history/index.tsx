@@ -1,14 +1,22 @@
-"use client"
+import { RecipeCardSkeleton }     from "@/components/cards";
+import RecipeCard                 from "@/components/cards/RecipeCard/RecipeCard";
+import { HistoryLayout }          from "@/components/history";
+import { useGetMyVisitedQuery }   from "@/lib/api/recipeApi";
+import { IAppState }              from "@/lib/store";
+import { IRecipePreview }         from "@/typings/recipe";
+import { GetStaticPropsContext }  from "next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { useRouter }              from "next/navigation";
+import { useEffect, useState }    from "react";
+import { useSelector }            from "react-redux";
 
-import { RecipeCardSkeleton } from "@/components/cards";
-import RecipeCard             from "@/components/cards/RecipeCard/RecipeCard";
-import { HistoryLayout }      from "@/components/history";
-import { useGetMyVisitedQuery } from "@/lib/api/recipeApi";
-import { IAppState } from "@/lib/store";
-import { IRecipePreview } from "@/typings/recipe";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+export async function getStaticProps({ locale }: GetStaticPropsContext) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale as string, ['common'])),
+    },
+  }
+}
 
 const HistoryPage = () => {
   const accessToken = useSelector((state: IAppState) => state.auth.accessToken);

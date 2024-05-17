@@ -1,22 +1,30 @@
-"use client"
-
-import { renderMetaTags }      from "@/pages/meta";
-import { RecipeCardSkeleton }  from "@/components/cards";
-import RecipeCard              from "@/components/cards/RecipeCard/RecipeCard";
+import { renderMetaTags }         from "@/pages/meta";
+import { RecipeCardSkeleton }     from "@/components/cards";
+import RecipeCard                 from "@/components/cards/RecipeCard/RecipeCard";
 import { 
   useGetPopularRecipesQuery, 
   useGetRecipesByTitleQuery, 
   useGetRecommendedRecipesQuery 
-}                              from "@/lib/api/recipeApi";
-import { IAppState }           from "@/lib/store";
-import { IRecipePreview }      from "@/typings/recipe";
-import { useSearchParams }     from "next/navigation";
-import { useEffect, useState } from "react";
-import { useTranslation }      from "react-i18next";
-import { useSelector }         from "react-redux";
+}                                 from "@/lib/api/recipeApi";
+import { IAppState }              from "@/lib/store";
+import { IRecipePreview }         from "@/typings/recipe";
+import { useSearchParams }        from "next/navigation";
+import { useEffect, useState }    from "react";
+import { useTranslation }         from "react-i18next";
+import { useSelector }            from "react-redux";
+import { GetStaticPropsContext }  from "next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+
+export async function getStaticProps({ locale }: GetStaticPropsContext) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale as string, ['common'])),
+    },
+  }
+}
 
 const Search = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation('common');
 
   const searchParams = useSearchParams();
   const accessToken  = useSelector((state: IAppState) => state.auth.accessToken);

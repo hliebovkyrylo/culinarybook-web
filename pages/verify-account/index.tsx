@@ -3,7 +3,7 @@
 import { AuthNumberInput, FormLayout }  from "@/components/auth";
 import { Button }                       from "@/ui";
 import { ArrowRightSquare }             from "@/icons";
-import { useTranslation }               from "react-i18next";
+import { useTranslation }               from "next-i18next";
 import { useDigitInput }                from "@/hooks/useDigitInput";
 import { useCallback }                  from "react";
 import { 
@@ -17,9 +17,19 @@ import { useGetMeQuery }                from "@/lib/api/userApi";
 import { useRouter }                    from "next/navigation";
 import { Loader }                       from "@/components/shared";
 import { renderMetaTags }               from "@/pages/meta";
+import { GetStaticPropsContext }        from "next";
+import { serverSideTranslations }       from "next-i18next/serverSideTranslations";
+
+export async function getStaticProps({ locale }: GetStaticPropsContext) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale as string, ['common'])),
+    },
+  }
+}
 
 const VerifyAccount = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation('common');
 
   const { data: user, isLoading } = useGetMeQuery();
 
