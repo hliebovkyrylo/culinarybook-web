@@ -1,6 +1,6 @@
 "use client"
 
-import { Checkbox, Input, Button }              from "@/ui";
+import { Checkbox, Input, Button }              from "@/components/ui";
 import { SettingsPanel }                        from "./SettingsPanel"
 import { useCallback, useState }                from "react";
 import Link                                     from "next/link";

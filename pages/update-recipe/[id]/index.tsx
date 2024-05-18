@@ -13,13 +13,13 @@ import {
   SelectButton, SelectContent, 
   SelectField 
 }                                           from "@/components/select";
-import Textarea                             from "@/ui/textarea/Textarea";
+import Textarea                             from "@/components/ui/textarea/Textarea";
 import { 
   RecipeCreateCover, 
   RecipeInput, 
   RecipeButton 
 }                                           from "@/components/create-recipe";
-import { Button }                           from "@/ui";
+import { Button }                           from "@/components/ui";
 import { useImageUpload }                   from "@/hooks/useUploadImage";
 import { useCustomState }                   from "@/hooks/useInputsState";
 import { useTranslation }                   from "next-i18next";

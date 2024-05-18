@@ -3,7 +3,7 @@ import { AuthInput, FormLayout }     from "@/components/auth";
 import { Loader }                    from "@/components/shared";
 import { useForgotPasswordMutation } from "@/lib/api/authApi";
 import { RtkError }                  from "@/typings/error";
-import { Button }                    from "@/ui";
+import { Button }                    from "@/components/ui";
 import { zodResolver }               from "@hookform/resolvers/zod";
 import { useRouter }                 from "next/navigation";
 import { useCallback }               from "react";

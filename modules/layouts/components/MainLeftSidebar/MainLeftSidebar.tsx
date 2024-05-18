@@ -1,16 +1,16 @@
-"use client"
+import Link                       from "next/link";
+import { sidebarLinks }           from "@/constants";
+import { LogoIcon }               from "@/icons/icons/LogoIcon/LogoIcon";
+import { useTranslation }         from "next-i18next";
+import { useGetMeQuery }          from "@/lib/api/userApi";
+import { Loader }                 from "@/components/shared";
+import { useRouter }              from "next/router";
 
-import Link             from "next/link";
-import { sidebarLinks } from "@/constants";
-import { usePathname }  from "next/navigation";
-import { LogoIcon }     from "@/icons/icons/LogoIcon/LogoIcon";
-import { useTranslation } from "react-i18next";
-import { useGetMeQuery } from "@/lib/api/userApi";
-import { Loader } from "../../Loader";
+export const MainLeftSidebar = () => {
+  const { t } = useTranslation('common');
 
-export const LeftSidebar = () => {
-  const { t }    = useTranslation();
-  const pathname = usePathname();
+  const router   = useRouter();
+  const pathname = router.pathname;
 
   const { data: user, isLoading } = useGetMeQuery();
 
@@ -20,7 +20,7 @@ export const LeftSidebar = () => {
 
   return (
     <aside className="leftsidebar">
-      <div className="flex items-center ml-14 mb-10">
+      <div className="flex items-center my-6 ml-12">
         <LogoIcon className="icon-color"/>
         <span className="leftsidebar__text">Recipebook</span>
       </div>

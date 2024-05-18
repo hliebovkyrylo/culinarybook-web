@@ -14,7 +14,7 @@ import {
 import { useGetRecipesByUserIdQuery }     from "@/lib/api/recipeApi";
 import { useGetMeQuery, useGetUserQuery } from "@/lib/api/userApi";
 import { IUserFollower }                  from "@/typings/user";
-import { Input }                          from "@/ui";
+import { Input }                          from "@/components/ui";
 import { GetStaticPropsContext }          from "next";
 import { serverSideTranslations }         from "next-i18next/serverSideTranslations";
 import { useParams, useRouter }           from "next/navigation";

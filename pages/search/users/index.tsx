@@ -1,6 +1,6 @@
 import { renderMetaTags }         from "@/pages/meta";
 import { CreatorCardSkeleton }    from "@/components/cards";
-import CreatorCard                from "@/components/cards/CreatorCard/CreatorCard";
+import CreatorCard                from "@/components/users/CreatorCard";
 import { 
   useGetPopularUsersQuery, 
   useGetRecommendedUsersQuery, 

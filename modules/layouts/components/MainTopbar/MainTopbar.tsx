@@ -1,5 +1,3 @@
-"use client"
-
 import { 
   BellIcon, 
   CheckIcon, 
@@ -10,29 +8,30 @@ import {
   MoonIcon, 
   SavedIcon, 
   SunIcon 
-}                                      from "@/icons";
-import Image                           from "next/image";
-import Link                            from "next/link";
-import { useEffect, useState }                    from "react";
-import DropMenu                        from "../../DropMenu/DropMenu";
-import { Button }                      from "@/ui";
-import { useTheme }                    from "next-themes";
-import { DropMenuButton, Loader, Settings }    from "../..";
-import { useTranslation }              from "react-i18next";
-import i18next                         from "i18next";
-import { useSignOutMutation }          from "@/lib/api/authApi";
-import { useGetMeQuery }               from "@/lib/api/userApi";
-import { useSelector }                 from "react-redux";
-import { IAppState }                   from "@/lib/store";
-import { io }                          from "socket.io-client";
-import { baseUrl }                     from "@/lib/api";
-import { usePathname } from "next/navigation";
+}                                           from "@/icons";
+import Image                                from "next/image";
+import Link                                 from "next/link";
+import { useEffect, useState }              from "react";
+import { Button }                           from "@/components/ui";
+import { useTheme }                         from "next-themes";
+import { useTranslation }                   from "next-i18next";
+import i18next                              from "i18next";
+import { useSignOutMutation }               from "@/lib/api/authApi";
+import { useGetMeQuery }                    from "@/lib/api/userApi";
+import { useSelector }                      from "react-redux";
+import { IAppState }                        from "@/lib/store";
+import { io }                               from "socket.io-client";
+import { baseUrl }                          from "@/lib/api";
+import { DropMenuButton, Loader, Settings } from "@/components/shared";
+import DropMenu                             from "@/components/shared/DropMenu/DropMenu";
+import { useRouter }                        from "next/router";
 
-export const Topbar = () => {
-  const { t }       = useTranslation();
+export const MainTopbar = () => {
+  const { t }       = useTranslation('common');
   const accessToken = useSelector((state: IAppState) => state.auth.accessToken)
 
-  const pathname = usePathname();
+  const router = useRouter();
+  const pathname = router.pathname;
 
   const { data: user, isLoading } = useGetMeQuery();
 
@@ -136,8 +135,8 @@ export const Topbar = () => {
       <nav className="topbar" onClick={handleOutsideClick}>
         <div className="flex justify-between w-full items-center">
           <span className="max-lg:hidden"/>
-          <Link href={'/'}>
-            <div className="flex items-center lg:hidden">
+          <Link href={'/'} className="main-logo lg:hidden">
+            <div className="flex items-center">
               <LogoIcon className="icon-color"/>
               <span className={"pl-4 text-lg link-text max-sm:hidden"}>Recipebook</span>
             </div>
@@ -174,7 +173,7 @@ export const Topbar = () => {
                 }
               </button>
               <Link href={'/sign-in'} className="w-[160px]">
-                <Button text={t('title-signin')} isActive={true} className="h-9" />
+                <Button text={t('title-signin')} isActive={true} className="h-9 flex items-center justify-center" />
               </Link>
             </div>
           )}

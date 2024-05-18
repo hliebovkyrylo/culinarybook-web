@@ -1,15 +1,15 @@
-"use client"
+import { sidebarLinks }           from "@/constants";
+import { useGetMeQuery }          from "@/lib/api/userApi";
+import Link                       from "next/link";
+import { useTranslation }         from "next-i18next";
+import { Loader }                 from "@/components/shared";
+import { useRouter }              from "next/router";
 
-import { sidebarLinks }   from "@/constants";
-import { useGetMeQuery }  from "@/lib/api/userApi";
-import Link               from "next/link";
-import { usePathname }    from "next/navigation";
-import { useTranslation } from "react-i18next";
-import { Loader }         from "../../Loader";
+export const MainBottombar = () => {
+  const { t } = useTranslation('common');
 
-export const Bottombar = () => {
-  const { t }     = useTranslation()
-  const pathname  = usePathname();
+  const router    = useRouter();
+  const pathname  = router.pathname;
 
   const { data: user, isLoading } = useGetMeQuery();
   const userId                    = user?.id;

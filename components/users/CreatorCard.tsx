@@ -15,7 +15,7 @@ interface ICreatorCard {
   userBanner : string;
 }
 
-const CreatorCard = ({
+export const CreatorCard = ({
   id,
   userImage,
   name,
@@ -44,5 +44,3 @@ const CreatorCard = ({
     </article>
   )
 };
-
-export default CreatorCard;

@@ -1,10 +1,7 @@
-"use client"
-
 import { ClockIcon, MedalIcon } from "@/icons";
 import Image                    from "next/image";
 import Link                     from "next/link";
 import { useState }             from "react";
-import { useTranslation }       from "react-i18next";
 
 interface IRecipeCard {
   id         : string;
@@ -18,7 +15,7 @@ interface IRecipeCard {
   className ?: string;
 }
 
-const RecipeCard = ({
+export const RecipeCard = ({
   id,
   recipeName,
   recipeImage,
@@ -29,7 +26,6 @@ const RecipeCard = ({
   authorName,
   className
 }: IRecipeCard) => {
-  const { t } = useTranslation()
   const [isHovered, setIsHovered] = useState<boolean>(false);
 
   const foodTypeImages: {[ key: string ]: string} = {
@@ -98,5 +94,3 @@ const RecipeCard = ({
     </article>
   )
 }
-
-export default RecipeCard;

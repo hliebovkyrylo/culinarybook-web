@@ -13,7 +13,7 @@ import {
 import { useChangePasswordMutation } from "@/lib/api/authApi";
 import { IAppState }                 from "@/lib/store";
 import { RtkError }                  from "@/typings/error";
-import { Button }                    from "@/ui";
+import { Button }                    from "@/components/ui";
 import { zodResolver }               from "@hookform/resolvers/zod";
 import Link                          from "next/link";
 import { useRouter }                 from "next/navigation";

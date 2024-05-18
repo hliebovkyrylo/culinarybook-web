@@ -1,5 +1,5 @@
 import { AuthNumberInput, FormLayout }  from "@/components/auth";
-import { Button }                       from "@/ui";
+import { Button }                       from "@/components/ui";
 import { useTranslation }               from "react-i18next";
 import { useDigitInput }                from "@/hooks/useDigitInput";
 import { useCallback }                  from "react";

@@ -1,5 +1,5 @@
 import { IAppState } from "@/lib/store";
-import { Button }         from "@/ui";
+import { Button }         from "@/components/ui";
 import Image              from "next/image";
 import Link               from "next/link";
 import { useTranslation } from "react-i18next";

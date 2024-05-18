@@ -1,7 +1,7 @@
 "use client"
 
 import { AuthNumberInput, FormLayout }  from "@/components/auth";
-import { Button }                       from "@/ui";
+import { Button }                       from "@/components/ui";
 import { ArrowRightSquare }             from "@/icons";
 import { useTranslation }               from "next-i18next";
 import { useDigitInput }                from "@/hooks/useDigitInput";

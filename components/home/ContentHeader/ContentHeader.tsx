@@ -14,9 +14,9 @@ export const ContentHeader = ({
   className,
 }: IContentHeader) => {
   return (
-    <header className={`flex items-center justify-between ${className}`}>
+    <div className={`flex items-center justify-between ${className}`}>
       <h2 className='second-head-text'>{title}</h2>
       <Link className="link-text" href={linkHref || ""}>{linkText}</Link>
-    </header>
+    </div>
   )
 };

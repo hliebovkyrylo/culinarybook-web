@@ -11,7 +11,7 @@ import {
   useSignUpMutation 
 }                                 from "@/lib/api/authApi";
 import { EyeIcon, SlashEyeIcon }  from "@/icons";
-import { Button }                 from "@/ui";
+import { Button }                 from "@/components/ui";
 import { useTranslation }         from "next-i18next";
 import { usePasswordVisibility }  from "@/hooks/usePasswordVisibility";
 import { useForm }                from "react-hook-form";

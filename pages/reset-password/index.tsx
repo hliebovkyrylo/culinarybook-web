@@ -4,7 +4,7 @@ import {
   FormLayout
 }                                   from "@/components/auth";
 import { EyeIcon, SlashEyeIcon }    from "@/icons";
-import { Button }                   from "@/ui";
+import { Button }                   from "@/components/ui";
 import { useTranslation }           from "next-i18next";
 import { usePasswordVisibility }    from "@/hooks/usePasswordVisibility";
 import { z }                        from "zod";

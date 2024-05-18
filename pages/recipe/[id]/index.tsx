@@ -31,8 +31,8 @@ import {
 }                                              from "@/lib/api/saveApi";
 import { useGetMeQuery }                       from "@/lib/api/userApi";
 import { RtkError }                            from "@/typings/error";
-import { Button }                              from "@/ui";
-import { Input }                               from "@/ui/input/Input";
+import { Button }                              from "@/components/ui";
+import { Input }                               from "@/components/ui/input/Input";
 import { zodResolver }                         from "@hookform/resolvers/zod";
 import Image                                   from "next/image";
 import { useParams, useRouter }                from "next/navigation";
