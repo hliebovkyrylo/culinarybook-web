@@ -20,7 +20,7 @@ export const MainBottombar = () => {
 
   return (
     <footer className="bottombar">
-      {sidebarLinks.map((link) => {
+      {sidebarLinks.map((link, index) => {
         const isActive = pathname.startsWith(link.route) && link.route.length > 1 || pathname === link.route;
 
         if (link.route === '/profile') link.route = `${link.route}/${userId}`
@@ -28,7 +28,7 @@ export const MainBottombar = () => {
         const label = link.label;
 
         return (
-          <Link key={link.route} href={link.route === '/search' ? '/search/recipes' : link.route} className={`bottombar__link ${isActive && 'link-button-active'}`}>
+          <Link key={index} href={link.route === '/search' ? '/search/recipes' : link.route} className={`bottombar__link ${isActive && 'link-button-active'}`}>
             {link.image}
             <span className="max-sm:hidden text-white mt-1">{t(label)}</span>
           </Link>

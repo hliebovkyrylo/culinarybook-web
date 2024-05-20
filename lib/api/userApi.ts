@@ -14,8 +14,9 @@ export interface IUpdateUserRequest {
 };
 
 export interface IGetUsersRequest {
-  page : number;
-  limit: number;
+  page     : number;
+  limit    : number;
+  username?: string;
 };
 
 export interface IGetUsersByUsernameRequest {
@@ -38,12 +39,6 @@ export const userApi = api.injectEndpoints({
       }),
       providesTags: ['user']
     }),
-    getUserByUsername: builder.query<IUsersResponse, IGetUsersByUsernameRequest>({
-      query: ({ username, page, limit }) => ({
-        url: `/user?username=${username}&page=${page}&limit=${limit}`
-      }),
-      providesTags: ['user']
-    }),
     updateUser: builder.mutation<IUserMeResponse, IUpdateUserRequest>({
       query: (body) => ({
         url   : '/user/update',
@@ -54,13 +49,13 @@ export const userApi = api.injectEndpoints({
     }),
     getRecommendedUsers: builder.query<IUsersResponse, IGetUsersRequest>({
       query: (body) => ({
-        url: `/user/recommended/users?page=${body.page}&limit=${body.limit}`
+        url: `/user/recommended/users?page=${body.page}&limit=${body.limit}&username=${body.username}`
       }),
       providesTags: ['user']
     }),
     getPopularUsers: builder.query<IUsersResponse, IGetUsersRequest>({
       query: (body) => ({
-        url: `/user/popular/users?page=${body.page}&limit=${body.limit}`
+        url: `/user/popular/users?page=${body.page}&limit=${body.limit}&username=${body.username}`
       }),
       providesTags: ['user']
     }),
@@ -76,7 +71,6 @@ export const userApi = api.injectEndpoints({
 export const { 
   useGetMeQuery,
   useGetUserQuery,
-  useGetUserByUsernameQuery,
   useGetRecommendedUsersQuery,
   useGetPopularUsersQuery,
   useChangeAccountTypeMutation,

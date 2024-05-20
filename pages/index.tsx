@@ -31,13 +31,14 @@ const Home = () => {
 
   return (
     <MainLayout
-      pageTitle={`${t('title')} | Culinarybook`}
+      pageTitle={t('title')}
       pageDescription={t('app-description')}
       isLoading={isLoading}
       backgroundImage={(recipes && recipes[0].image !== '') ? recipes[0].image : ''}
+      containerSize="full"
+      metaTitle={`${t('title')} | Culinarybook`}
     >
       <div className="mb-28 w-full">
-        <h1 className='text-black dark:text-neutral-50 font-semibold text-2xl'>{t('title')}</h1>
         <ContentHeader
           title={accessToken ? t('recipes-headText') : t('second-recipes-headText')}
           linkText={t('link')}

@@ -1,12 +1,12 @@
-"use client"
-
-import Link            from "next/link"
-import { usePathname } from "next/navigation";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "next-i18next";
+import Link               from "next/link"
+import { useRouter }      from "next/router";
 
 export const SearchButtons = ({ className }: { className?: string }) => {
-  const pathname = usePathname();
-  const { t }    = useTranslation()
+  const router = useRouter();
+  const pathname = router.pathname;
+
+  const { t } = useTranslation("common");
 
   const isActiveRecipesSearch = pathname === `/search/recipes`;
   const isActiveUsersSearch   = pathname === `/search/users`;

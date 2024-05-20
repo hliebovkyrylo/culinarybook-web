@@ -8,8 +8,9 @@ export type IRecipeResponse         = IRecipe;
 export type IRecipesPreviewResponse = IRecipePreview[];
 
 export interface IRecipeQueryRequest {
-  page : number;
-  limit: number;
+  page       : number;
+  limit      : number;
+  recipeName?: string;
 };
 
 export interface IRecipeQueryTitleRequest {
@@ -119,21 +120,15 @@ export const recipeApi = api.injectEndpoints({
     }),
     getRecommendedRecipes: builder.query<IRecipesPreviewResponse, IRecipeQueryRequest>({
       query: (body) => ({
-        url: `/recipe/recommended/recipes?page=${body.page}&limit=${body.limit}`
+        url: `/recipe/recommended/recipes?page=${body.page}&limit=${body.limit}&title=${body.recipeName}`
       }),
       providesTags: ['user', 'recipe']
     }),
     getPopularRecipes: builder.query<IRecipesPreviewResponse, IRecipeQueryRequest>({
       query: (body) => ({
-        url: `/recipe/popular/recipes?page=${body.page}&limit=${body.limit}`
+        url: `/recipe/popular/recipes?page=${body.page}&limit=${body.limit}&title=${body.recipeName}`
       }),
       providesTags: ['user', 'recipe']
-    }),
-    getRecipesByTitle: builder.query<IRecipesPreviewResponse, IRecipeQueryTitleRequest>({
-      query: (body) => ({
-        url: `/recipe?title=${body.title}&page=${body.page}&limit=${body.limit}`
-      }),
-      providesTags: ['recipe']
     }),
     getRecipesByUserId: builder.query<IRecipesPreviewResponse, IRecipeRequest>({
       query: (body) => ({
@@ -154,7 +149,6 @@ export const {
   useGetMyVisitedQuery,
   useGetPopularRecipesQuery,
   useGetRecipeQuery,
-  useGetRecipesByTitleQuery,
   useGetRecommendedRecipesQuery,
   useGetStepsQuery,
   useGetRecipesByUserIdQuery,

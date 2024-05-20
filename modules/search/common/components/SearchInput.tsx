@@ -1,21 +1,19 @@
-"use client"
-
-import { useRouter } from "next/navigation";
+import { useRouter }           from "next/navigation";
 import { useEffect, useState } from "react";
 
-interface ISearchField {
+interface ISearchInput {
   placeholder: string;
   leftIcon   : React.ReactNode;
   routeType ?: string;
   searchType?: string;
 }
 
-export const SearchField = ({
+export const SearchInput = ({
   placeholder,
   leftIcon,
   routeType,
   searchType,
-}: ISearchField) => {
+}: ISearchInput) => {
   const router              = useRouter();
   const [search, setSearch] = useState("");
 
@@ -27,7 +25,7 @@ export const SearchField = ({
     }
   }, [search, routeType]);
   return (
-    <div className="relative">
+    <div className="relative my-3">
       {leftIcon}
       <input onChange={(e) => setSearch(e.target.value)} type="text" className="search-field" placeholder={placeholder} />
     </div>

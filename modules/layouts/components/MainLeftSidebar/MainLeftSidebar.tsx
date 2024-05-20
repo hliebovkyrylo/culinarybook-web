@@ -22,9 +22,9 @@ export const MainLeftSidebar = () => {
     <aside className="leftsidebar">
       <div className="flex items-center my-6 ml-12">
         <LogoIcon className="icon-color"/>
-        <span className="leftsidebar__text">Recipebook</span>
+        <span className="leftsidebar__text">Culinarybook</span>
       </div>
-      {sidebarLinks.map((link) => {
+      {sidebarLinks.map((link, index) => {
         const isActive = pathname.startsWith(link.route) && link.route.length > 1 || pathname === link.route;
 
         if (link.route === '/profile') {
@@ -41,7 +41,7 @@ export const MainLeftSidebar = () => {
         const label = link.label;
 
         return (
-          <Link key={link.route} href={link.route === '/search' ? '/search/recipes' : link.route} className={`link-button ${isActive && 'link-button-active'}`}>
+          <Link key={index} href={link.route === '/search' ? '/search/recipes' : link.route} className={`link-button ${isActive && 'link-button-active'}`}>
             {link.image}
             <span className="leftsidebar__text ml-2">{t(label)}</span>
           </Link>
