@@ -74,9 +74,8 @@ export const SignInForm = () => {
           inputType={passwordInputType}
         />
       </div>
-      <div className="flex my-2">
-        <p className="mr-1">{t('dont-have-account')}</p>
-        <Link className="link-text" href={"/sign-up"}>{t('signIn-link')}</Link>
+      <div>
+        <Link className="link-text text-sm" href={"/forgot-password"}>{t('forgot-password')}</Link>
       </div>
       <Button
         text={t('signIn-button')}
@@ -85,6 +84,10 @@ export const SignInForm = () => {
       />
       <p className="flex justify-center text-[#949494]">{t('or')}</p>
       <AuthGoogleButton onClick={handleLogin} />
+      <div className="flex my-2">
+        <p className="mr-1">{t('dont-have-account')}</p>
+        <Link className="link-text" href={"/sign-up"}>{t('signIn-link')}</Link>
+      </div>
     </form>
   )
 }
