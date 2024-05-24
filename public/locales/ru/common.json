@@ -147,6 +147,8 @@
   "old-password-placeholder": "Старый пароль",
   "new-password-placeholder": "Новый пароль",
   "change-button": "Изменить пароль",
+  "continue-google-button": "Продолжить с Google",
+  "or": "или", 
   "back-home": "Вернуться",
   "title-new-password": "Новый пароль",
   "change-language": "Поменять язык",

@@ -14,19 +14,26 @@ export const MainBottombar = () => {
   const { data: user, isLoading } = useGetMeQuery();
   const userId                    = user?.id;
 
+  const links = sidebarLinks.map(link => {
+    let route = link.route;
+    if (link.route === '/profile') {
+      route = user ? `${link.route}/${user.id}` : '/sign-in';
+    } else if (link.route === '/create-recipe' && !user) {
+      route = '/sign-in';
+    }
+    return { ...link, route };
+  });
+
   if (isLoading) {
     return <Loader className="absolute left-0 top-0" />
   }
 
   return (
     <footer className="bottombar">
-      {sidebarLinks.map((link, index) => {
+      {links.map((link, index) => {
         const isActive = pathname.startsWith(link.route) && link.route.length > 1 || pathname === link.route;
 
-        if (link.route === '/profile') link.route = `${link.route}/${userId}`
-
         const label = link.label;
-
         return (
           <Link key={index} href={link.route === '/search' ? '/search/recipes' : link.route} className={`bottombar__link ${isActive && 'link-button-active'}`}>
             {link.image}

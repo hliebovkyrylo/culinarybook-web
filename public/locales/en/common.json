@@ -111,6 +111,8 @@
   "title-signup": "Sign Up",
   "email-placeholder": "Email",
   "username-placeholder-signup": "Username",
+  "continue-google-button": "Continue with Google", 
+  "or": "or",
   "name-placeholder-signup": "Name",
   "password-placeholder": "Password",
   "confirm-password-placeholder": "Confirm password",

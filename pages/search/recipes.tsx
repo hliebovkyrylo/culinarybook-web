@@ -1,6 +1,5 @@
 import { useInfiniteScroll }      from "@/hooks/useInfiniteScroll";
 import { GlassIcon }              from "@/icons";
-import { IAppState }              from "@/lib/store";
 import { MainLayout }             from "@/modules/layouts";
 import { 
   SearchButtons, 
@@ -15,6 +14,8 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useRouter }              from "next/router";
 import { useEffect, useState }    from "react";
 import { useSelector }            from "react-redux";
+import cookies                    from "js-cookie";
+import { useGetAuthStatusQuery } from "@/lib/api/authApi";
 
 export async function getStaticProps({ locale }: GetStaticPropsContext) {
   return {
@@ -27,12 +28,13 @@ export async function getStaticProps({ locale }: GetStaticPropsContext) {
 const SearchRecipes = () => {
   const { t }       = useTranslation("common");
   const router      = useRouter();
-  const accessToken = useSelector((state: IAppState) => state.auth.accessToken);
+
+  const { data: authStatus, isLoading: isLoadingAuthStatus } = useGetAuthStatusQuery();
 
   const searchParams = router.query.title;
   const [page, setPage] = useState(1);
 
-  const { recipes: newRecipes, isLoading } = useRecipes(page, accessToken, searchParams);
+  const { recipes: newRecipes, isLoading } = useRecipes(page, authStatus?.isAuth, searchParams);
   const [recipes, setRecipes]              = useState<IRecipePreview[]>([]);
   const [findedRecipes, setFindedRecipes]  = useState<IRecipePreview[]>([]);
 
@@ -63,7 +65,7 @@ const SearchRecipes = () => {
       <SearchButtons />
       <SearchRecipesContent
         data={searchParams ? findedRecipes : recipes}
-        isLoading={isLoading}
+        isLoading={isLoading || isLoadingAuthStatus}
         isLoadingMore={isLoadingMore}
       />
     </MainLayout>

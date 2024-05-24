@@ -118,6 +118,8 @@
   "title-signup": "Створити обліковий запис",
   "email-placeholder": "Пошта",
   "username-placeholder-signup": "Ім'я користувача",
+  "continue-google-button": "Продовжити з Google", 
+  "or": "або", 
   "name-placeholder-signup": "Ім'я",
   "password-placeholder": "Пароль",
   "confirm-password-placeholder": "Підтвердіть пароль",

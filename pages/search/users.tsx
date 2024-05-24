@@ -6,7 +6,6 @@ import {
 }                                 from "@/modules/search";
 import { useInfiniteScroll }      from "@/hooks/useInfiniteScroll";
 import { GlassIcon }              from "@/icons";
-import { IAppState }              from "@/lib/store";
 import { MainLayout }             from "@/modules/layouts";
 import { IUser }                  from "@/typings/user";
 import { GetStaticPropsContext }  from "next";
@@ -14,7 +13,8 @@ import { useTranslation }         from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useRouter }              from "next/router";
 import { useEffect, useState }    from "react";
-import { useSelector }            from "react-redux";
+import cookies                    from "js-cookie";
+import { useGetAuthStatusQuery } from "@/lib/api/authApi";
 
 export async function getStaticProps({ locale }: GetStaticPropsContext) {
   return {
@@ -27,12 +27,13 @@ export async function getStaticProps({ locale }: GetStaticPropsContext) {
 const SearchUsers = () => {
   const { t }       = useTranslation("common");
   const router      = useRouter();
-  const accessToken = useSelector((state: IAppState) => state.auth.accessToken);
+  
+  const { data: authStatus, isLoading: isLoadingAuthStatus } = useGetAuthStatusQuery();
 
   const searchParams      = router.query.username;
   const [ page, setPage ] = useState<number>(1);
 
-  const { users: newUsers, isLoading } = useUsers(page, accessToken, searchParams);
+  const { users: newUsers, isLoading } = useUsers(page, authStatus?.isAuth, searchParams);
   const [users, setUses]               = useState<IUser[]>([]);
   const [findedUsers, setFindedUsers]  = useState<IUser[]>([]);
 
@@ -63,7 +64,7 @@ const SearchUsers = () => {
       <SearchButtons />
       <SearchUsersContent 
         data={searchParams ? findedUsers : users}
-        isLoading={isLoading}
+        isLoading={isLoading || isLoadingAuthStatus}
         isLoadingMore={isLoadingMore}
       />
     </MainLayout>

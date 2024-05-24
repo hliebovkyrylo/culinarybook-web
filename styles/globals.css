@@ -108,22 +108,6 @@ body {
   @apply fill-fill-orange dark:fill-fill-yellow
 }
 
-.auth-form {
-  @apply dark:bg-neutral-900 p-8 bg-[#DFDFDF] max-[390px]:mx-4
-}
-
-.auth-input {
-  @apply dark:bg-bg-c-2 dark:text-white w-full outline-none p-3 text-base dark:hover:bg-bg-c-3 dark:focus:bg-bg-c-3 transition-all rounded-lg hover:bg-slate-100 focus:bg-slate-100
-}
-
-.auth-button {
-  @apply dark:bg-bg-c-10 text-black w-full py-2 rounded-lg dark:hover:bg-[#ADAE5E] transition-all bg-[#C77D0A] hover:bg-[#c7750a]
-}
-
-.auth-button-disabled {
-  @apply !bg-[#888888]
-}
-
 .icon-eye {
   @apply dark:fill-white fill-black
 }

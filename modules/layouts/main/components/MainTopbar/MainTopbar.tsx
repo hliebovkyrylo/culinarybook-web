@@ -15,11 +15,8 @@ import { useEffect, useState }              from "react";
 import { Button }                           from "@/components/ui";
 import { useTheme }                         from "next-themes";
 import { useTranslation }                   from "next-i18next";
-import i18next                              from "i18next";
 import { useSignOutMutation }               from "@/lib/api/authApi";
 import { useGetMeQuery }                    from "@/lib/api/userApi";
-import { useSelector }                      from "react-redux";
-import { IAppState }                        from "@/lib/store";
 import { io }                               from "socket.io-client";
 import { baseUrl }                          from "@/lib/api";
 import { DropMenuButton, Loader, Settings } from "@/components/shared";
@@ -27,15 +24,14 @@ import DropMenu                             from "@/components/shared/DropMenu/D
 import { useRouter }                        from "next/router";
 
 export const MainTopbar = () => {
-  const { t }       = useTranslation('common');
-  const accessToken = useSelector((state: IAppState) => state.auth.accessToken)
+  const { t, i18n } = useTranslation('common');
 
   const router = useRouter();
   const pathname = router.pathname;
 
   const { data: user, isLoading } = useGetMeQuery();
 
-  const [ signOut ] = useSignOutMutation();
+  const [ signOut, { isLoading: isLoadingSignOut, isSuccess } ] = useSignOutMutation();
   
   const [isVisible, setIsVisible]               = useState<boolean>(false);
   const [isOpenedSettings, setIsOpenedSettings] = useState<boolean>(false);
@@ -48,9 +44,7 @@ export const MainTopbar = () => {
 
   useEffect(() => {
     const socket = io(baseUrl, {
-      extraHeaders: {
-        authorization: accessToken || '',
-      },
+      withCredentials: true,
     });
 
     if (user) {
@@ -91,7 +85,7 @@ export const MainTopbar = () => {
   const onClickSignOut = () => {
     setIsVisible(false);
     signOut().unwrap().then(() => {
-      window.location.reload()
+      window.location.reload();
     }).catch((error) => {
       console.log(error)
     });
@@ -123,8 +117,13 @@ export const MainTopbar = () => {
     };
   }, []);
 
-  if (isLoading) {
-    return <Loader className="absolute left-0 top-0" />
+  const changeLanguage = (lng: string) => {
+    i18n.changeLanguage(lng);
+    router.push(router.pathname, router.asPath, { locale: lng });
+  };
+
+  if (isLoading || isLoadingSignOut || isSuccess) {
+    return <Loader className="absolute left-0 top-0 z-[100]" />
   }
 
   return (
@@ -138,10 +137,10 @@ export const MainTopbar = () => {
           <Link href={'/'} className="main-logo lg:hidden">
             <div className="flex items-center">
               <LogoIcon className="icon-color"/>
-              <span className={"pl-4 text-lg link-text max-sm:hidden"}>Recipebook</span>
+              <span className={"pl-4 text-lg link-text max-sm:hidden"}>Culinarybook</span>
             </div>
           </Link>
-          {accessToken ? (
+          {user ? (
             <div className="flex items-center">
               <Link href={'/notifications'} className="mr-6 fill-[#6b6b6b] hover:fill-[#808080] transition-all relative">
                 <BellIcon className="w-6" />
@@ -173,7 +172,7 @@ export const MainTopbar = () => {
                 }
               </button>
               <Link href={'/sign-in'} className="w-[160px]">
-                <Button text={t('title-signin')} isActive={true} className="h-9 flex items-center justify-center" />
+                <Button text={t('title-signin')} isActive={true} className="h-9" />
               </Link>
             </div>
           )}
@@ -197,20 +196,20 @@ export const MainTopbar = () => {
                   <DropMenu className="w-40 !-left-40 !-top-2">
                     <DropMenuButton 
                       text={'English'}
-                      textIcon={i18next.language === 'en' && <CheckIcon className="w-4 fill-[#555555]" />}
-                      onClick={() => i18next.changeLanguage('en')} 
+                      textIcon={i18n.language === 'en' && <CheckIcon className="w-4 fill-[#555555]" />}
+                      onClick={() => changeLanguage('en')} 
                       className="px-3 justify-between"
                     />
                     <DropMenuButton 
                       text={'Українська'}
-                      textIcon={i18next.language === 'uk' && <CheckIcon className="w-4 fill-[#555555]" />}
-                      onClick={() => i18next.changeLanguage('uk')} 
+                      textIcon={i18n.language === 'uk' && <CheckIcon className="w-4 fill-[#555555]" />}
+                      onClick={() => changeLanguage('uk')} 
                       className="px-3 justify-between"
                     />
                     <DropMenuButton 
                       text={'Русский'}
-                      textIcon={i18next.language === 'ru' && <CheckIcon className="w-4 fill-[#555555]" />}
-                      onClick={() => i18next.changeLanguage('ru')} 
+                      textIcon={i18n.language === 'ru' && <CheckIcon className="w-4 fill-[#555555]" />}
+                      onClick={() => changeLanguage('ru')} 
                       className="px-3 justify-between"
                     />
                   </DropMenu>

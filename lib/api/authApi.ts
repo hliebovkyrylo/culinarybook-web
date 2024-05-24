@@ -8,10 +8,6 @@ export interface ISignUpRequest {
   image   : string;
 };
 
-export interface IAuthResponse {
-  accessToken: string;
-};
-
 export interface IVerifyAccountRequest {
   code: string;
 };
@@ -21,9 +17,9 @@ export interface ISignInRequest {
   password: string;
 };
 
-export interface ISignOutResponse {
-  accessToken: null;
-};
+export interface IAuthStateResponse {
+  isAuth: boolean;
+}
 
 export interface IForgotPasswordRequest {
   email: string;
@@ -48,7 +44,7 @@ export interface IChangePasswordRequest {
 
 export const authApi = api.injectEndpoints({
   endpoints: builder => ({
-    signUp: builder.mutation<IAuthResponse, ISignUpRequest>({
+    signUp: builder.mutation<void, ISignUpRequest>({
       query: (body) => ({
         method: 'POST',
         url   : '/auth/sign-up',
@@ -71,7 +67,7 @@ export const authApi = api.injectEndpoints({
       }),
       invalidatesTags: ['user', 'recipe']
     }),
-    signIn: builder.mutation<IAuthResponse, ISignInRequest>({
+    signIn: builder.mutation<void, ISignInRequest>({
       query: (body) => ({
         method: 'POST',
         url   : '/auth/sign-in',
@@ -115,9 +111,15 @@ export const authApi = api.injectEndpoints({
         body
       })
     }),
-    signOut: builder.mutation<ISignOutResponse, void>({
-      queryFn: () => ({
-        data: { accessToken: null }
+    getAuthStatus: builder.query<IAuthStateResponse, void>({
+      query: () => ({
+        url: '/auth/check-auth-status'
+      })
+    }),
+    signOut: builder.mutation<void, void>({
+      query: () => ({
+        method: 'POST',
+        url   : '/auth/sign-out',
       }),
       invalidatesTags: ['user', 'recipe']
     })
@@ -133,5 +135,6 @@ export const {
   useForgotPasswordMutation,
   useCanResetPasswordMutation,
   useResetPasswordMutation,
-  useChangePasswordMutation
+  useChangePasswordMutation,
+  useGetAuthStatusQuery,
 } = authApi;

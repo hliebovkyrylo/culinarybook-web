@@ -32,7 +32,7 @@ import {
 import { useGetMeQuery }                       from "@/lib/api/userApi";
 import { RtkError }                            from "@/typings/error";
 import { Button }                              from "@/components/ui";
-import { Input }                               from "@/components/ui/input/Input";
+import { Input }                               from "@/components/ui/input";
 import { zodResolver }                         from "@hookform/resolvers/zod";
 import Image                                   from "next/image";
 import { useParams, useRouter }                from "next/navigation";

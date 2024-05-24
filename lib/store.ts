@@ -1,10 +1,8 @@
 import { createWrapper, MakeStore, HYDRATE } from 'next-redux-wrapper';
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
-import { authSlice } from './slices/authSlice';
 import { api } from './api/index';
 
 const combinedReducer = combineReducers({
-  auth: authSlice.reducer,
   api : api.reducer,
 });
 
@@ -28,4 +26,3 @@ export const makeStore = () => configureStore({
 });
 
 export const wrapper = createWrapper(makeStore, {debug: false});
-export type IAppState = ReturnType<typeof reducer>;

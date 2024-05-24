@@ -1,6 +1,3 @@
-"use client"
-
-import { Checkbox, Input, Button }              from "@/components/ui";
 import { SettingsPanel }                        from "./SettingsPanel"
 import { useCallback, useState }                from "react";
 import Link                                     from "next/link";
@@ -13,6 +10,8 @@ import { zodResolver }                          from "@hookform/resolvers/zod";
 import { useImageUpload }                       from "@/hooks/useUploadImage";
 import { RtkError }                             from "@/typings/error";
 import { Loader }                               from "../Loader";
+import { Button, Input }                        from "@/components/ui";
+import { Checkbox }                             from "@/components/ui/checkbox";
 
 const changeUserDataSchema = z.object({
   name           : z.string().min(2),
@@ -94,9 +93,9 @@ export const Settings = ({ closeSettings }: { closeSettings: () => void }) => {
             />
             <p className="my-2 text-color-666">{t('settings-personal')}</p>
             <label>{t('username-label')}</label>
-            <Input {...register('username')} type="text" placeholder={t('username-placeholder')} className="border-[1px] border-[#313131] mb-2" />
+            <Input color="default" {...register('username')} type="text" placeholder={t('username-placeholder')} className="border-[1px] border-[#313131] mb-2" />
             <label>{t('name-label')}</label>
-            <Input {...register('name')} type="text" placeholder={t('name-placeholder')} className="border-[1px] border-[#313131] mb-2" />
+            <Input color="default" {...register('name')} type="text" placeholder={t('name-placeholder')} className="border-[1px] border-[#313131] mb-2" />
             <p className="my-2 text-color-666">{t('settings-confidentiality')}</p>
             <div className="py-6 border-y-[1px] border-[#313131]">
               <div className="flex justify-between">
