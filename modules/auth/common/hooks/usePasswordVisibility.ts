@@ -1,9 +1,7 @@
-"use client"
-
 import { useState } from 'react';
 
 export const usePasswordVisibility = () => {
-  const [passwordInputType, setPasswordInputType] = useState("password");
+  const [passwordInputType, setPasswordInputType]               = useState("password");
   const [confirmPasswordInputType, setConfirmPasswordInputType] = useState("password");
 
   const handleVisibleChange = (setInputType: React.Dispatch<React.SetStateAction<string>>, inputType: string) => {

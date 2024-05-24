@@ -22,7 +22,7 @@ export const AuthorizationLayout = ({
         <title>{metaTitle}</title>
         <meta name="description" content={pageDescription} />
       </Head>
-      <section className="dark:bg-neutral-900 p-8 w-full max-w-[360px] max-h-[516px] bg-[#DFDFDF] max-[390px]:mx-4">
+      <section className="dark:bg-neutral-900 p-8 w-full max-w-[360px] bg-[#DFDFDF] max-[390px]:mx-4">
         <h1 className="text-2xl mb-3">{pageTitle}</h1>
         {children}
       </section>

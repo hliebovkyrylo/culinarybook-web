@@ -5,7 +5,7 @@ import {
   FormLayout
 }                                    from "@/components/auth";
 import { Loader }                    from "@/components/shared";
-import { usePasswordVisibility }     from "@/hooks/usePasswordVisibility";
+import { usePasswordVisibility }     from "@/modules/auth/common/hooks/usePasswordVisibility";
 import { 
   EyeIcon, 
   SlashEyeIcon 

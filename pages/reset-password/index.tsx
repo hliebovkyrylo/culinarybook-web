@@ -6,7 +6,7 @@ import {
 import { EyeIcon, SlashEyeIcon }    from "@/icons";
 import { Button }                   from "@/components/ui";
 import { useTranslation }           from "next-i18next";
-import { usePasswordVisibility }    from "@/hooks/usePasswordVisibility";
+import { usePasswordVisibility }    from "@/modules/auth/common/hooks/usePasswordVisibility";
 import { z }                        from "zod";
 import { useResetPasswordMutation } from "@/lib/api/authApi";
 import { useForm }                  from "react-hook-form";

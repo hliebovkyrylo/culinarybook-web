@@ -1,18 +1,18 @@
-import { Button, Input }         from "@/components/ui"
-import { usePasswordVisibility } from "@/hooks/usePasswordVisibility";
-import { useTranslation }        from "next-i18next"
-import { AuthGoogleButton, AuthIconButton }        from "../common";
-import { EyeIcon, SlashEyeIcon } from "@/icons";
-import Link                      from "next/link";
-import { useSignInMutation } from "@/lib/api/authApi";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { SignInFormData, signInSchema } from "./schemas/signInSchema";
-import { useCallback } from "react";
-import { useRouter } from "next/router";
-import { RtkError } from "@/typings/error";
-import { Loader } from "@/components/shared";
-import { baseUrl } from "@/lib/api";
+import { Button, Input }                    from "@/components/ui"
+import { useTranslation }                   from "next-i18next"
+import { AuthGoogleButton, AuthIconButton } from "../common";
+import { EyeIcon, SlashEyeIcon }            from "@/icons";
+import Link                                 from "next/link";
+import { useSignInMutation }                from "@/lib/api/authApi";
+import { useForm }                          from "react-hook-form";
+import { zodResolver }                      from "@hookform/resolvers/zod";
+import { SignInFormData, signInSchema }     from "./schemas/signInSchema";
+import { useCallback }                      from "react";
+import { useRouter }                        from "next/router";
+import { RtkError }                         from "@/typings/error";
+import { Loader }                           from "@/components/shared";
+import { baseUrl }                          from "@/lib/api";
+import { usePasswordVisibility }            from "../common/hooks/usePasswordVisibility";
 
 export const SignInForm = () => {
   const { t }  = useTranslation("common");
