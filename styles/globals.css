@@ -112,10 +112,6 @@ body {
   @apply dark:fill-white fill-black
 }
 
-.auth-numberInput {
-  @apply dark:bg-bg-c-3 w-12 h-16 rounded-md text-center text-2xl outline-none max-[368px]:w-7 max-[368px]:h-11
-}
-
 .select-button {
   @apply h-6 px-3 dark:bg-bg-c-2 rounded-md dark:hover:bg-bg-c-3 transition-all bg-white hover:bg-slate-100 
 }

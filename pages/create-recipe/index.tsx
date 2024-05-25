@@ -11,7 +11,7 @@ import {
   SelectButton, SelectContent, 
   SelectField 
 }                                 from "@/components/select";
-import Textarea                   from "@/components/ui/textarea/Textarea";
+import Textarea                   from "@/components/ui/textarea";
 import { 
   RecipeCreateCover, 
   RecipeInput, 
