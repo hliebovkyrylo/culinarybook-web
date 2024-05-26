@@ -4,3 +4,4 @@ export * from "./forgot-password-form";
 export * from "./ConfirmCodeForm";
 export * from "./reset-password-form";
 export * from "./VerifyAccountForm";
+export * from "./change-password-form";
