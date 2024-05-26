@@ -20,6 +20,7 @@ const ForgotPassword = () => {
       pageTitle={t('email-title')}
       pageDescription=""
       metaTitle={`${t('forgot-passwor-meta')} | Culinarybook` }
+      applyHomeButton={true}
     >
       <ForgotPasswordForm />
     </AuthorizationLayout>

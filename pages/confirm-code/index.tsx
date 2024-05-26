@@ -20,6 +20,7 @@ const ConfirmCode = () => {
       pageTitle={t('title-confirm')}
       pageDescription=""
       metaTitle={`${t('title-confirm')} | Culinarybook`}
+      applyHomeButton={true}
     >
       <ConfirmCodeForm />
     </AuthorizationLayout>

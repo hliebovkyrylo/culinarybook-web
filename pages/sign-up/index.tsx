@@ -20,6 +20,7 @@ const SignUp = () => {
       pageTitle={t('title-signup')}
       pageDescription={t('meta-sign-up-description')}
       metaTitle={`${t('title-signup')} | Culinarybook`}
+      applyHomeButton={true}
     >
       <SignUpForm />
     </AuthorizationLayout>

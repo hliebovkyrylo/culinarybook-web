@@ -19,6 +19,7 @@ const ResetPassword = () => {
       pageTitle={t('title-new-password')}
       pageDescription=""
       metaTitle={`${t('title-new-password')} | Culinarybook`}
+      applyHomeButton={false}
     >
       <ResetPasswordForm />
     </AuthorizationLayout>

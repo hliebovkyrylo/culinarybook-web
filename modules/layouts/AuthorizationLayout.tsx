@@ -8,6 +8,7 @@ interface IAuthorizationLayout {
   pageTitle      : string;
   metaTitle      : string;
   pageDescription: string;
+  applyHomeButton: boolean;
 }
 
 const montserrat = Montserrat({ subsets: ['latin'] });
@@ -17,6 +18,7 @@ export const AuthorizationLayout = ({
   pageDescription,
   pageTitle,
   metaTitle,
+  applyHomeButton
 }: IAuthorizationLayout) => {
   const { t } = useTranslation("common");
   return (
@@ -29,7 +31,9 @@ export const AuthorizationLayout = ({
         <h1 className="text-2xl mb-3">{pageTitle}</h1>
         {children}
       </section>
-      <Link className="absolute left-6 bottom-6 flex items-center text-[#727272] hover:text-[#a3a3a3]" href={'/'}>{t('back-home')}</Link>
+      {applyHomeButton && (
+        <Link className="absolute left-6 bottom-6 flex items-center text-[#727272] hover:text-[#a3a3a3]" href={'/'}>{t('back-home')}</Link>
+      )}
     </main>
   )
 }
