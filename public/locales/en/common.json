@@ -50,6 +50,7 @@
   "create-button": "Create recipe",
   "follow-button": "Follow",
   "follow-button-already": "Already followed",
+  "button-loading": "Loading",
   "recipe": "Recipe",
   "follower": "Follower",
   "followers": "Followers",

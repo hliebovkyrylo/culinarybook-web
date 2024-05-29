@@ -172,7 +172,7 @@ export const MainTopbar = () => {
                 }
               </button>
               <Link href={'/sign-in'} className="w-[160px]">
-                <Button text={t('title-signin')} isActive={true} className="h-9" />
+                <Button text={t('title-signin')} state="default" className="h-9" />
               </Link>
             </div>
           )}

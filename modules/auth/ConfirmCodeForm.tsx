@@ -69,7 +69,7 @@ export const ConfirmCodeForm = () => {
       <Button
         type="submit"
         text={t('verify-button')}
-        isActive={otp.length === 6}
+        state={otp.length === 6 ? "default" : "disabled"}
       />
       <div className="flex text-sm">
         <p className="mr-1">{t('resent-text-confirm')}</p>

@@ -10,7 +10,6 @@ import { SignInFormData, signInSchema }     from "./schemas/signInSchema";
 import { useCallback }                      from "react";
 import { useRouter }                        from "next/router";
 import { RtkError }                         from "@/typings/error";
-import { Loader }                           from "@/components/shared";
 import { baseUrl }                          from "@/lib/api";
 import { usePasswordVisibility }            from "../common/hooks/usePasswordVisibility";
 
@@ -47,10 +46,6 @@ export const SignInForm = () => {
       }
     })
   }, [signIn]);
-
-  if (isSignInLoading || isSuccess) {
-    return <Loader className="absolute top-0 left-0" />
-  }
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-2">
       <label className="text-red-500 text-sm">{errors.email?.message}</label>
@@ -58,6 +53,7 @@ export const SignInForm = () => {
         color="default" 
         placeholder={t('email-placeholder')} 
         {...register('email')}
+        disabled={isSignInLoading || isSuccess}
       />
       <div className="relative">
         <label className="text-red-500 text-sm">{errors.password?.message}</label>
@@ -66,6 +62,7 @@ export const SignInForm = () => {
           color="default" 
           placeholder={t('password-placeholder')} 
           {...register('password')}
+          disabled={isSignInLoading || isSuccess}
         />
         <AuthIconButton
           firstIcon={<EyeIcon className="icon-eye" />}
@@ -79,7 +76,7 @@ export const SignInForm = () => {
       </div>
       <Button
         text={t('signIn-button')}
-        isActive={isValid}
+        state={isSignInLoading || isSuccess ? "loading" : isValid ? "default" : "disabled"}
         type="submit"
       />
       <p className="flex justify-center text-[#949494]">{t('or')}</p>

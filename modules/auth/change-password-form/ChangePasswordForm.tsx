@@ -91,7 +91,7 @@ export const ChangePasswordForm = () => {
         />
       </div>
       <Button
-        isActive={isValid}
+        state={isLoadingChangingPassword ? "loading" : isValid ? "default" : "disabled"}
         text={t('change-button')}
         className="mt-3"
       />

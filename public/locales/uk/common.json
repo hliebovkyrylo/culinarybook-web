@@ -25,6 +25,7 @@
   "forgot-passwor-meta": "Забули пароль",
   "incorrect-old-password": "Введено некоректні дані",
   "passwords-missmatch": "Паролі не збігаються",
+  "button-loading": "Завантаження",
   "complexity": "Складність",
   "complexity-choose-easy": "Легко",
   "complexity-choose-middle": "Середнє",

@@ -50,7 +50,7 @@ export const ForgotPasswordForm = () => {
         {...register('email')}
       />
       <Button
-        isActive={isValid}
+        state={isValid ? "default" : "disabled"}
         text={t('next-button')}
         className={"max-w-xs min-w-[260px] mt-3"}
       />

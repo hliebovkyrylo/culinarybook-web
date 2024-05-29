@@ -1,1 +1,1 @@
-export * from "./RecipeCommentSkeleton";
+export * from "../../../modules/recipe/comments/common/components/CommentSkeleton";

@@ -1,5 +1,3 @@
-"use client"
-
 import { 
   ChevronDownIcon, 
   ChevronUpIcon, 
@@ -11,7 +9,7 @@ import Image              from "next/image";
 import Link               from "next/link";
 import { useTranslation } from "react-i18next";
 
-interface IRecipeComment {
+interface IComment {
   userImage           : string;
   username            : string;
   userId              : string;
@@ -25,7 +23,7 @@ interface IRecipeComment {
   onClickDeleteComment: () => void;
 }
 
-export const RecipeComment = ({
+export const Comment = ({
   userImage,
   username,
   rating,
@@ -37,7 +35,7 @@ export const RecipeComment = ({
   onClickOpenReplies,
   onClickReply,
   onClickDeleteComment
-}: IRecipeComment) => {
+}: IComment) => {
   const { t } = useTranslation();
 
   const { data: userMe } = useGetMeQuery();
@@ -50,8 +48,8 @@ export const RecipeComment = ({
           <Link href={`/profile/${userId}`}>@{username}</Link>
           {rating && (
             <div className="flex ml-2">
-              {[...Array(rating)].map(() => (
-                <StarIcon className="w-3 star-icon-active" key={'154rf334'} />
+              {[...Array(rating)].map((_, index) => (
+                <StarIcon className="w-3 star-icon-active" key={index} />
               ))}
             </div>
           )}

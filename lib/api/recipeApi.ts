@@ -8,8 +8,8 @@ export type IRecipeResponse         = IRecipe;
 export type IRecipesPreviewResponse = IRecipePreview[];
 
 export interface IRecipeQueryRequest {
-  page       : number;
-  limit      : number;
+  page      ?: number;
+  limit     ?: number;
   recipeName?: string;
 };
 
@@ -49,12 +49,6 @@ export const recipeApi = api.injectEndpoints({
         body
       }),
       invalidatesTags: ['recipe']
-    }),
-    getRecipe: builder.query<IRecipeResponse, string>({
-      query: (recipeId) => ({
-        url: `/recipe/${recipeId}`
-      }),
-      providesTags: ['recipe']
     }),
     updateRecipe: builder.mutation<IRecipeResponse, IUpdateRecipeRequest>({
       query: ({ id, ...rest }) => ({

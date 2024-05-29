@@ -94,7 +94,7 @@ export const ResetPasswordForm = () => {
         />
       </div>
       <Button
-        isActive={isValid}
+        state={isValid ? "default" : "disabled"}
         text={t('title-change')}
         className="mt-3"
       />

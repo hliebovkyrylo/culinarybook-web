@@ -152,10 +152,6 @@ body {
   @apply dark:bg-bg-c-2 dark:hover:bg-bg-c-3
 }
 
-.recipe-content-card {
-  @apply bg-[#cccccc4b] dark:bg-[#41414159] break-words p-3 rounded-xl
-}
-
 .star-icon {
   @apply dark:fill-color-custom-yellow fill-fill-orange
 }

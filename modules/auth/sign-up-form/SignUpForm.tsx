@@ -3,7 +3,6 @@ import { useRouter }                              from "next/router";
 import { useForm }                                from "react-hook-form";
 import { SignUpFormData, signUpSchema }           from "./schemas/signUpSchema";
 import { zodResolver }                            from "@hookform/resolvers/zod";
-import { Loader }                                 from "@/components/shared";
 import { useCallback }                            from "react";
 import { RtkError }                               from "@/typings/error";
 import { useTranslation }                         from "next-i18next";
@@ -56,10 +55,6 @@ export const SignUpForm = () => {
   const handleLogin = () => {
     router.push(`${baseUrl}/auth/google`)
   };
-
-  if (isSignUpLoading || isSendCodeLoading || isSuccess || isSuccessCodeSent) {
-    return <Loader />
-  }
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-2">
       <label className="text-red-500 text-sm">{errors.email?.message}</label>
@@ -68,6 +63,7 @@ export const SignUpForm = () => {
         color={errors.email ? "danger" : "default"}
         placeholder={t('email-placeholder')}
         {...register('email')}
+        disabled={isSignUpLoading || isSendCodeLoading || isSuccess || isSuccessCodeSent}
       />
       <label className={`text-red-500 text-sm ${!errors.name?.message && "hidden"}`}>{errors.username?.message}</label>
       <Input
@@ -75,6 +71,7 @@ export const SignUpForm = () => {
         color={errors.username ? "danger" : "default"}
         placeholder={t('username-placeholder-signup')}
         {...register('username')}
+        disabled={isSignUpLoading || isSendCodeLoading || isSuccess || isSuccessCodeSent}
       />
       <label className={`text-red-500 text-sm ${!errors.name?.message && "hidden"}`}>{errors.name?.message}</label>
       <Input
@@ -82,6 +79,7 @@ export const SignUpForm = () => {
         color={errors.name ? "danger" : "default"}
         placeholder={t('name-placeholder-signup')}
         {...register('name')}
+        disabled={isSignUpLoading || isSendCodeLoading || isSuccess || isSuccessCodeSent}
       />
       <div className="relative">
         <label className="text-red-500 text-sm">{errors.password?.message}</label>
@@ -90,6 +88,7 @@ export const SignUpForm = () => {
           color={errors.password ? "danger" : "default"}
           placeholder={t('password-placeholder')}
           {...register('password')}
+          disabled={isSignUpLoading || isSendCodeLoading || isSuccess || isSuccessCodeSent}
         />
         <AuthIconButton
           firstIcon={<EyeIcon className="icon-eye" />}
@@ -105,6 +104,7 @@ export const SignUpForm = () => {
           color={errors.confirmPassword ? "danger" : "default"}
           placeholder={t('confirm-password-placeholder')}
           {...register('confirmPassword')}
+          disabled={isSignUpLoading || isSendCodeLoading || isSuccess || isSuccessCodeSent}
         />
         <AuthIconButton
           firstIcon={<EyeIcon className="icon-eye" />}
@@ -119,11 +119,11 @@ export const SignUpForm = () => {
       </div>
       <Button
         type="submit"
-        isActive={isValid}
+        state={isSignUpLoading || isSendCodeLoading || isSuccess || isSuccessCodeSent ? "loading" : isValid ? "default" : "disabled"}
         text={t('signUp-button')}
       />
       <p className="flex justify-center text-[#949494]">{t('or')}</p>
-      <AuthGoogleButton onClick={handleLogin} />
+      <AuthGoogleButton onClick={handleLogin} disabled={isSignUpLoading || isSendCodeLoading || isSuccess || isSuccessCodeSent} />
     </form>
   )
 }
