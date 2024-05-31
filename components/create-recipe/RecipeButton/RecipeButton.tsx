@@ -1,6 +1,5 @@
 import { AddIcon } from "@/icons";
-import { useTranslation } from "react-i18next";
-
+import { useTranslation } from "next-i18next";
 interface RecipeButtonProps {
   buttonClick: () => void;
 };
@@ -8,7 +7,7 @@ interface RecipeButtonProps {
 export const RecipeButton = ({
   buttonClick,
 }: RecipeButtonProps) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation('common');
   return (
     <button type="button" onClick={buttonClick} className="flex items-center flex-col">
       <div className=" text-color-666">{t('step-button')}</div>
