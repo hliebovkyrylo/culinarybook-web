@@ -11,7 +11,8 @@ export const api = createApi({
   }),
   endpoints: (builder) => ({
     getRecipe: builder.query({
-      query: (recipeId) => `recipe/${recipeId}`
+      query: (recipeId) => `recipe/${recipeId}`,
+      providesTags: ['recipe']
     }),
   }),
 });

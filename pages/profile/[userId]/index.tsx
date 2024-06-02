@@ -1,62 +1,78 @@
-import { RecipeCardSkeleton }         from "@/components/cards";
-import RecipeCard                     from "@/components/cards/RecipeCard/RecipeCard";
+import { 
+  GetServerSidePropsContext, 
+  InferGetServerSidePropsType 
+}                                     from "next";
+import { 
+  PrivateAccountWindow,
+  ProfileNavigationPanel, 
+  ProfileRecipesContent, 
+  ProfileUserData, 
+  useFollowState, 
+  useUsers
+}                                     from "@/modules/profile";
 import { useGetRecipesByUserIdQuery } from "@/lib/api/recipeApi";
-import { GetStaticPropsContext }      from "next";
 import { serverSideTranslations }     from "next-i18next/serverSideTranslations";
-import { useSearchParams }            from "next/navigation";
 import { useTranslation }             from "next-i18next";
+import { useRouter }                  from "next/router";
+import { MainLayout }                 from "@/modules/layouts";
+import { Loader }                     from "@/components/shared";
 
-export async function getStaticProps({ locale }: GetStaticPropsContext) {
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+  const userId = ctx.params?.userId;
+  const locale = ctx.locale;
+
   return {
     props: {
-      ...(await serverSideTranslations(locale as string, ['common'])),
+      ...await serverSideTranslations(locale as string, ['common']),
+      userId: userId as string,
     },
-  }
+  };
 }
 
-const Profile = () => {
-  const { t } = useTranslation('common');
+const Profile = ({ userId }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+  const { t }  = useTranslation('common');
+  const router = useRouter();
 
-  const id = "6616a09cc5d792a792f999b5";
-  const userId = id as string;
+  const sortBy = router.query.sortBy;
 
-  let sortBy = useSearchParams().get('sortBy');
+  const { user, userMe, isLoadingUser, isMeLoading }                                           = useUsers(userId);
+  const { followState, followRequestState, isLoadingFollowState, isLoadingFollowRequestState } = useFollowState(userId);
 
-  if (sortBy === null) {
-    sortBy = 'desc'
+  const { data: recipes, isLoading: isLoadingRecipes } = useGetRecipesByUserIdQuery({ userId: userId as string, sortBy: sortBy !== undefined ? sortBy as string : 'desc' });
+
+  if (isMeLoading || isLoadingFollowState || isLoadingRecipes || isLoadingUser || isLoadingFollowRequestState) {
+    return <Loader className="absolute top-0 left-0" />
   }
 
-  const { data: recipes, isLoading } = useGetRecipesByUserIdQuery({ userId: userId, sortBy: sortBy })
+  const isPrivateAccount = user?.isPrivate && userMe?.id !== userId && !followState?.isFollowed;
 
   return (
-    <>
-      {isLoading ? (
+    <MainLayout
+      pageDescription={`${user?.name} ${t('meta-profile-description')}`}
+      metaTitle={`${user?.name} | Culinarybook`}
+      containerSize="full"
+    >
+      <ProfileUserData 
+        data={user}
+        followRequestState={followRequestState}
+        selfId={userMe?.id}
+        followState={followState}
+      />
+      {!isPrivateAccount ? (
         <>
-          {[...Array(12)].map(() => (
-            <RecipeCardSkeleton className="max-[746px]:!w-full mb-7" />
-          ))}
+          <ProfileNavigationPanel 
+            userId={userId}
+            selfId={userMe?.id}
+          />
+          <ProfileRecipesContent 
+            isLoading={isLoadingRecipes}
+            data={recipes}
+          />
         </>
       ) : (
-        <>
-          {recipes && recipes.length > 0 ? recipes.map((recipe) => (
-            <RecipeCard
-              key={recipe.id}
-              id={recipe.id}
-              recipeName={recipe.title}
-              recipeImage={recipe.image}
-              foodType={recipe.typeOfFood}
-              cookingTime={recipe.coockingTime}
-              complexity={recipe.complexity}
-              authorImage={recipe.owner.image}
-              authorName={recipe.owner.name}
-              className="max-[746px]:!w-full mb-7"
-            />
-          )) : (
-            <p className="text-color-666 absolute top-[60%]">{t('no-have-recipes')}</p>
-          )}
-        </>
+        <PrivateAccountWindow />
       )}
-    </>
+    </MainLayout>
   )
 }
 

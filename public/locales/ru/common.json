@@ -191,5 +191,6 @@
   "search-user-meta-title": "Поиск пользователей",
   "search-user-meta-description": "Находите различных пользователей, которые вам нужны",
   "settings-personal": "Персонализация",
-  "settings-confidentiality": "Конфиденциальность"
+  "settings-confidentiality": "Конфиденциальность",
+  "private-account": "Этот аккаунт приватный!"
 }

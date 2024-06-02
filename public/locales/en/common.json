@@ -189,5 +189,6 @@
   "search-user-meta-title": "Search for users",
   "search-user-meta-description": "Find various users you need",
   "settings-personal": "Personalization",
-  "settings-confidentiality": "Confidentiality"
+  "settings-confidentiality": "Confidentiality",
+  "private-account": "This account is private!"
 }

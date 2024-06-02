@@ -1,15 +1,15 @@
-import Link from "next/link";
-import { sidebarLinks } from "@/constants";
-import { LogoIcon } from "@/icons/icons/LogoIcon/LogoIcon";
+import Link               from "next/link";
+import { sidebarLinks }   from "@/constants";
+import { LogoIcon }       from "@/icons/icons/LogoIcon/LogoIcon";
 import { useTranslation } from "next-i18next";
-import { useGetMeQuery } from "@/lib/api/userApi";
-import { Loader } from "@/components/shared";
-import { useRouter } from "next/router";
+import { useGetMeQuery }  from "@/lib/api/userApi";
+import { Loader }         from "@/components/shared";
+import { useRouter }      from "next/router";
 
 export const MainLeftSidebar = () => {
   const { t } = useTranslation('common');
   const router = useRouter();
-  const pathname = router.pathname;
+  const pathname = router.asPath;
   const { data: user, isLoading } = useGetMeQuery();
 
   if (isLoading) {
