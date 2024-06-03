@@ -38,7 +38,7 @@ export const ProfileNavigationPanel = ({
         {profileLinks.map((link) => {
           let route = link.route;
 
-          if (route === '/profile') route = `${route}/${selfId}`;
+          if (route === '/profile') route = `${route}/${userId}`;
 
           if (route === '/profile/liked') {
             route = `/profile/${selfId}/liked`;
@@ -54,10 +54,10 @@ export const ProfileNavigationPanel = ({
             }
           }
 
-          let isActive = pathname === route && route.length > 1;
+          let isActive = pathname === route;
           let label = link.label;
 
-          if (route === (`/profile/${userId}`) && route !== (`/profile/${userId}/liked`) &&  route !== (`/profile/${userId}/saved`)) {
+          if (pathname === `/profile/${userId}?sortBy=${currentSort}` && route === `/profile/${userId}`) {
             isActive = true;
           }
 

@@ -16,8 +16,8 @@ export const ProfileRecipesContent = ({
     <section className="grid grid-cols-6 justify-items-center max-[1480px]:grid-cols-5 max-[1220px]:grid-cols-4 max-lg:grid-cols-3 max-[748px]:grid-cols-1">
       {isLoading ? (
         <>
-          {[...Array(12)].map(() => (
-            <RecipeCardSkeleton className="max-[746px]:!w-full mb-7" />
+          {[...Array(12)].map((_, index) => (
+            <RecipeCardSkeleton key={index} className="max-[746px]:!w-full mb-7" />
           ))}
         </>
       ) : (
