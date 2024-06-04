@@ -1,18 +1,22 @@
-import { Confirm } from "@/components/shared";
-import { Button }         from "@/components/ui";
-import { useCancelFollowRequestMutation, useFollowMutation, useUnfollowMutation } from "@/lib/api/followApi";
-import { IUser }          from "@/typings/user";
-import { useTranslation } from "next-i18next";
-import Image              from "next/image";
-import Link               from "next/link";
-import { useRouter } from "next/router";
-import { useEffect, useState }       from "react";
+import { Button }              from "@/components/ui";
+import { 
+  useCancelFollowRequestMutation, 
+  useFollowMutation, 
+  useUnfollowMutation 
+}                              from "@/lib/api/followApi";
+import { IUser }               from "@/typings/user";
+import { useTranslation }      from "next-i18next";
+import Image                   from "next/image";
+import Link                    from "next/link";
+import { useRouter }           from "next/router";
+import { useEffect, useState } from "react";
+import { UnfollowDialog }      from "./common";
 
 interface IProfileUserData {
   data               : IUser | undefined;
-  followRequestState : any;
+  followRequestState?: any;
   selfId            ?: string;
-  followState        : any;
+  followState       ?: any;
 }
 
 export const ProfileUserData = ({
@@ -119,7 +123,7 @@ export const ProfileUserData = ({
         </div>
       </div>
       {isOpenConfirm && (
-        <Confirm
+        <UnfollowDialog
           confirmText={confirmText}
           clickAction={() => onClickUnfollow()}
           buttonText={confirmButtonText}

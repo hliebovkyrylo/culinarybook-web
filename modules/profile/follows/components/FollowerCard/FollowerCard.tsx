@@ -37,7 +37,7 @@ export const FollowerCard = ({
         </div>
       </div>
       {userId !== user?.id && (
-        <Button text={!isFollowed ? t('follow-button') : t('follow-button-already')} isActive={true} onClick={onClick} className={`!w-36 h-8 flex opacity-70 items-center justify-center ml-4 ${isFollowed && "dark:!bg-[#363638] !bg-[#939396] !text-white font-normal"}`} />
+        <Button text={!isFollowed ? t('follow-button') : t('follow-button-already')} state="default" onClick={onClick} className={`!w-36 h-8 flex opacity-70 items-center justify-center ml-4 ${isFollowed && "dark:!bg-[#363638] !bg-[#939396] !text-white font-normal"}`} />
       )}
     </article>
   )

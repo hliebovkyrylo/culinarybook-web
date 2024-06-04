@@ -1,20 +1,20 @@
 import { Button }         from "@/components/ui";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "next-i18next";
 
-interface IConfirm {
+interface IUnfollowDialog {
   confirmText      : string;
   buttonText       : string;
   clickAction      : () => void;
   closeConfirm     : () => void;
 }
 
-export const Confirm = ({
+export const UnfollowDialog = ({
   confirmText,
   clickAction,
   closeConfirm,
   buttonText
-}: IConfirm) => {
-  const { t } = useTranslation();
+}: IUnfollowDialog) => {
+  const { t } = useTranslation("common");
 
   const handleOutsideClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     closeConfirm();
@@ -29,7 +29,7 @@ export const Confirm = ({
         <p className="text-sm text-[#b6b6b6]">{confirmText}</p>
         <div className="flex justify-end">
           <button type="button" onClick={closeConfirm} className="mr-4">{t('canclel-button')}</button>
-          <Button type="button" onClick={clickAction} className="!w-40 h-8 flex items-center justify-center" isActive={true} text={buttonText} />
+          <Button type="button" onClick={clickAction} className="!w-40 h-8 flex items-center justify-center" state="default" text={buttonText} />
         </div>
       </div>
     </div>
