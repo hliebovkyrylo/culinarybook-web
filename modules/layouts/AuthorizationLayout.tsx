@@ -4,11 +4,11 @@ import Head               from "next/head";
 import Link               from "next/link";
 
 interface IAuthorizationLayout {
-  children       : React.ReactNode;
-  pageTitle      : string;
-  metaTitle      : string;
-  pageDescription: string;
-  applyHomeButton: boolean;
+  children        : React.ReactNode;
+  pageTitle       : string;
+  metaTitle      ?: string;
+  pageDescription?: string;
+  applyHomeButton : boolean;
 }
 
 const montserrat = Montserrat({ subsets: ['latin'] });

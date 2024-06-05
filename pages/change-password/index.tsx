@@ -3,7 +3,7 @@ import { GetStaticPropsContext }  from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { AuthorizationLayout }    from "@/modules/layouts";
 import { ChangePasswordForm }     from "@/modules/auth";
-import { requireAuth }            from "@/hocs/requireAuth";
+import { RequireAuth }            from "@/hocs/requireAuth";
 
 export async function getStaticProps({ locale }: GetStaticPropsContext) {
   return {
@@ -18,7 +18,6 @@ const ChangePassword = () => {
   return (
     <AuthorizationLayout
       pageTitle={t('title-change')}
-      pageDescription=""
       metaTitle={`${t('title-change')} | Culinarybook`}
       applyHomeButton={true}
     >
@@ -27,4 +26,4 @@ const ChangePassword = () => {
   )
 };
 
-export default requireAuth(ChangePassword);
+export default RequireAuth(ChangePassword);

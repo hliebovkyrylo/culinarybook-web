@@ -10,7 +10,7 @@ import {
   InferGetServerSidePropsType 
 }                                 from "next";
 import { Loader }                 from "@/components/shared";
-import { requireAuth }            from "@/hocs/requireAuth";
+import { RequireAuth }            from "@/hocs/requireAuth";
 import { useGetMySavedQuery }     from "@/lib/api/recipeApi";
 import { MainLayout }             from "@/modules/layouts"
 import { useTranslation }         from "next-i18next";
@@ -70,4 +70,4 @@ const Saved = ({ userId }: InferGetServerSidePropsType<typeof getServerSideProps
   )
 }
 
-export default requireAuth(Saved);
+export default RequireAuth(Saved);

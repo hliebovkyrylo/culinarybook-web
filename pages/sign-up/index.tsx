@@ -3,7 +3,7 @@ import { GetStaticPropsContext }  from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { AuthorizationLayout }    from "@/modules/layouts";
 import { SignUpForm }             from "@/modules/auth";
-import { requireGuest }           from "@/hocs/requireGuest";
+import { RequireGuest }           from "@/hocs/requireGuest";
 
 export async function getStaticProps({ locale }: GetStaticPropsContext) {
   return {
@@ -27,4 +27,4 @@ const SignUp = () => {
   )
 };
 
-export default requireGuest(SignUp);
+export default RequireGuest(SignUp);

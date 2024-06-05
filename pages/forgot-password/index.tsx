@@ -3,7 +3,7 @@ import { GetStaticPropsContext }     from "next";
 import { serverSideTranslations }    from "next-i18next/serverSideTranslations";
 import { AuthorizationLayout }       from "@/modules/layouts";
 import { ForgotPasswordForm }        from "@/modules/auth";
-import { requireGuest }              from "@/hocs/requireGuest";
+import { RequireGuest }              from "@/hocs/requireGuest";
 
 export async function getStaticProps({ locale }: GetStaticPropsContext) {
   return {
@@ -18,7 +18,6 @@ const ForgotPassword = () => {
   return (
     <AuthorizationLayout
       pageTitle={t('email-title')}
-      pageDescription=""
       metaTitle={`${t('forgot-passwor-meta')} | Culinarybook` }
       applyHomeButton={true}
     >
@@ -27,4 +26,4 @@ const ForgotPassword = () => {
   )
 }
 
-export default requireGuest(ForgotPassword);
+export default RequireGuest(ForgotPassword);

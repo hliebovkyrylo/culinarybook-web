@@ -13,7 +13,7 @@ import {
   InferGetServerSidePropsType 
 }                                     from "next";
 import { Loader }                     from "@/components/shared";
-import { requireAuth }                from "@/hocs/requireAuth";
+import { RequireAuth }                from "@/hocs/requireAuth";
 import { useGetUserFollowersQuery }   from "@/lib/api/followApi";
 import { useGetRecipesByUserIdQuery } from "@/lib/api/recipeApi";
 import { MainLayout }                 from "@/modules/layouts"
@@ -83,4 +83,4 @@ const Followers = ({ userId }: InferGetServerSidePropsType<typeof getServerSideP
   )
 }
 
-export default requireAuth(Followers);
+export default RequireAuth(Followers);

@@ -1,11 +1,11 @@
 "use client"
 
 import useFormatDaysAgo   from "@/hooks/useFormatDaysAgo";
+import { useTranslation } from "next-i18next";
 import Image              from "next/image";
 import Link               from "next/link";
-import { useTranslation } from "react-i18next";
 
-interface INotificationLikeMessage {
+interface INotificationLike {
   userImage  : string;
   username   : string;
   recipeImage: string;
@@ -14,15 +14,15 @@ interface INotificationLikeMessage {
   createdAt  : Date;
 }
 
-export const NotificationLikeMessage = ({
+export const NotificationLike = ({
   userImage,
   username,
   recipeImage,
   recipeId,
   userId,
   createdAt,
-}: INotificationLikeMessage) => {
-  const { t } = useTranslation();
+}: INotificationLike) => {
+  const { t } = useTranslation('common');
 
   const formatDaysAgo = useFormatDaysAgo();
 

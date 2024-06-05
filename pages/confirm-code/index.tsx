@@ -3,7 +3,7 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { AuthorizationLayout }    from "@/modules/layouts";
 import { ConfirmCodeForm }        from "@/modules/auth";
 import { useTranslation }         from "next-i18next";
-import { requireGuest }           from "@/hocs/requireGuest";
+import { RequireGuest }           from "@/hocs/requireGuest";
 
 export async function getStaticProps({ locale }: GetStaticPropsContext) {
   return {
@@ -27,4 +27,4 @@ const ConfirmCode = () => {
   )
 };
 
-export default requireGuest(ConfirmCode);
+export default RequireGuest(ConfirmCode);

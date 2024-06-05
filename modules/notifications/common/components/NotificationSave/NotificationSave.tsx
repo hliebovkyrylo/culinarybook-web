@@ -1,9 +1,9 @@
 import useFormatDaysAgo   from "@/hooks/useFormatDaysAgo";
+import { useTranslation } from "next-i18next";
 import Image              from "next/image";
 import Link               from "next/link";
-import { useTranslation } from "react-i18next";
 
-interface INotificationSaveMessage {
+interface INotificationSave {
   userImage  : string;
   username   : string;
   recipeImage: string;
@@ -12,15 +12,15 @@ interface INotificationSaveMessage {
   createdAt  : Date;
 }
 
-export const NotificationSaveMessage = ({
+export const NotificationSave = ({
   userImage,
   username,
   recipeImage,
   recipeId,
   userId,
   createdAt,
-}: INotificationSaveMessage) => {
-  const { t } = useTranslation();
+}: INotificationSave) => {
+  const { t } = useTranslation('common');
 
   const formatDaysAgo = useFormatDaysAgo()
   return (

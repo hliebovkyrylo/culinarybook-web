@@ -2,7 +2,7 @@ import useFormatDaysAgo   from "@/hooks/useFormatDaysAgo";
 import { Button }         from "@/components/ui";
 import Image              from "next/image";
 import Link               from "next/link";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "next-i18next";
 
 interface INotificationFollowRequest {
   userId              : string;
@@ -13,7 +13,7 @@ interface INotificationFollowRequest {
   onClickRejectRequest: () => void;
 }
 
-export const NotificationFollowRequestMessage = ({
+export const NotificationFollowRequest = ({
   userId,
   username,
   createdAt,
@@ -21,7 +21,7 @@ export const NotificationFollowRequestMessage = ({
   onClickAllowRequest,
   onClickRejectRequest
 }: INotificationFollowRequest) => {
-  const { t }         = useTranslation();
+  const { t }         = useTranslation('common');
   const formatDaysAgo = useFormatDaysAgo();
   return (
     <article className="w-full min-h-[64px] second-background flex items-center py-2 px-3 rounded-lg mb-2">
@@ -41,7 +41,7 @@ export const NotificationFollowRequestMessage = ({
         </div>
         <div className="flex items-center max-[600px]:ml-16 max-[600px]:mt-2">
           <button onClick={onClickRejectRequest} className="mr-3 text-sm">{t('refuse-request')}</button>
-          <Button onClick={onClickAllowRequest} text={t('allow-request')} className="!w-28 flex items-center justify-center h-8 text-sm" isActive={true} />
+          <Button onClick={onClickAllowRequest} text={t('allow-request')} className="!w-28 flex items-center justify-center h-8 text-sm" state="default" />
         </div>
       </div>
     </article>

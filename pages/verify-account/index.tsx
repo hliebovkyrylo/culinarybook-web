@@ -3,7 +3,7 @@ import { GetStaticPropsContext }  from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { AuthorizationLayout }    from "@/modules/layouts";
 import { VerifyAccountForm }      from "@/modules/auth";
-import { requireAuth }            from "@/hocs/requireAuth";
+import { RequireAuth }            from "@/hocs/requireAuth";
 
 export async function getStaticProps({ locale }: GetStaticPropsContext) {
   return {
@@ -18,7 +18,6 @@ const VerifyAccount = () => {
   return (
     <AuthorizationLayout
       pageTitle={t('title-verify')}
-      pageDescription=""
       metaTitle={`${t('title-verify')} | Culinarybook`}
       applyHomeButton={false}
     >
@@ -27,4 +26,4 @@ const VerifyAccount = () => {
   )
 };
 
-export default requireAuth(VerifyAccount);
+export default RequireAuth(VerifyAccount);

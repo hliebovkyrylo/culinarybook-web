@@ -1,5 +1,5 @@
 import { Loader }                 from "@/components/shared"
-import { requireAuth }            from "@/hocs/requireAuth"
+import { RequireAuth }            from "@/hocs/requireAuth"
 import { useGetMyLikedQuery }     from "@/lib/api/recipeApi"
 import { MainLayout }             from "@/modules/layouts"
 import { 
@@ -70,4 +70,4 @@ const Liked = ({ userId }: InferGetServerSidePropsType<typeof getServerSideProps
   )
 }
 
-export default requireAuth(Liked);
+export default RequireAuth(Liked);
