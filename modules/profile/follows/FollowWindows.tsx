@@ -19,7 +19,7 @@ export const FollowsWindow = ({ children, title, userId }: { children: React.Rea
           <h2 className="second-head-text">{title}</h2>
           <Link href={`/profile/${userId}`}><XMarkIcon className="w-9 h-9 p-2 dark:fill-white fill-black dark:hover:bg-bg-c-5 hover:bg-bg-c-8 rounded-full" /></Link>
         </div>
-        <div className="flex flex-col overflow-y-auto h-[432px]">
+        <div className="flex flex-col gap-3 overflow-y-auto h-[432px]">
           {children}
         </div>
       </section>

@@ -36,7 +36,6 @@ export const followApi = api.injectEndpoints({
         method: 'POST',
         url: `/follow/${userId}`
       }),
-      invalidatesTags: ['user']
     }),
     followRequestAnswear: builder.mutation<void, IFollowRequestAnsqwear>({
       query: ({ userId, ...rest }) => ({
@@ -44,33 +43,28 @@ export const followApi = api.injectEndpoints({
         url: `/follow/${userId}/follow-request`,
         body: rest
       }),
-      invalidatesTags: ['user']
     }),
     unfollow: builder.mutation<void, string>({
       query: (userId) => ({
         method: 'DELETE',
         url: `/follow/${userId}/unfollow`
       }),
-      invalidatesTags: ['user']
     }),
     cancelFollowRequest: builder.mutation<void, string>({
       query: (userId) => ({
         method: 'DELETE',
         url: `/follow/${userId}/cancel-request`
       }),
-      invalidatesTags: ['user']
     }),
     getUserFollowers: builder.query<IUserFollowerResponse, IGetUsersRequestById>({
       query: (body) => ({
         url: `/follow/${body.userId}/followers?username=${body.username}&page=${body.page}&limit=${body.limit}`
       }),
-      providesTags: ['user']
     }),
     getUserFollowings: builder.query<IUserFollowerResponse, IGetUsersRequestById>({
       query: (body) => ({
         url: `/follow/${body.userId}/followings?username=${body.username}&page=${body.page}&limit=${body.limit}`
       }),
-      providesTags: ['user']
     }),
     getFollowState: builder.query<IGetFollowStateResponse, string>({
       query: (userId) => ({
@@ -82,7 +76,6 @@ export const followApi = api.injectEndpoints({
       query: (userId) => ({
         url: `/follow/user/${userId}/follow-request-state`
       }),
-      providesTags: ['user']
     })
   })
 });

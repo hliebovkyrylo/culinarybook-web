@@ -38,7 +38,7 @@ const Profile = ({ userId }: InferGetServerSidePropsType<typeof getServerSidePro
   const { user, userMe, isLoadingUser, isMeLoading }                                           = useUsers(userId);
   const { followState, followRequestState, isLoadingFollowState, isLoadingFollowRequestState } = useFollowState(userId);
 
-  const { data: recipes, isLoading: isLoadingRecipes } = useGetRecipesByUserIdQuery({ userId: userId as string, sortBy: sortBy !== undefined ? sortBy as string : 'desc' });
+  const { data: recipes, isLoading: isLoadingRecipes, isFetching: isFetchingRecipes } = useGetRecipesByUserIdQuery({ userId: userId as string, sortBy: sortBy !== undefined ? sortBy as string : 'desc' });
 
   if (isMeLoading || isLoadingFollowState || isLoadingRecipes || isLoadingUser || isLoadingFollowRequestState) {
     return <Loader className="absolute top-0 left-0" />
@@ -65,7 +65,7 @@ const Profile = ({ userId }: InferGetServerSidePropsType<typeof getServerSidePro
             selfId={userMe?.id}
           />
           <ProfileRecipesContent 
-            isLoading={isLoadingRecipes}
+            isLoading={isLoadingRecipes || isFetchingRecipes}
             data={recipes}
           />
         </>

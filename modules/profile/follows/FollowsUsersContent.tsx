@@ -23,11 +23,7 @@ export const FollowsUsersContent = ({
   const [selectedUsername, setSelectedUsername] = useState<string>("");
   const [isOpenConfirm, setIsOpenConfirm]       = useState<boolean>(false);
 
-  const [followStateButtonText, setFollowStateButtonText] = useState<{ [id: string]: boolean }>(
-    data
-      ? Object.fromEntries(data.map((follower) => [follower.id, follower.isFollowed]))
-      : {}
-  );
+  const [followStateButtonText, setFollowStateButtonText] = useState<{ [id: string]: boolean }>();
 
   const handleFollow = async (follower: IUserFollower) => {
     if (follower.isFollowed) {
@@ -59,7 +55,7 @@ export const FollowsUsersContent = ({
       {isLoading ? (
         <>
           {[...Array(5)].map((_, index) => (
-            <FollowerCardSkeleton key={index} className="mb-[10px]" />
+            <FollowerCardSkeleton key={index} />
           ))}
         </>
       ) : (
@@ -69,10 +65,9 @@ export const FollowsUsersContent = ({
               key={follower.id}
               username={follower.username}
               userImage={follower.image}
-              isFollowed={followStateButtonText[follower.id]}
+              isFollowed={followStateButtonText ? followStateButtonText[follower.id] : follower.isFollowed }
               name={follower.name}
               userId={follower.id}
-              className="mb-3"
               onClick={() => handleFollow(follower)}
             />
           )) : (

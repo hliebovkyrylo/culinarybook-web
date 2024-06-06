@@ -1,13 +1,14 @@
-import { baseUrl }                         from "@/lib/api";
-import { useGetMeQuery }                   from "@/lib/api/userApi";
-import { INotification }                   from "@/typings/notification";
-import { useEffect, useState }             from "react";
-import { useTranslation }                  from "next-i18next";
-import io                                  from "socket.io-client";
-import { serverSideTranslations }          from "next-i18next/serverSideTranslations";
-import { MainLayout } from "@/modules/layouts";
-import { NotificationsContent } from "@/modules/notifications";
-import { RequireAuth } from "@/hocs/requireAuth";
+import { baseUrl }                from "@/lib/api";
+import { useGetMeQuery }          from "@/lib/api/userApi";
+import { INotification }          from "@/typings/notification";
+import { useEffect, useState }    from "react";
+import { useTranslation }         from "next-i18next";
+import io                         from "socket.io-client";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { MainLayout }             from "@/modules/layouts";
+import { NotificationsContent }   from "@/modules/notifications";
+import { RequireAuth }            from "@/hocs/requireAuth";
+import { Loader }                 from "@/components/shared";
 
 export const getServerSideProps = async ({ locale }: { locale: string }) => ({
   props: {
@@ -61,12 +62,14 @@ const Notifications = () => {
     };
   }, [user]);
 
-  const isLoading = isLoadingUser || isLoadingNotification;
+  if (isLoadingUser) {
+    return <Loader className="absolute top-0 left-0" />
+  }
 
   return (
     <MainLayout
-      pageTitle={t('title-history')}
-      metaTitle={`${t('user')} - ${t('title-history')} | Culinarybook`}
+      pageTitle={t('title-notifications')}
+      metaTitle={`${t('user')} - ${t('title-notifications')} | Culinarybook`}
       pageDescription=""
       containerSize="small"
     >
