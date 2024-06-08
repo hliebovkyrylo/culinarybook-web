@@ -1,9 +1,9 @@
-import { Loader } from "@/components/shared";
-import { RequireAuth } from "@/hocs/requireAuth";
-import { useGetMeQuery } from "@/lib/api/userApi";
-import { MainLayout } from "@/modules/layouts";
+import { Loader }                 from "@/components/shared";
+import { RequireAuth }            from "@/hocs/requireAuth";
+import { useGetMeQuery }          from "@/lib/api/userApi";
+import { MainLayout }             from "@/modules/layouts";
 import { SettingsUpdateUserForm } from "@/modules/settings";
-import { useTranslation } from "next-i18next";
+import { useTranslation }         from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 export const getServerSideProps = async ({ locale }: { locale: string }) => ({
