@@ -52,16 +52,12 @@ body {
   @apply w-full h-12 z-40 flex items-center justify-end px-16 fixed dark:bg-bg-c-2 bg-white max-lg:px-5 drop-shadow-xl
 }
 
-.leftsidebar {
-  @apply sticky top-0 pt-12 flex flex-col w-width-300 h-screen dark:bg-bg-c-2 bg-white max-2xl:hidden drop-shadow-xl z-50
-}
-
 .leftsidebar__text {
   @apply dark:text-color-custom-yellow text-color-orange pl-4 text-lg font-medium
 }
 
 .link-button {
-  @apply flex pl-14 items-center w-full h-12 hover:bg-bg-c-6 max-2xl:pr-14 hover:dark:bg-bg-c-3
+  @apply flex pl-14 items-center w-full h-12 hover:bg-bg-c-6 max-2xl:pr-14 hover:dark:bg-bg-c-3 transition-colors
 }
 
 .link-button-active {
@@ -78,14 +74,6 @@ body {
 
 .bottombar__link {
   @apply flex flex-col items-center py-2 px-4 rounded-md
-}
-
-.dropmenu {
-  @apply absolute p-2 top-12 right-5 bg-bg-c-8 dark:bg-bg-c-4 z-30 rounded-2xl
-}
-
-.dropmenu__button {
-  @apply flex items-center dark:text-neutral-50 text-left rounded-md font-normal text-base h-10 w-full dark:hover:bg-bg-c-5 hover:bg-bg-c-9
 }
 
 .recipecard {
