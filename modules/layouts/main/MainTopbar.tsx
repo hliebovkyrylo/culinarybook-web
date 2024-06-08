@@ -153,7 +153,7 @@ export const MainTopbar = () => {
                   </DropdownMenuPortal>
                 </DropdownMenuSub>
                 <DropdownMenuItem>
-                  <Link href={'settings'} className="flex items-center w-full gap-1">
+                  <Link href={'/settings'} className="flex items-center w-full gap-1">
                     <GearIcon className="dark:fill-white fill-black" />
                     {t('settings')}
                   </Link>
