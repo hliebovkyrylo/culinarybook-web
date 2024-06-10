@@ -1,19 +1,19 @@
 import { Button }         from "@/components/ui";
 import { useTranslation } from "next-i18next";
 
-interface IUnfollowDialog {
+interface IDialog {
   confirmText      : string;
   buttonText       : string;
   clickAction      : () => void;
   closeConfirm     : () => void;
 }
 
-export const UnfollowDialog = ({
+export const Dialog = ({
   confirmText,
   clickAction,
   closeConfirm,
   buttonText
-}: IUnfollowDialog) => {
+}: IDialog) => {
   const { t } = useTranslation("common");
 
   const handleOutsideClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {

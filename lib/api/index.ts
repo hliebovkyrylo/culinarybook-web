@@ -9,10 +9,5 @@ export const api = createApi({
     baseUrl       : baseUrl,
     credentials   : 'include'
   }),
-  endpoints: (builder) => ({
-    getRecipe: builder.query({
-      query: (recipeId) => `recipe/${recipeId}`,
-      providesTags: ['recipe']
-    }),
-  }),
+  endpoints: () => ({}),
 });

@@ -184,6 +184,7 @@
   "refuse-request": "Отказать",
   "no-notifications": "Уведомления отсутствуют",
   "update-recipe": "Обновить рецепт",
+  "update-recipe-meta-description": "Ошиблись в ингредиентах или допустили опечатку? Нет проблем, обновите данные рецептов или обновите их в Culinarybook.",
   "apply-changes": "Применить изменения",
   "delete-recipe": "Удалить рецепт",
   "delete-recipe-text": "Вы уверены что хотите удалить рецепт ",

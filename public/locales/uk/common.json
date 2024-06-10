@@ -183,6 +183,7 @@
   "refuse-request": "Відмовити",
   "no-notifications": "Сповіщення відсутні",
   "update-recipe": "Оновити рецепт",
+  "update-recipe-meta-description": "Зробили помилку в інгредієнті чи допустили опечатку? Не проблема, оновіть дані рецептів або оновіть їх у Culinarybook.",
   "apply-changes": "Зберегти зміни",
   "delete-recipe": "Видалити рецепт",
   "delete-recipe-text": "Ви впевнені, що хочете видалити рецепт ",

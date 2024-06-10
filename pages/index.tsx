@@ -4,12 +4,12 @@ import {
   useRecipes, 
   useUsers 
 }                                 from "@/modules/home";
-import { ContentHeader }          from "@/components/home";
 import { useTranslation }         from 'next-i18next'
 import { GetStaticPropsContext }  from 'next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { MainLayout }             from "@/modules/layouts";
 import { useGetMeQuery }          from "@/lib/api/userApi";
+import Link                       from "next/link";
 
 export async function getStaticProps({ locale }: GetStaticPropsContext) {
   return {
@@ -39,20 +39,17 @@ const Home = () => {
       metaTitle={`${t('title')} | Culinarybook`}
     >
       <div className="mb-28 w-full">
-        <ContentHeader
-          title={me ? t('recipes-headText') : t('second-recipes-headText')}
-          linkText={t('link')}
-          linkHref={`/search/recipes`}
-          className="mt-6"
-        />
+        <div className="flex items-center justify-between mt-6 mb-3">
+          <span>{me ? t('recipes-headText') : t('second-recipes-headText')}</span>
+          <Link href={'/search/recipes'} className="link-text">{t('link')}</Link>
+        </div>
         <RecipesContent
           data={recipes}
           isLoading={isLoading} 
         />
-        <ContentHeader
-          title={me ? t('users-headText') : t('second-users-headText')}
-          className="mt-9 mb-3"
-        />
+        <div className="flex items-center justify-between mt-6 mb-3">
+          <span>{me ? t('users-headText') : t('second-users-headText')}</span>
+        </div>
         <UsersContent
           data={users}
           isLoading={isLoading}

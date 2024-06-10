@@ -182,6 +182,7 @@
   "refuse-request": "Refuse",
   "no-notifications": "No notifications",
   "update-recipe": "Update recipe",
+  "update-recipe-meta-description": "Made a mistake in the ingredient or made a typo? No problem, update the recipe data or update it in Culinarybook.",
   "apply-changes": "Apply changes",
   "delete-recipe": "Delete recipe",
   "delete-recipe-text": "Are you sure you want to delete recipe ",

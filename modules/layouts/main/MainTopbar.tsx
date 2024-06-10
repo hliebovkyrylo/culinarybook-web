@@ -98,8 +98,8 @@ export const MainTopbar = () => {
   }
 
   return (
-    <nav className="topbar">
-      <div className="flex justify-between w-full items-center">
+    <header className="topbar">
+      <nav className="flex justify-between w-full items-center">
         <span className="max-lg:hidden" />
         <Link href={'/'} className="main-logo lg:hidden">
           <div className="flex items-center">
@@ -181,7 +181,7 @@ export const MainTopbar = () => {
             </Link>
           </div>
         )}
-      </div>
-    </nav>
+      </nav>
+    </header>
   )
 };

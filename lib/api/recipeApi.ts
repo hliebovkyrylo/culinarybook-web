@@ -50,6 +50,12 @@ export const recipeApi = api.injectEndpoints({
       }),
       invalidatesTags: ['recipe']
     }),
+    getRecipe: builder.query<IRecipeResponse, string>({
+      query: (recipeId) => ({
+        url: `/recipe/${recipeId}`
+      }),
+      providesTags: ['recipe']
+    }),
     updateRecipe: builder.mutation<IRecipeResponse, IUpdateRecipeRequest>({
       query: ({ id, ...rest }) => ({
         method: 'PATCH', 

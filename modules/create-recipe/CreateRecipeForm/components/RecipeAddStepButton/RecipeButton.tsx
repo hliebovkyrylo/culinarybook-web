@@ -1,10 +1,10 @@
-import { AddIcon } from "@/icons";
+import { AddIcon }        from "@/icons";
 import { useTranslation } from "next-i18next";
 interface RecipeButtonProps {
   buttonClick: () => void;
 };
 
-export const RecipeButton = ({
+export const RecipeAddStepButton = ({
   buttonClick,
 }: RecipeButtonProps) => {
   const { t } = useTranslation('common');

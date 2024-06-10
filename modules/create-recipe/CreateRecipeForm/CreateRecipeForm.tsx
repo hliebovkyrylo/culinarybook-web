@@ -10,10 +10,8 @@ import {
   useCreateRecipeMutation, 
   useCreateStepsMutation 
 }                                  from "@/lib/api/recipeApi";
-import { useCustomState }          from "@/hooks/useInputsState";
 import { 
   useCallback, 
-  useEffect, 
   useRef, 
   useState 
 }                                  from "react";
@@ -22,6 +20,7 @@ import { Loader }                  from "@/components/shared";
 import { useUploadImageMutation }  from "@/lib/api/uploadImageApi";
 import { 
   RecipeAccessSelect, 
+  RecipeAddStepButton, 
   RecipeBgImageApplySelect, 
   RecipeComplexitySelect, 
   RecipeCreateCover, 
@@ -37,8 +36,7 @@ import {
   UntesilsIcon 
 }                                  from "@/icons";
 import { Button, Input, Textarea } from "@/components/ui";
-import { RecipeButton }            from "@/components/create-recipe";
-import { baseUrl } from "@/lib/api";
+import { baseUrl }                 from "@/lib/api";
 
 export const CreateRecipeForm = () => {
   const { t } = useTranslation('common');
@@ -48,8 +46,8 @@ export const CreateRecipeForm = () => {
   const inputFileRef = useRef<HTMLInputElement | null>(null);
 
   const [createRecipe, { isLoading: isCreatingRecipe, isSuccess }] = useCreateRecipeMutation();
-  const [createSteps, { isLoading: isCreatingSteps }] = useCreateStepsMutation();
-  const [uploadImage, { isLoading: isLoadingUploadingImage }] = useUploadImageMutation();
+  const [createSteps, { isLoading: isCreatingSteps }]              = useCreateStepsMutation();
+  const [uploadImage, { isLoading: isLoadingUploadingImage }]      = useUploadImageMutation();
 
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
 
@@ -193,16 +191,18 @@ export const CreateRecipeForm = () => {
           <div key={index}>
             <p className="text-red-500 text-sm">{errors.steps?.[index]?.stepDescription?.message}</p>
             <div className="relative max-w-[300px]">
-              <span className="link-text font-semibold z-50">{`${t('step')} ${index + 1}`}</span>
-              {index !== 0 && (
-                <button
-                  className="w-6 absolute right-3 top-2 p-1"
-                  type="button"
-                  onClick={() => handleRemoveStep(index)}
-                >
-                  <TrashIcon className="fill-color-666" />
-                </button>
-              )}
+              <div className="flex justify-between items-center">
+                <span className="link-text font-semibold z-50">{`${t('step')} ${index + 1}`}</span>
+                {index !== 0 && (
+                  <button
+                    className="w-4"
+                    type="button"
+                    onClick={() => handleRemoveStep(index)}
+                  >
+                    <TrashIcon className="fill-color-666" />
+                  </button>
+                )}
+              </div>
               <Textarea
                 placeholder={t('step-placeholder')}
                 className="min-h-[128px] w-full max-w-[300px]"
@@ -212,7 +212,7 @@ export const CreateRecipeForm = () => {
           </div>
         ))}
         <div className="w-full max-w-[300px] flex justify-center">
-          <RecipeButton
+          <RecipeAddStepButton
             buttonClick={() => append({ stepNumber: fields.length + 1, stepDescription: '' })}
           />
         </div>
