@@ -1,4 +1,4 @@
-import { Loader }                 from "@/components/shared";
+import { Loader }                 from "@/components/Loader";
 import { RequireAuth }            from "@/hocs/requireAuth";
 import { useGetMeQuery }          from "@/lib/api/userApi";
 import { MainLayout }             from "@/modules/layouts";

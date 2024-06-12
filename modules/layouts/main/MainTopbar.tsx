@@ -28,8 +28,9 @@ import { useSignOutMutation }  from "@/lib/api/authApi";
 import { useGetMeQuery }       from "@/lib/api/userApi";
 import { io }                  from "socket.io-client";
 import { baseUrl }             from "@/lib/api";
-import { Loader }              from "@/components/shared";
 import { useRouter }           from "next/router";
+import { Loader }              from "@/components/Loader";
+import cookie                  from "js-cookie";
 
 export const MainTopbar = () => {
   const { t, i18n } = useTranslation('common');
@@ -104,7 +105,7 @@ export const MainTopbar = () => {
         <Link href={'/'} className="main-logo lg:hidden">
           <div className="flex items-center">
             <LogoIcon className="icon-color" />
-            <span className={"pl-4 text-lg link-text max-sm:hidden"}>Culinarybook</span>
+            <span className={"pl-4 text-lg link-text max-sm:hidden"}>Culinarybook <b className="dark:text-white text-black">beta</b></span>
           </div>
         </Link>
         {user ? (

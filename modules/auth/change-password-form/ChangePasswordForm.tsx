@@ -13,9 +13,9 @@ import { zodResolver }               from "@hookform/resolvers/zod";
 import { useCallback }               from "react";
 import { RtkError }                  from "@/typings/error";
 import { useTranslation }            from "next-i18next";
-import { Loader }                    from "@/components/shared";
 import { Button, Input }             from "@/components/ui";
 import { EyeIcon, SlashEyeIcon }     from "@/icons";
+import { Loader }                    from "@/components/Loader";
 
 export const ChangePasswordForm = () => {
   const { t }  = useTranslation("common");

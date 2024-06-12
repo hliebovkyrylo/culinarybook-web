@@ -1,10 +1,10 @@
 import Head                from "next/head"
-import { Loader }          from "@/components/shared";
 import Image               from "next/image";
 import { Montserrat }      from 'next/font/google'
 import { MainTopbar }      from "./MainTopbar";
 import { MainLeftSidebar } from "./MainLeftSidebar";
 import { MainBottombar }   from "./MainBottombar";
+import { Loader }          from "@/components/Loader";
 
 const montserrat = Montserrat({ subsets: ['latin'] });
 

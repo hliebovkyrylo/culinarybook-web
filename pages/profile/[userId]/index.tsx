@@ -15,7 +15,7 @@ import { serverSideTranslations }     from "next-i18next/serverSideTranslations"
 import { useTranslation }             from "next-i18next";
 import { useRouter }                  from "next/router";
 import { MainLayout }                 from "@/modules/layouts";
-import { Loader }                     from "@/components/shared";
+import { Loader }                     from "@/components/Loader";
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const userId = ctx.params?.userId;

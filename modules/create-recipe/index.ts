@@ -1,1 +1,1 @@
-export * from "./CreateRecipeForm";
+export * from "./create-recipe-form";

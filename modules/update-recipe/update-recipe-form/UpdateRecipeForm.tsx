@@ -36,6 +36,7 @@ import {
 import { Button, Dialog, Input, Textarea } from "@/components/ui";
 import { useUploadImageMutation }          from "@/lib/api/uploadImageApi";
 import { baseUrl }                         from "@/lib/api";
+import { Loader }                          from "@/components/Loader";
 
 interface IUpdateRecipeForm {
   recipe?: IRecipe;
@@ -153,7 +154,9 @@ export const UpdateRecipeForm = ({
     setIsOpenConfirm(!isOpenConfirm);
   };
 
-  const isLoading = isLoadingDeleteStep || isLoadingDeleteRecipe || isUpdatingRecipe || isCreatingSteps || isUpdatingSteps || isLoadingUploadingImage;
+  if (isLoadingDeleteStep || isLoadingDeleteRecipe || isUpdatingRecipe || isCreatingSteps || isUpdatingSteps || isLoadingUploadingImage) {
+    return <Loader className="absolute top-0 left-0" />
+  }
   return (
     <section>
       <form onSubmit={handleSubmit(onSubmit)} className="my-7">
@@ -254,7 +257,7 @@ export const UpdateRecipeForm = ({
         </>
         <div className="flex max-sm:flex-col-reverse mt-12 max-md:mb-14">
           <button type="button" onClick={() => handleOpenConfirm()} className="h-10 mr-3 w-48 max-sm:mt-3 border-red-500 border-[1px] px-1 rounded-lg hover:bg-red-500 transition-all">{t('delete-recipe')}</button>
-          <Button text={t('apply-changes')} className="max-w-[234px]" state={isLoading ? 'loading' : isValid ? 'default' : 'disabled'} />
+          <Button text={t('apply-changes')} className="max-w-[234px]" state={isValid ? 'default' : 'disabled'} />
         </div>
       </form>
       {isOpenConfirm && (

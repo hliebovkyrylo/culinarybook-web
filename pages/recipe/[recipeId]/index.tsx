@@ -18,7 +18,6 @@ import {
 }                                      from "next";
 import { useGetSaveStateQuery }        from "@/lib/api/saveApi";
 import { PrivateRecipe }               from "@/components/recipe";
-import { Loader }                      from "@/components/shared";
 import { useGetCommentsQuery }         from "@/lib/api/commentApi";
 import Image                           from "next/image";
 import { useEffect, useState }         from "react";
@@ -26,6 +25,7 @@ import { useTranslation }              from "next-i18next";
 import { useGetMeQuery }               from "@/lib/api/userApi";
 import { serverSideTranslations }      from "next-i18next/serverSideTranslations";
 import { MainLayout }                  from "@/modules/layouts";
+import { Loader }                      from "@/components/Loader";
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const recipeId = ctx.params?.recipeId;

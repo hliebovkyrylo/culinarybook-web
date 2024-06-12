@@ -8,7 +8,7 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { MainLayout }             from "@/modules/layouts";
 import { NotificationsContent }   from "@/modules/notifications";
 import { RequireAuth }            from "@/hocs/requireAuth";
-import { Loader }                 from "@/components/shared";
+import { Loader }                 from "@/components/Loader";
 
 export const getServerSideProps = async ({ locale }: { locale: string }) => ({
   props: {

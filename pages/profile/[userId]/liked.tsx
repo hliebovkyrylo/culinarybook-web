@@ -1,4 +1,4 @@
-import { Loader }                 from "@/components/shared"
+import { Loader }                 from "@/components/Loader"
 import { RequireAuth }            from "@/hocs/requireAuth"
 import { useGetMyLikedQuery }     from "@/lib/api/recipeApi"
 import { MainLayout }             from "@/modules/layouts"

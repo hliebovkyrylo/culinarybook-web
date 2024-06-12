@@ -9,13 +9,13 @@ import {
   GetServerSidePropsContext,
   InferGetServerSidePropsType 
 }                                 from "next";
-import { Loader }                 from "@/components/shared";
 import { RequireAuth }            from "@/hocs/requireAuth";
 import { useGetMySavedQuery }     from "@/lib/api/recipeApi";
 import { MainLayout }             from "@/modules/layouts"
 import { useTranslation }         from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useRouter }              from "next/router";
+import { Loader }                 from "@/components/Loader";
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const userId = ctx.params?.userId;

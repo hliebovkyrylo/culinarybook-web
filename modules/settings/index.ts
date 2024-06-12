@@ -1,1 +1,1 @@
-export * from "./SettingUpdateUserForm"
+export * from "./settings-update-user-form"

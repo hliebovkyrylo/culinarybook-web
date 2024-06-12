@@ -1,17 +1,14 @@
 import { useTranslation }         from "next-i18next";
-import { GetStaticPropsContext }  from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { AuthorizationLayout }    from "@/modules/layouts";
 import { SignInForm }             from "@/modules/auth";
 import { RequireGuest }           from "@/hocs/requireGuest";
 
-export async function getStaticProps({ locale }: GetStaticPropsContext) {
-  return {
-    props: {
-      ...(await serverSideTranslations(locale as string, ['common'])),
-    },
-  }
-}
+export const getServerSideProps = async ({ locale }: { locale: string }) => ({
+  props: {
+    ...await serverSideTranslations(locale, ['common']),
+  },
+})
 
 const SignIn = () => {
   const { t } = useTranslation('common');

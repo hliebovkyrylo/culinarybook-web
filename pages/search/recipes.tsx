@@ -8,22 +8,17 @@ import {
   useRecipes 
 }                                 from "@/modules/search";
 import { IRecipePreview }         from "@/typings/recipe";
-import { GetStaticPropsContext }  from "next";
 import { useTranslation }         from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useRouter }              from "next/router";
 import { useEffect, useState }    from "react";
-import { useSelector }            from "react-redux";
-import cookies                    from "js-cookie";
-import { useGetAuthStatusQuery } from "@/lib/api/authApi";
+import { useGetAuthStatusQuery }  from "@/lib/api/authApi";
 
-export async function getStaticProps({ locale }: GetStaticPropsContext) {
-  return {
-    props: {
-      ...(await serverSideTranslations(locale as string, ['common'])),
-    },
-  }
-}
+export const getServerSideProps = async ({ locale }: { locale: string }) => ({
+  props: {
+    ...await serverSideTranslations(locale, ['common']),
+  },
+})
 
 const SearchRecipes = () => {
   const { t }       = useTranslation("common");

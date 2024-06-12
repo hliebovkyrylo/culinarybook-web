@@ -1,16 +1,13 @@
 import { useTranslation }         from "next-i18next";
-import { GetStaticPropsContext }  from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { AuthorizationLayout }    from "@/modules/layouts";
 import { ResetPasswordForm }      from "@/modules/auth";
 
-export async function getStaticProps({ locale }: GetStaticPropsContext) {
-  return {
-    props: {
-      ...(await serverSideTranslations(locale as string, ['common'])),
-    },
-  }
-}
+export const getServerSideProps = async ({ locale }: { locale: string }) => ({
+  props: {
+    ...await serverSideTranslations(locale, ['common']),
+  },
+})
 
 const ResetPassword = () => {
   const { t } = useTranslation('common');

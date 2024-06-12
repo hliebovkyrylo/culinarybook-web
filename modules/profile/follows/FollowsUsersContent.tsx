@@ -3,7 +3,7 @@ import { FollowerCard, FollowerCardSkeleton }     from "./components";
 import { useTranslation }                         from "next-i18next";
 import { useState }                               from "react";
 import { useFollowMutation, useUnfollowMutation } from "@/lib/api/followApi";
-import { UnfollowDialog }                         from "../common";
+import { Dialog }                                 from "@/components/ui";
 
 interface IFollowsUsersContent {
   data    ?: IUserFollower[];
@@ -78,7 +78,7 @@ export const FollowsUsersContent = ({
         </>
       )}
       {isOpenConfirm && (
-        <UnfollowDialog
+        <Dialog
           confirmText={`${t('confirm-unfollow')} "${selectedUsername}"?`}
           buttonText={t('unfollow-button') }
           clickAction={() => onClickUnfollow(selectedUserId)}

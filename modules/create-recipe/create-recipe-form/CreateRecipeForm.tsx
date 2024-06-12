@@ -16,7 +16,6 @@ import {
   useState 
 }                                  from "react";
 import { RtkError }                from "@/typings/error";
-import { Loader }                  from "@/components/shared";
 import { useUploadImageMutation }  from "@/lib/api/uploadImageApi";
 import { 
   RecipeAccessSelect, 
@@ -37,6 +36,7 @@ import {
 }                                  from "@/icons";
 import { Button, Input, Textarea } from "@/components/ui";
 import { baseUrl }                 from "@/lib/api";
+import { Loader }                  from "@/components/Loader";
 
 export const CreateRecipeForm = () => {
   const { t } = useTranslation('common');
@@ -53,13 +53,13 @@ export const CreateRecipeForm = () => {
 
   const { handleSubmit, register, setError, formState: { errors, isValid }, setValue, control } = useForm<CreateRecipeAndStepFormData>({
     defaultValues: {
-      title: '',
-      image: '',
-      coockingTime: '',
-      complexity: '',
-      typeOfFood: '',
-      ingradients: '',
-      isPublic: true,
+      title          : '',
+      image          : '',
+      coockingTime   : '',
+      complexity     : '',
+      typeOfFood     : '',
+      ingradients    : '',
+      isPublic       : true,
       applyBackground: true,
       steps: [{
         stepNumber: 1,

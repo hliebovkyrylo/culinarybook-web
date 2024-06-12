@@ -5,19 +5,16 @@ import {
   useUsers 
 }                                 from "@/modules/home";
 import { useTranslation }         from 'next-i18next'
-import { GetStaticPropsContext }  from 'next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { MainLayout }             from "@/modules/layouts";
 import { useGetMeQuery }          from "@/lib/api/userApi";
 import Link                       from "next/link";
 
-export async function getStaticProps({ locale }: GetStaticPropsContext) {
-  return {
-    props: {
-      ...(await serverSideTranslations(locale as string, ['common'])),
-    },
-  }
-}
+export const getServerSideProps = async ({ locale }: { locale: string }) => ({
+  props: {
+    ...await serverSideTranslations(locale, ['common']),
+  },
+})
 
 const Home = () => {
   const { t }  = useTranslation('common');

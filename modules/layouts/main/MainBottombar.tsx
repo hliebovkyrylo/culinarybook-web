@@ -2,8 +2,8 @@ import { sidebarLinks }           from "@/constants";
 import { useGetMeQuery }          from "@/lib/api/userApi";
 import Link                       from "next/link";
 import { useTranslation }         from "next-i18next";
-import { Loader }                 from "@/components/shared";
 import { useRouter }              from "next/router";
+import { Loader }                 from "@/components/Loader";
 
 export const MainBottombar = () => {
   const { t } = useTranslation('common');
@@ -12,7 +12,6 @@ export const MainBottombar = () => {
   const pathname  = router.pathname;
 
   const { data: user, isLoading } = useGetMeQuery();
-  const userId                    = user?.id;
 
   const links = sidebarLinks.map(link => {
     let route = link.route;

@@ -2,7 +2,6 @@ import {
   useCanResetPasswordMutation,
   useForgotPasswordMutation
 }                                from "@/lib/api/authApi";
-import { Loader }                from "@/components/shared";
 import { Button, InputOTP }      from "@/components/ui";
 import { RtkError }              from "@/typings/error";
 import { useTranslation }        from "next-i18next";
@@ -10,6 +9,7 @@ import { useRouter }             from "next/router";
 import { useCallback, useState } from "react";
 import { useForm }               from "react-hook-form";
 import cookie                    from "js-cookie";
+import { Loader }                from "@/components/Loader";
 
 export const ConfirmCodeForm = () => {
   const { t }  = useTranslation('common');

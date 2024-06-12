@@ -1,5 +1,3 @@
-"use client"
-
 import { useState } from "react";
 
 type StateSetter = (id: string) => void;

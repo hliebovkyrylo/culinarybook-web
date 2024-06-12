@@ -53,7 +53,7 @@ body {
 }
 
 .leftsidebar__text {
-  @apply dark:text-color-custom-yellow text-color-orange pl-4 text-lg font-medium
+  @apply dark:text-color-custom-yellow text-color-orange text-lg font-medium
 }
 
 .link-button {

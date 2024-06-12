@@ -52,8 +52,8 @@ export const RecipeData = ({
   const [ createSave ] = useCreateSaveMutation();
   const [ removeSave ] = useRemoveSaveMutation();
 
-  const [ isLiked, setIsLiked ] = useState<boolean>(!!likeState?.isLiked);
-  const [ isSaved, setIsSaved ] = useState<boolean>(!!saveState?.isSaved);
+  const [ isLiked, setIsLiked ]      = useState<boolean>(!!likeState?.isLiked);
+  const [ isSaved, setIsSaved ]      = useState<boolean>(!!saveState?.isSaved);
   const [ likesCount, setLikesCount] = useState(likes?.length || 0); 
 
   useEffect(() => {

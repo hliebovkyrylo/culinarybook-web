@@ -1,7 +1,7 @@
 import { RecipeContentCardSkeleton } from "@/components/recipe";
-import { IStep } from "@/typings/recipe"
-import { useTranslation } from "next-i18next";
-import { Swiper, SwiperSlide } from "swiper/react"
+import { IStep }                     from "@/typings/recipe"
+import { useTranslation }            from "next-i18next";
+import { Swiper, SwiperSlide }       from "swiper/react"
 
 interface IStepsData {
   data     : IStep[] | undefined;

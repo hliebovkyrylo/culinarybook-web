@@ -1,1 +1,1 @@
-export * from "./UpdateRecipeForm";
+export * from "./update-recipe-form";

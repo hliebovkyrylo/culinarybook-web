@@ -8,21 +8,17 @@ import { useInfiniteScroll }      from "@/hooks/useInfiniteScroll";
 import { GlassIcon }              from "@/icons";
 import { MainLayout }             from "@/modules/layouts";
 import { IUser }                  from "@/typings/user";
-import { GetStaticPropsContext }  from "next";
 import { useTranslation }         from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useRouter }              from "next/router";
 import { useEffect, useState }    from "react";
-import cookies                    from "js-cookie";
 import { useGetAuthStatusQuery } from "@/lib/api/authApi";
 
-export async function getStaticProps({ locale }: GetStaticPropsContext) {
-  return {
-    props: {
-      ...(await serverSideTranslations(locale as string, ['common'])),
-    },
-  }
-}
+export const getServerSideProps = async ({ locale }: { locale: string }) => ({
+  props: {
+    ...await serverSideTranslations(locale, ['common']),
+  },
+})
 
 const SearchUsers = () => {
   const { t }       = useTranslation("common");

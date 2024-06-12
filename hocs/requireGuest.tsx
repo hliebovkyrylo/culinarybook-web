@@ -1,7 +1,7 @@
 import { useRouter }             from "next/router";
 import { FunctionComponent }     from "react";
 import { useGetAuthStatusQuery } from "@/lib/api/authApi";
-import { Loader }                from "@/components/shared";
+import { Loader }                from "@/components/Loader";
 
 export const RequireGuest = <Props extends object>(Component: FunctionComponent<Props>) => (props: Props) => {
   const { data: authStatus, isLoading } = useGetAuthStatusQuery();

@@ -1,17 +1,19 @@
-
-import { useTranslation } from "next-i18next";
+import { useTranslation }         from "next-i18next";
 import {
   useGetRecipeQuery,
   useGetStepsQuery,
-} from "@/lib/api/recipeApi";
-import { useRouter } from "next/navigation";
-import { Loader } from "@/components/shared";
+}                                 from "@/lib/api/recipeApi";
+import { useRouter }              from "next/navigation";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
-import { MainLayout } from "@/modules/layouts";
-import { UpdateRecipeForm } from "@/modules/update-recipe";
-import { RequireAuth } from "@/hocs/requireAuth";
-import { useGetMeQuery } from "@/lib/api/userApi";
+import { 
+  GetServerSidePropsContext, 
+  InferGetServerSidePropsType 
+}                                 from "next";
+import { MainLayout }             from "@/modules/layouts";
+import { UpdateRecipeForm }       from "@/modules/update-recipe";
+import { RequireAuth }            from "@/hocs/requireAuth";
+import { useGetMeQuery }          from "@/lib/api/userApi";
+import { Loader }                 from "@/components/Loader";
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const recipeId = ctx.params?.recipeId;

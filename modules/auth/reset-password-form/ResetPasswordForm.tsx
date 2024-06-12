@@ -10,12 +10,12 @@ import { zodResolver }              from "@hookform/resolvers/zod";
 import { useCallback }              from "react";
 import { RtkError }                 from "@/typings/error";
 import { useTranslation }           from "next-i18next";
-import { Loader }                   from "@/components/shared";
 import { usePasswordVisibility }    from "../common/hooks";
 import { Button, Input }            from "@/components/ui";
 import { AuthIconButton }           from "../common";
 import { EyeIcon, SlashEyeIcon }    from "@/icons";
 import cookie                       from "js-cookie";
+import { Loader }                   from "@/components/Loader";
 
 export const ResetPasswordForm = () => {
   const { t }                     = useTranslation("common");
