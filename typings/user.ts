@@ -23,6 +23,7 @@ export interface IUser {
   isPrivate       : boolean;
   followersCount  : number;
   followingsCount : number;
+  recipesCount    : number;
 }
 
 export interface IUserFollower {

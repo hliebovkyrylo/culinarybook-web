@@ -6,6 +6,7 @@ export interface IComment {
   commentText   : string;
   grade         : number;
   createdAt     : Date;
+  commentReply  : ICommentReply[];
 };
 
 export interface ICommentReply {

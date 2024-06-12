@@ -39,3 +39,4 @@ export * from "./EarthIcon";
 export * from "./CheckIcon";
 export * from "./TrashIcon";
 export * from "./PenToSquareIcon";
+export * from "./GoogleIcon";

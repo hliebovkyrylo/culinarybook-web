@@ -1,25 +1,21 @@
-"use client"
+import { useState, useRef, useEffect } from 'react';
 
-import { useState, useEffect, useRef } from 'react';
-
-export const useDigitInput = () => {
-  const [digits, setDigits] = useState(['', '', '', '', '', '']);
-  const inputRefs = useRef<HTMLInputElement[]>([]);
+export const useDigitInput = (length: number) => {
+  const [digits, setDigits] = useState(Array(length).fill(''));
+  const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
   useEffect(() => {
     inputRefs.current[0]?.focus();
   }, []);
 
   const handleChange = (index: number, value: string) => {
-    if (!/^\d*$/.test(value)) {
-      return;
-    }
-  
-    const newDigits  = [...digits];
+    if (!/^\d*$/.test(value)) return;
+
+    const newDigits = [...digits];
     newDigits[index] = value;
     setDigits(newDigits);
-  
-    if (value !== '' && index < 5) {
+
+    if (value !== '' && index < length - 1) {
       inputRefs.current[index + 1]?.focus();
     }
   };

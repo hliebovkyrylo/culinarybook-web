@@ -1,1 +1,1 @@
-export * from "./RecipeContentCardSkeleton";
+export * from "../../recipes/RecipeContentCardSkeleton";
