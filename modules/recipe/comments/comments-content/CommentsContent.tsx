@@ -2,7 +2,6 @@ import { IComment }                 from "@/typings/comment"
 import { Comment, CommentSkeleton } from "../common";
 import { useToggleState }           from "@/hooks/useToggleState";
 import { useCallback, useState }    from "react";
-import { useGetAuthStatusQuery }    from "@/lib/api/authApi";
 import { zodResolver }              from "@hookform/resolvers/zod";
 import { Button, Input }            from "@/components/ui";
 import { useTranslation }           from "next-i18next";
@@ -17,6 +16,8 @@ import {
 }                                   from "@/lib/api/commentApi";
 import { useRouter }                from "next/router";
 import { useForm }                  from "react-hook-form";
+import { useSelector }              from "react-redux";
+import { IAppState }                from "@/lib/store";
 
 interface ICommentsContent {
   data         : IComment[] | undefined;
@@ -29,8 +30,9 @@ export const CommentsContent = ({
   isLoading,
   recipeOwnerId
 }: ICommentsContent) => {
-  const { t }  = useTranslation("common");
-  const router = useRouter();
+  const accessToken = useSelector((state: IAppState) => state.auth.access_token);
+  const { t }       = useTranslation("common");
+  const router      = useRouter();
 
   const [openReplies, toggleOpenReplies] = useToggleState({});
   const handleOpenReplies = (commentId: string) => {
@@ -40,8 +42,6 @@ export const CommentsContent = ({
   const [selectedCommentId, setSelectedCommentId] = useState('');
   const [selectedUserId, setSelectedUserId]       = useState('');
   const [openInputId, setOpenInputId]             = useState<string>();
-
-  const { data: authStatus } = useGetAuthStatusQuery();
 
   const { handleSubmit: handleSubmitReply, register: registerReply, formState: { isValid: isValidReply }, reset: resetReply, setValue: setReplyValue } = useForm<CreateCommentReplyFormData>({
     defaultValues: {
@@ -64,7 +64,7 @@ export const CommentsContent = ({
   }
 
   const onSubmitCreateCommentReply = useCallback(async (values: CreateCommentReplyFormData) => {
-    if (!authStatus?.isAuth) {
+    if (!accessToken) {
       router.push('/sign-in');
     } else {
       createCommentReply({ ...values, commentId: selectedCommentId, userId: selectedUserId }).unwrap().then(() => {
@@ -72,7 +72,7 @@ export const CommentsContent = ({
         setOpenInputId('');
       })
     }
-  }, [createCommentReply, selectedCommentId, authStatus?.isAuth])
+  }, [createCommentReply, selectedCommentId, accessToken])
 
   const handleOpenInput = (openCommentId: string, createCommentId: string, userId: string) => {
     setSelectedCommentId(createCommentId);
