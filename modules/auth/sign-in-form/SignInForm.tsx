@@ -12,6 +12,7 @@ import { useRouter }                        from "next/router";
 import { RtkError }                         from "@/typings/error";
 import { baseUrl }                          from "@/lib/api";
 import { usePasswordVisibility }            from "../common/hooks/usePasswordVisibility";
+import Cookies                              from "js-cookie";
 
 export const SignInForm = () => {
   const { t }  = useTranslation("common");
@@ -34,7 +35,8 @@ export const SignInForm = () => {
   });
 
   const onSubmit = useCallback(async (values: SignInFormData) => {
-    signIn(values).unwrap().then(() => {
+    signIn(values).unwrap().then((res) => {
+      Cookies.set('access_token', res.access_token)
       router.push('/');
     }).catch((error: RtkError) => {
       if (error.data.code === 'wrong-data') {

@@ -11,11 +11,10 @@ import { RtkError }                 from "@/typings/error";
 import { useTranslation }           from "next-i18next";
 import { Button, Input }            from "@/components/ui";
 import { CommentRating }            from "./components";
-import { useSelector }              from "react-redux";
-import { IAppState }                from "@/lib/store";
+import Cookies                      from "js-cookie";
 
 export const CreateCommentForm = ({ averageRating }: { averageRating: number }) => {
-  const accessToken = useSelector((state: IAppState) => state.auth.access_token);
+  const accessToken = Cookies.get('access_token');
   const { t }       = useTranslation("common");
 
   const [rating, setRating] = useState<number>(averageRating);

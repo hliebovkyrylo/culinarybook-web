@@ -27,5 +27,4 @@ export const makeStore = () => configureStore({
   }).concat(api.middleware),
 });
 
-export type IAppState = ReturnType<typeof combinedReducer>;
 export const wrapper  = createWrapper(makeStore, {debug: false});

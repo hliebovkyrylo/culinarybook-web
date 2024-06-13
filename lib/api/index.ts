@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { IAppState }                 from '../store';
+import Cookies                       from "js-cookie";
 
 export const baseUrl = process.env.NEXT_PUBLIC_APP_API_URL as string;
 
@@ -9,7 +9,7 @@ export const api = createApi({
   baseQuery  : fetchBaseQuery({
     baseUrl       : baseUrl,
     prepareHeaders: (headers, { getState }) => {
-      const accessToken = (getState() as IAppState).auth.access_token;
+      const accessToken = Cookies.get('access_token');
 
       if (accessToken) {
         headers.set('authorization', accessToken);

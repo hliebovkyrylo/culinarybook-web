@@ -12,8 +12,7 @@ import { useTranslation }         from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useRouter }              from "next/router";
 import { useEffect, useState }    from "react";
-import { useSelector }            from "react-redux";
-import { IAppState }              from "@/lib/store";
+import Cookies                    from "js-cookie";
 
 export const getServerSideProps = async ({ locale }: { locale: string }) => ({
   props: {
@@ -22,7 +21,7 @@ export const getServerSideProps = async ({ locale }: { locale: string }) => ({
 })
 
 const SearchUsers = () => {
-  const accessToken = useSelector((state: IAppState) => state.auth.access_token);
+  const accessToken = Cookies.get('access_token');
   const { t }       = useTranslation("common");
   const router      = useRouter();
 
