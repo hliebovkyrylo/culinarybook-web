@@ -2,7 +2,9 @@ import { useTranslation }         from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { AuthorizationLayout }    from "@/modules/layouts";
 import { VerifyAccountForm }      from "@/modules/auth";
-import { RequireAuth }            from "@/hocs/requireAuth";
+import { useGetMeQuery }          from "@/lib/api/userApi";
+import { Loader }                 from "@/components/Loader";
+import { useRouter }              from "next/router";
 
 export const getServerSideProps = async ({ locale }: { locale: string }) => ({
   props: {
@@ -11,7 +13,19 @@ export const getServerSideProps = async ({ locale }: { locale: string }) => ({
 })
 
 const VerifyAccount = () => {
+  const { data: user, isLoading } = useGetMeQuery();
+
   const { t } = useTranslation('common');
+  const router = useRouter();
+
+  if (isLoading) {
+    return <Loader className="absolute top-0 left-0" />
+  }
+
+  if (!user) {
+    router.push('/sign-in');
+    return null;
+  }
   return (
     <AuthorizationLayout
       pageTitle={t('title-verify')}
@@ -23,4 +37,4 @@ const VerifyAccount = () => {
   )
 };
 
-export default RequireAuth(VerifyAccount);
+export default VerifyAccount;
