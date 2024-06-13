@@ -12,7 +12,8 @@ import { useTranslation }         from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useRouter }              from "next/router";
 import { useEffect, useState }    from "react";
-import { useGetAuthStatusQuery } from "@/lib/api/authApi";
+import { useSelector }            from "react-redux";
+import { IAppState }              from "@/lib/store";
 
 export const getServerSideProps = async ({ locale }: { locale: string }) => ({
   props: {
@@ -21,15 +22,14 @@ export const getServerSideProps = async ({ locale }: { locale: string }) => ({
 })
 
 const SearchUsers = () => {
+  const accessToken = useSelector((state: IAppState) => state.auth.access_token);
   const { t }       = useTranslation("common");
   const router      = useRouter();
-  
-  const { data: authStatus, isLoading: isLoadingAuthStatus } = useGetAuthStatusQuery();
 
   const searchParams      = router.query.username;
   const [ page, setPage ] = useState<number>(1);
 
-  const { users: newUsers, isLoading } = useUsers(page, authStatus?.isAuth, searchParams);
+  const { users: newUsers, isLoading } = useUsers(page, !!accessToken, searchParams);
   const [users, setUses]               = useState<IUser[]>([]);
   const [findedUsers, setFindedUsers]  = useState<IUser[]>([]);
 
@@ -60,7 +60,7 @@ const SearchUsers = () => {
       <SearchButtons />
       <SearchUsersContent 
         data={searchParams ? findedUsers : users}
-        isLoading={isLoading || isLoadingAuthStatus}
+        isLoading={isLoading}
         isLoadingMore={isLoadingMore}
       />
     </MainLayout>
