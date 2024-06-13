@@ -9,8 +9,8 @@ import { MainLayout }             from "@/modules/layouts";
 import { NotificationsContent }   from "@/modules/notifications";
 import { RequireAuth }            from "@/hocs/requireAuth";
 import { Loader }                 from "@/components/Loader";
-import { useSelector }            from "react-redux";
-import { IAppState }              from "@/lib/store";
+import Cookies                    from "js-cookie";
+
 
 export const getServerSideProps = async ({ locale }: { locale: string }) => ({
   props: {
@@ -19,7 +19,7 @@ export const getServerSideProps = async ({ locale }: { locale: string }) => ({
 })
 
 const Notifications = () => {
-  const accessToken = useSelector((state: IAppState) => state.auth.access_token);
+  const accessToken = Cookies.get('access_token');
   const { t }       = useTranslation('common');
 
   const { data: user, isLoading: isLoadingUser } = useGetMeQuery();

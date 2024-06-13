@@ -12,6 +12,7 @@ import { EyeIcon, SlashEyeIcon }                  from "@/icons";
 import Link                                       from "next/link";
 import { baseUrl }                                from "@/lib/api";
 import { usePasswordVisibility }                  from "../common/hooks/usePasswordVisibility";
+import Cookies                                    from "js-cookie";
 
 export const SignUpForm = () => {
   const { t }  = useTranslation("common");
@@ -36,7 +37,8 @@ export const SignUpForm = () => {
 
   const onSubmit = useCallback(async (values: Omit<SignUpFormData, "confirmPassword">) => {
     signUp(values).unwrap()
-      .then(() => {
+      .then((res) => {
+        Cookies.set('access_token', res.access_token)
         sendCode().unwrap().then(() => {
           router.push("/verify-account")
         })

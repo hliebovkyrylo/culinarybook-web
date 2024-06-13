@@ -16,8 +16,7 @@ import {
 }                                   from "@/lib/api/commentApi";
 import { useRouter }                from "next/router";
 import { useForm }                  from "react-hook-form";
-import { useSelector }              from "react-redux";
-import { IAppState }                from "@/lib/store";
+import Cookies                      from "js-cookie";
 
 interface ICommentsContent {
   data         : IComment[] | undefined;
@@ -30,7 +29,7 @@ export const CommentsContent = ({
   isLoading,
   recipeOwnerId
 }: ICommentsContent) => {
-  const accessToken = useSelector((state: IAppState) => state.auth.access_token);
+  const accessToken = Cookies.get('access_token');
   const { t }       = useTranslation("common");
   const router      = useRouter();
 
