@@ -8,6 +8,10 @@ export interface ISignUpRequest {
   image   : string;
 };
 
+export interface IAuthResponse {
+  access_token: string;
+};
+
 export interface IVerifyAccountRequest {
   code: string;
 };
@@ -17,9 +21,9 @@ export interface ISignInRequest {
   password: string;
 };
 
-export interface IAuthStateResponse {
-  isAuth: boolean;
-}
+export interface ISignOutResponse {
+  access_token: null;
+};
 
 export interface IForgotPasswordRequest {
   email: string;
@@ -36,15 +40,9 @@ export interface IResetPasswordRequest {
   email          : string;
 };
 
-export interface IChangePasswordRequest {
-  oldPassword       : string;
-  newPassword       : string;
-  confirmNewPassword: string;
-}
-
 export const authApi = api.injectEndpoints({
   endpoints: builder => ({
-    signUp: builder.mutation<void, ISignUpRequest>({
+    signUp: builder.mutation<IAuthResponse, ISignUpRequest>({
       query: (body) => ({
         method: 'POST',
         url   : '/auth/sign-up',
@@ -67,7 +65,7 @@ export const authApi = api.injectEndpoints({
       }),
       invalidatesTags: ['user', 'recipe']
     }),
-    signIn: builder.mutation<void, ISignInRequest>({
+    signIn: builder.mutation<IAuthResponse, ISignInRequest>({
       query: (body) => ({
         method: 'POST',
         url   : '/auth/sign-in',
@@ -104,24 +102,11 @@ export const authApi = api.injectEndpoints({
       }),
       invalidatesTags: ['user', 'recipe']
     }),
-    changePassword: builder.mutation<void, IChangePasswordRequest>({
-      query: (body) => ({
-        method: 'PATCH',
-        url: '/auth/change-password',
-        body
-      })
-    }),
-    getAuthStatus: builder.query<IAuthStateResponse, void>({
-      query: () => ({
-        url: '/auth/check-auth-status'
-      })
-    }),
-    signOut: builder.mutation<void, void>({
-      query: () => ({
-        method: 'POST',
-        url   : '/auth/sign-out',
+    signOut: builder.mutation<ISignOutResponse, void>({
+      queryFn: () => ({
+        data: { access_token: null }
       }),
-      invalidatesTags: ['user', 'recipe']
+      invalidatesTags: ['user']
     })
   })
 });
@@ -135,6 +120,4 @@ export const {
   useForgotPasswordMutation,
   useCanResetPasswordMutation,
   useResetPasswordMutation,
-  useChangePasswordMutation,
-  useGetAuthStatusQuery,
 } = authApi;
