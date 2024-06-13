@@ -1,9 +1,11 @@
-import { createWrapper, MakeStore, HYDRATE } from 'next-redux-wrapper';
+import { createWrapper, HYDRATE }          from 'next-redux-wrapper';
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
-import { api } from './api/index';
+import { api }                             from './api/index';
+import { authSlice }                       from './slices/authSlice';
 
 const combinedReducer = combineReducers({
   api : api.reducer,
+  auth: authSlice.reducer,
 });
 
 const reducer = (state: any, action: any) => {
@@ -25,4 +27,4 @@ export const makeStore = () => configureStore({
   }).concat(api.middleware),
 });
 
-export const wrapper = createWrapper(makeStore, {debug: false});
+export const wrapper  = createWrapper(makeStore, {debug: false});

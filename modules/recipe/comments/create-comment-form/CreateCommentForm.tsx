@@ -9,14 +9,13 @@ import { useRouter }                from "next/router";
 import { useCreateCommentMutation } from "@/lib/api/commentApi";
 import { RtkError }                 from "@/typings/error";
 import { useTranslation }           from "next-i18next";
-import { useGetAuthStatusQuery }    from "@/lib/api/authApi";
 import { Button, Input }            from "@/components/ui";
 import { CommentRating }            from "./components";
+import Cookies                      from "js-cookie";
 
 export const CreateCommentForm = ({ averageRating }: { averageRating: number }) => {
-  const { t } = useTranslation("common");
-
-  const { data: authStatus } = useGetAuthStatusQuery();
+  const accessToken = Cookies.get('access_token');
+  const { t }       = useTranslation("common");
 
   const [rating, setRating] = useState<number>(averageRating);
   const router = useRouter();
@@ -34,7 +33,7 @@ export const CreateCommentForm = ({ averageRating }: { averageRating: number }) 
   });
 
   const onSubmitCreateComment = useCallback(async (values: CreateCommentFormData) => {
-    if (!authStatus?.isAuth) {
+    if (!accessToken) {
       router.push('/sign-in');
     } else {
       await createComment({ ...values, recipeId: recipeId as string }).unwrap().then(() => {
@@ -46,7 +45,7 @@ export const CreateCommentForm = ({ averageRating }: { averageRating: number }) 
         }
       });
     }
-  }, [createComment, reset, authStatus?.isAuth]);
+  }, [createComment, reset, accessToken]);
 
   const handleSetGrade = (grade: number) => {
     setRating(grade);

@@ -30,12 +30,13 @@ import { io }                  from "socket.io-client";
 import { baseUrl }             from "@/lib/api";
 import { useRouter }           from "next/router";
 import { Loader }              from "@/components/Loader";
-import cookie                  from "js-cookie";
+import Cookies                 from "js-cookie";
 
 export const MainTopbar = () => {
+  const accessToken = Cookies.get('access_token');
   const { t, i18n } = useTranslation('common');
 
-  const router = useRouter();
+  const router   = useRouter();
   const pathname = router.pathname;
 
   const { data: user, isLoading } = useGetMeQuery();
@@ -48,7 +49,9 @@ export const MainTopbar = () => {
 
   useEffect(() => {
     const socket = io(baseUrl, {
-      withCredentials: true,
+      extraHeaders: {
+        authorization: accessToken || '',
+      },
     });
 
     if (user) {
@@ -82,11 +85,8 @@ export const MainTopbar = () => {
   };
 
   const onClickSignOut = () => {
-    signOut().unwrap().then(() => {
-      window.location.reload();
-    }).catch((error) => {
-      console.log(error)
-    });
+    Cookies.remove('access_token');
+    window.location.reload();
   };
 
   const changeLanguage = (lng: string) => {

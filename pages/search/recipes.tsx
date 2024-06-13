@@ -12,7 +12,7 @@ import { useTranslation }         from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useRouter }              from "next/router";
 import { useEffect, useState }    from "react";
-import { useGetAuthStatusQuery }  from "@/lib/api/authApi";
+import Cookies                    from "js-cookie";
 
 export const getServerSideProps = async ({ locale }: { locale: string }) => ({
   props: {
@@ -21,15 +21,14 @@ export const getServerSideProps = async ({ locale }: { locale: string }) => ({
 })
 
 const SearchRecipes = () => {
+  const accessToken = Cookies.get('access_token');
   const { t }       = useTranslation("common");
   const router      = useRouter();
-
-  const { data: authStatus, isLoading: isLoadingAuthStatus } = useGetAuthStatusQuery();
 
   const searchParams = router.query.title;
   const [page, setPage] = useState(1);
 
-  const { recipes: newRecipes, isLoading } = useRecipes(page, authStatus?.isAuth, searchParams);
+  const { recipes: newRecipes, isLoading } = useRecipes(page, !!accessToken, searchParams);
   const [recipes, setRecipes]              = useState<IRecipePreview[]>([]);
   const [findedRecipes, setFindedRecipes]  = useState<IRecipePreview[]>([]);
 
@@ -60,7 +59,7 @@ const SearchRecipes = () => {
       <SearchButtons />
       <SearchRecipesContent
         data={searchParams ? findedRecipes : recipes}
-        isLoading={isLoading || isLoadingAuthStatus}
+        isLoading={isLoading}
         isLoadingMore={isLoadingMore}
       />
     </MainLayout>

@@ -1,16 +1,14 @@
-import { useRouter }             from "next/router";
-import { FunctionComponent }     from "react";
-import { useGetAuthStatusQuery } from "@/lib/api/authApi";
-import { Loader }                from "@/components/Loader";
-import { useGetMeQuery }         from "@/lib/api/userApi";
+import { useRouter }         from "next/router";
+import { FunctionComponent } from "react";
+import { Loader }            from "@/components/Loader";
+import { useGetMeQuery }     from "@/lib/api/userApi";
 
 export const RequireAuth = <Props extends object>(Component: FunctionComponent<Props>) => (props: Props) => {
   const { data: user, isLoading: isMeLoading } = useGetMeQuery();
-  const { data: authStatus, isLoading }        = useGetAuthStatusQuery();
 
   const router = useRouter();
 
-  if (isLoading || isMeLoading) {
+  if (isMeLoading) {
     return <Loader className="absolute top-0 left-0" />
   }
 
@@ -19,7 +17,11 @@ export const RequireAuth = <Props extends object>(Component: FunctionComponent<P
     return null;
   }
 
-  if (!authStatus?.isAuth) {
+  if (user.canResetPassword) {
+    router.push('/reset-password');
+  }
+
+  if (!user) {
     router.push('/sign-in');
     return null;
   }
