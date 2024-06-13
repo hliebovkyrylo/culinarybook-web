@@ -30,9 +30,11 @@ import { io }                  from "socket.io-client";
 import { baseUrl }             from "@/lib/api";
 import { useRouter }           from "next/router";
 import { Loader }              from "@/components/Loader";
-import cookie                  from "js-cookie";
+import { useSelector }         from "react-redux";
+import { IAppState }           from "@/lib/store";
 
 export const MainTopbar = () => {
+  const accessToken = useSelector((state: IAppState) => state.auth.access_token);
   const { t, i18n } = useTranslation('common');
 
   const router = useRouter();
@@ -48,7 +50,9 @@ export const MainTopbar = () => {
 
   useEffect(() => {
     const socket = io(baseUrl, {
-      withCredentials: true,
+      extraHeaders: {
+        authorization: accessToken || '',
+      },
     });
 
     if (user) {
