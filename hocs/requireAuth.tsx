@@ -12,12 +12,12 @@ export const RequireAuth = <Props extends object>(Component: FunctionComponent<P
     return <Loader className="absolute top-0 left-0" />
   }
 
-  if (!user?.isVerified) {
+  if (user?.isVerified === false) {
     router.push('/verify-account');
     return null;
   }
 
-  if (user.canResetPassword) {
+  if (user?.canResetPassword) {
     router.push('/reset-password');
   }
 
