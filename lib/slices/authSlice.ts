@@ -33,8 +33,8 @@ export const authSlice = createSlice({
       )
       .addMatcher(
         authApi.endpoints.signOut.matchFulfilled,
-        (state, { payload }) => {
-          state.access_token = payload.access_token;
+        (state) => {
+          state.access_token = null;
         }
       )
   }
