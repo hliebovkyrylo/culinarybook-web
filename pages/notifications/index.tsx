@@ -1,15 +1,9 @@
-import { baseUrl }                from "@/lib/api";
-import { useGetMeQuery }          from "@/lib/api/userApi";
-import { INotification }          from "@/typings/notification";
-import { useEffect, useState }    from "react";
-import { useTranslation }         from "next-i18next";
-import io                         from "socket.io-client";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { MainLayout }             from "@/modules/layouts";
-import { NotificationsContent }   from "@/modules/notifications";
-import { RequireAuth }            from "@/hocs/requireAuth";
-import { Loader }                 from "@/components/Loader";
-import Cookies                    from "js-cookie";
+import { useTranslation }                from "next-i18next";
+import { serverSideTranslations }        from "next-i18next/serverSideTranslations";
+import { MainLayout }                    from "@/modules/layouts";
+import { NotificationsContent }          from "@/modules/notifications";
+import { RequireAuth }                   from "@/hocs/requireAuth";
+import { useGetMyAllNotificationsQuery } from "@/lib/api/notificationApi";
 
 
 export const getServerSideProps = async ({ locale }: { locale: string }) => ({
@@ -19,57 +13,9 @@ export const getServerSideProps = async ({ locale }: { locale: string }) => ({
 })
 
 const Notifications = () => {
-  const accessToken = Cookies.get('access_token');
-  const { t }       = useTranslation('common');
+  const { t } = useTranslation('common');
 
-  const { data: user, isLoading: isLoadingUser } = useGetMeQuery();
-
-  const [ notifications, setNotifications ] = useState<INotification[]>([]);
-
-  const [ isLoadingNotification, setIsLoadingNotifications ] = useState<boolean>(false);
-
-  useEffect(() => {
-    if (!user) {
-      return () => null;
-    }
-    
-    const socket = io(baseUrl, {
-      extraHeaders: {
-        authorization: accessToken || '',
-      },
-    });
-
-    socket.emit('userConnect', user.id); 
-    socket.emit('getNotifications', user.id);
-
-    socket.on("notification", (notification: any) => {
-      setNotifications((currentNotifications) => [notification, ...currentNotifications]);
-    });
-
-    socket.on('removeNotification', (notificationId) => {
-      setNotifications((currentNotifications) => currentNotifications.filter(notification => notification.id !== notificationId));
-    });
-
-    socket.on('loading_start', () => {
-      setIsLoadingNotifications(true);
-    });
-
-    socket.on('notifications', (notifications) => {
-      setNotifications(notifications);
-    });
-
-    socket.on('loading_end', () => {
-      setIsLoadingNotifications(false);
-    });
-
-    return () => {
-      socket.disconnect();
-    };
-  }, [user]);
-
-  if (isLoadingUser) {
-    return <Loader className="absolute top-0 left-0" />
-  }
+  const { data: notifications, isLoading: isLoadingNotification } = useGetMyAllNotificationsQuery();
 
   return (
     <MainLayout

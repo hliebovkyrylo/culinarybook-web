@@ -7,8 +7,9 @@ export const api = createApi({
   reducerPath: 'api',
   tagTypes   : ['user', 'recipe'],
   baseQuery  : fetchBaseQuery({
-    baseUrl       : baseUrl,
-    prepareHeaders: (headers, { getState }) => {
+    baseUrl: baseUrl,
+    credentials: 'include',
+    prepareHeaders: (headers) => {
       const accessToken = Cookies.get('access_token');
 
       if (accessToken) {

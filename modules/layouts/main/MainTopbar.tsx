@@ -21,62 +21,25 @@ import {
 }                              from "@/components/ui";
 import Image                   from "next/image";
 import Link                    from "next/link";
-import { useEffect, useState } from "react";
 import { useTheme }            from "next-themes";
 import { useTranslation }      from "next-i18next";
 import { useSignOutMutation }  from "@/lib/api/authApi";
 import { useGetMeQuery }       from "@/lib/api/userApi";
-import { io }                  from "socket.io-client";
-import { baseUrl }             from "@/lib/api";
 import { useRouter }           from "next/router";
 import { Loader }              from "@/components/Loader";
-import Cookies                 from "js-cookie";
+import { useGetMyAllUnreadedNotificationsQuery } from "@/lib/api/notificationApi";
 
 export const MainTopbar = () => {
-  const accessToken = Cookies.get('access_token');
   const { t, i18n } = useTranslation('common');
 
   const router   = useRouter();
-  const pathname = router.pathname;
 
   const { data: user, isLoading } = useGetMeQuery();
+  const { data: notifications, isLoading: isLoadingNotifications } = useGetMyAllUnreadedNotificationsQuery();
 
   const [signOut, { isLoading: isLoadingSignOut, isSuccess }] = useSignOutMutation();
 
   const { theme, setTheme } = useTheme();
-
-  const [unreadedNotificationsCount, setUnreadedNotificaionsCount] = useState<number>(0);
-
-  useEffect(() => {
-    const socket = io(baseUrl, {
-      extraHeaders: {
-        authorization: accessToken || '',
-      },
-    });
-
-    if (user) {
-      socket.emit('userConnect', user.id);
-      socket.emit('getUnreadedNotifications', user.id);
-
-      socket.on('unreadedNotifications', (unreadedNotifications) => {
-        setUnreadedNotificaionsCount(unreadedNotifications);
-      });
-
-      socket.on("notification", () => {
-        setUnreadedNotificaionsCount(unreadedNotificationsCount + 1);
-      });
-
-      socket.on('removeNotification', () => {
-        setUnreadedNotificaionsCount(unreadedNotificationsCount - 1);
-      });
-    }
-  }, [user])
-
-  useEffect(() => {
-    if (pathname === '/notifications') {
-      setUnreadedNotificaionsCount(0);
-    }
-  }, [pathname]);
 
   const userId = user?.id;
 
@@ -85,8 +48,9 @@ export const MainTopbar = () => {
   };
 
   const onClickSignOut = () => {
-    Cookies.remove('access_token');
-    window.location.reload();
+    signOut().unwrap().then(() => {
+      window.location.reload();
+    })
   };
 
   const changeLanguage = (lng: string) => {
@@ -94,7 +58,7 @@ export const MainTopbar = () => {
     router.push(router.pathname, router.asPath, { locale: lng });
   };
 
-  if (isLoading || isLoadingSignOut || isSuccess) {
+  if (isLoading || isLoadingSignOut || isSuccess || isLoadingNotifications) {
     return <Loader className="absolute left-0 top-0 z-[100]" />
   }
 
@@ -112,10 +76,10 @@ export const MainTopbar = () => {
           <div className="flex items-center gap-6">
             <Link href={'/notifications'} className="fill-[#6b6b6b] hover:fill-[#808080] transition-all relative">
               <BellIcon className="w-6" />
-              {unreadedNotificationsCount > 0 && (
+              {notifications && notifications.length > 0 && (
                 <>
                   <span className="block absolute top-[3px] right-[-1px] rounded-full w-3 h-3 bg-red-600 animate-ping" />
-                  <span className="block absolute top-[3px] text-white right-[-1px] rounded-full text-xs text-center w-3 h-3 bg-red-600">{unreadedNotificationsCount > 10 ? "9+" : unreadedNotificationsCount}</span>
+                  <span className="block absolute top-[3px] text-white right-[-1px] rounded-full text-xs text-center w-3 h-3 bg-red-600">{notifications.length > 10 ? "9+" : 1}</span>
                 </>
               )}
             </Link>

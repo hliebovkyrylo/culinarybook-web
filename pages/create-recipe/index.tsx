@@ -2,6 +2,7 @@ import { useTranslation }         from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { MainLayout }             from "@/modules/layouts";
 import { CreateRecipeForm }       from "@/modules/create-recipe";
+import { RequireAuth }            from "@/hocs/requireAuth";
 
 export const getServerSideProps = async ({ locale }: { locale: string }) => ({
   props: {
@@ -24,4 +25,4 @@ const CreateRecipe = () => {
   )
 };
 
-export default CreateRecipe;
+export default RequireAuth(CreateRecipe);

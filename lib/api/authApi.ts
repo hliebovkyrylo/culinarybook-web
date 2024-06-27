@@ -115,11 +115,12 @@ export const authApi = api.injectEndpoints({
         body
       })
     }),
-    signOut: builder.mutation<ISignOutResponse, void>({
-      queryFn: () => ({
-        data: { access_token: null }
+    signOut: builder.mutation<void, void>({
+      query: () => ({
+        method: 'POST',
+        url: '/auth/signOut'
       }),
-      invalidatesTags: ['user']
+      invalidatesTags: ['user', 'recipe']
     })
   })
 });
