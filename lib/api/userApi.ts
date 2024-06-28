@@ -31,7 +31,6 @@ export const userApi = api.injectEndpoints({
       query: () => ({
         url: '/user/me'
       }),
-      providesTags: ['user'],
       keepUnusedDataFor: 1
     }),
     getUser: builder.query<IUserResponse, string>({
