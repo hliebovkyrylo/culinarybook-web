@@ -27,6 +27,7 @@ import { useSignOutMutation }  from "@/lib/api/authApi";
 import { useGetMeQuery }       from "@/lib/api/userApi";
 import { useRouter }           from "next/router";
 import { Loader }              from "@/components/Loader";
+import Cookie from "js-cookie";
 import { useGetMyAllUnreadedNotificationsQuery } from "@/lib/api/notificationApi";
 
 export const MainTopbar = () => {
@@ -48,6 +49,7 @@ export const MainTopbar = () => {
   };
 
   const onClickSignOut = () => {
+    Cookie.remove('access_token');
     signOut().unwrap().then(() => {
       window.location.reload();
     })
