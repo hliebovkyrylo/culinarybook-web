@@ -10,6 +10,7 @@ import { MainLayout } from "@/modules/layouts";
 import { useGetMeQuery } from "@/lib/api/userApi";
 import Link from "next/link";
 import { useGetMyAllUnreadedNotificationsQuery } from "@/lib/api/notificationApi";
+import { Loader } from "@/components/Loader";
 
 export const getServerSideProps = async ({ locale }: { locale: string }) => ({
   props: {
@@ -26,7 +27,11 @@ const Home = () => {
   const { recipes, isLoadingRecipes } = useRecipes(!!user);
   const { users, isLoadingUsers } = useUsers(!!user);
 
-  const isLoading = isLoadingRecipes || isLoadingUsers || isMeLoading || isLoadingNotifications;
+  const isLoading = isLoadingRecipes || isLoadingUsers;
+
+  if (isMeLoading || isLoadingNotifications) {
+    return <Loader className="absolute top-0 left-0" />
+  }
 
   return (
     <MainLayout

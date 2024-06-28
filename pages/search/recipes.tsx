@@ -5,7 +5,7 @@ import {
   SearchButtons,
   SearchInput,
   SearchRecipesContent,
-  useRecipes
+  useRecipes,
 } from "@/modules/search";
 import { IRecipePreview } from "@/typings/recipe";
 import { useTranslation } from "next-i18next";
