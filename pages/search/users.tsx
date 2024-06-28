@@ -26,8 +26,16 @@ const SearchUsers = () => {
   const { t } = useTranslation("common");
   const router = useRouter();
 
-  const { data: user, isLoading: isLoadingUser } = useGetMeQuery();
-  const { data: notifications, isLoading: isLoadingNotifications } = useGetMyAllUnreadedNotificationsQuery();
+  const { data: notifications, isLoading: isLoadingNotifications } = useGetMyAllUnreadedNotificationsQuery(undefined, {
+    refetchOnMountOrArgChange: true,
+    refetchOnReconnect: true,
+    refetchOnFocus: true
+  });
+  const { data: user, isLoading: isLoadingUser } = useGetMeQuery(undefined, {
+    refetchOnMountOrArgChange: true,
+    refetchOnReconnect: true,
+    refetchOnFocus: true
+  });
 
   const searchParams = router.query.username;
   const [page, setPage] = useState<number>(1);

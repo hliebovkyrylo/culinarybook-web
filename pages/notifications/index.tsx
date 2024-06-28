@@ -17,8 +17,16 @@ export const getServerSideProps = async ({ locale }: { locale: string }) => ({
 const Notifications = () => {
   const { t } = useTranslation('common');
 
-  const { data: user, isLoading: isLoadingUser } = useGetMeQuery();
-  const { data: unreadedNotifications, isLoading: isLoadingUnreadedNotifications } = useGetMyAllUnreadedNotificationsQuery();
+  const { data: unreadedNotifications, isLoading: isLoadingUnreadedNotifications } = useGetMyAllUnreadedNotificationsQuery(undefined, {
+    refetchOnMountOrArgChange: true,
+    refetchOnReconnect: true,
+    refetchOnFocus: true
+  });
+  const { data: user, isLoading: isLoadingUser } = useGetMeQuery(undefined, {
+    refetchOnMountOrArgChange: true,
+    refetchOnReconnect: true,
+    refetchOnFocus: true
+  });
   const { data: notifications, isLoading: isLoadingNotifications } = useGetMyAllNotificationsQuery();
 
   if (isLoadingUser || isLoadingNotifications || isLoadingUnreadedNotifications) {
@@ -31,6 +39,8 @@ const Notifications = () => {
       metaTitle={`${t('user')} - ${t('title-notifications')} | Culinarybook`}
       pageDescription=""
       containerSize="small"
+      user={user}
+      notifications={unreadedNotifications}
     >
       <section className="w-full h-full p-3 mt-3 rounded-lg overflow-y-auto max-h-[85%] dark:bg-[#222] bg-white">
         <NotificationsContent

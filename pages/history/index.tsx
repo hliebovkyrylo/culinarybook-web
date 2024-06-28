@@ -24,8 +24,16 @@ const History = () => {
   const [visitedRecipes, setVisitedRecipes] = useState<IRecipePreview[]>([]);
   const [isLoadingMore, setIsLoadingMore] = useState<boolean>(false);
 
-  const { data: user, isLoading: isLoadingUser } = useGetMeQuery();
-  const { data: notifications, isLoading: isLoadingNotifications } = useGetMyAllUnreadedNotificationsQuery();
+  const { data: notifications, isLoading: isLoadingNotifications } = useGetMyAllUnreadedNotificationsQuery(undefined, {
+    refetchOnMountOrArgChange: true,
+    refetchOnReconnect: true,
+    refetchOnFocus: true
+  });
+  const { data: user, isLoading: isLoadingUser } = useGetMeQuery(undefined, {
+    refetchOnMountOrArgChange: true,
+    refetchOnReconnect: true,
+    refetchOnFocus: true
+  });
 
   const { data: newVisitedRecipes, isLoading: isLoadingRecipes } = useGetMyVisitedQuery({ page: page, limit: 10 });
 

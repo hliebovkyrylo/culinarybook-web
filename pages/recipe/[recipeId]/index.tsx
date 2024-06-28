@@ -43,13 +43,20 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 const Recipe = ({ recipeId }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const { t } = useTranslation('common');
 
-  const { data: user, isLoading: isLoadingUser } = useGetMeQuery();
-
   const { data: recipe, isLoading: isLoadingRecipe } = useGetRecipeQuery(recipeId)
   const { data: steps, isLoading: isLoadingSteps } = useGetStepsQuery(recipeId);
   const { data: comments, isLoading: isLoadingComments, isFetching } = useGetCommentsQuery(recipeId);
   const { data: likes, isLoading: isLoadingLikes } = useGetRecipeLikesQuery(recipeId);
-  const { data: notifications, isLoading: isLoadingNotifications } = useGetMyAllUnreadedNotificationsQuery();
+  const { data: notifications, isLoading: isLoadingNotifications } = useGetMyAllUnreadedNotificationsQuery(undefined, {
+    refetchOnMountOrArgChange: true,
+    refetchOnReconnect: true,
+    refetchOnFocus: true
+  });
+  const { data: user, isLoading: isLoadingUser } = useGetMeQuery(undefined, {
+    refetchOnMountOrArgChange: true,
+    refetchOnReconnect: true,
+    refetchOnFocus: true
+  });
 
   const { data: likeState, isLoading: isLoadingLikeState } = useGetLikeStateQuery(recipeId);
   const { data: saveState, isLoading: isLoadingSaveState } = useGetSaveStateQuery(recipeId);

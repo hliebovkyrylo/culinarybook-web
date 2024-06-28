@@ -21,8 +21,16 @@ export const getServerSideProps = async ({ locale }: { locale: string }) => ({
 const Home = () => {
   const { t } = useTranslation('common');
 
-  const { data: notifications, isLoading: isLoadingNotifications } = useGetMyAllUnreadedNotificationsQuery();
-  const { data: user, isLoading: isMeLoading } = useGetMeQuery();
+  const { data: notifications, isLoading: isLoadingNotifications } = useGetMyAllUnreadedNotificationsQuery(undefined, {
+    refetchOnMountOrArgChange: true,
+    refetchOnReconnect: true,
+    refetchOnFocus: true
+  });
+  const { data: user, isLoading: isMeLoading } = useGetMeQuery(undefined, {
+    refetchOnMountOrArgChange: true,
+    refetchOnReconnect: true,
+    refetchOnFocus: true
+  });
 
   const { recipes, isLoadingRecipes } = useRecipes(!!user);
   const { users, isLoadingUsers } = useUsers(!!user);

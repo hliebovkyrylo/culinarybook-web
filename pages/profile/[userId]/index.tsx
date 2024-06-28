@@ -39,7 +39,11 @@ const Profile = ({ userId }: InferGetServerSidePropsType<typeof getServerSidePro
   const { user, userMe, isLoadingUser, isMeLoading } = useUsers(userId);
   const { followState, followRequestState, isLoadingFollowState, isLoadingFollowRequestState } = useFollowState(userId);
 
-  const { data: notifications, isLoading: isLoadingNotifications } = useGetMyAllUnreadedNotificationsQuery();
+  const { data: notifications, isLoading: isLoadingNotifications } = useGetMyAllUnreadedNotificationsQuery(undefined, {
+    refetchOnMountOrArgChange: true,
+    refetchOnReconnect: true,
+    refetchOnFocus: true
+  });
   const { data: recipes, isLoading: isLoadingRecipes, isFetching: isFetchingRecipes } = useGetRecipesByUserIdQuery({ userId: userId as string, sortBy: sortBy !== undefined ? sortBy as string : 'desc' });
 
   if (isMeLoading || isLoadingFollowState || isLoadingRecipes || isLoadingUser || isLoadingFollowRequestState || isLoadingNotifications) {

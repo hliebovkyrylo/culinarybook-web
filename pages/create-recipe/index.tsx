@@ -16,8 +16,16 @@ export const getServerSideProps = async ({ locale }: { locale: string }) => ({
 const CreateRecipe = () => {
   const { t } = useTranslation('common');
 
-  const { data: user, isLoading: isLoadingUser } = useGetMeQuery();
-  const { data: notifications, isLoading: isLoadingNotifications } = useGetMyAllUnreadedNotificationsQuery();
+  const { data: notifications, isLoading: isLoadingNotifications } = useGetMyAllUnreadedNotificationsQuery(undefined, {
+    refetchOnMountOrArgChange: true,
+    refetchOnReconnect: true,
+    refetchOnFocus: true
+  });
+  const { data: user, isLoading: isLoadingUser } = useGetMeQuery(undefined, {
+    refetchOnMountOrArgChange: true,
+    refetchOnReconnect: true,
+    refetchOnFocus: true
+  });
 
   if (isLoadingUser || isLoadingNotifications) {
     return <Loader className="absolute top-0 left-0" />

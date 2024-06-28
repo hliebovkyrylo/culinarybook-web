@@ -9,6 +9,7 @@ export const notificationApi = api.injectEndpoints({
       query: () => ({
         url: '/notification/get/my/all',
       }),
+      keepUnusedDataFor: 1
     }),
     getMyAllUnreadedNotifications: builder.query<NotificationsResponse, void>({
       query: () => ({

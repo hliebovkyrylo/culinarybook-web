@@ -29,8 +29,16 @@ const SearchRecipes = () => {
   const searchParams = router.query.title;
   const [page, setPage] = useState(1);
 
-  const { data: user, isLoading: isLoadingUser } = useGetMeQuery();
-  const { data: notifications, isLoading: isLoadingNotifications } = useGetMyAllUnreadedNotificationsQuery();
+  const { data: notifications, isLoading: isLoadingNotifications } = useGetMyAllUnreadedNotificationsQuery(undefined, {
+    refetchOnMountOrArgChange: true,
+    refetchOnReconnect: true,
+    refetchOnFocus: true
+  });
+  const { data: user, isLoading: isLoadingUser } = useGetMeQuery(undefined, {
+    refetchOnMountOrArgChange: true,
+    refetchOnReconnect: true,
+    refetchOnFocus: true
+  });
 
   const { recipes: newRecipes, isLoading } = useRecipes(page, !!user, searchParams);
   const [recipes, setRecipes] = useState<IRecipePreview[]>([]);
