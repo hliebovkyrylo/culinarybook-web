@@ -49,8 +49,8 @@ export const MainTopbar = () => {
   };
 
   const onClickSignOut = () => {
-    Cookie.remove('access_token');
     signOut().unwrap().then(() => {
+      Cookie.remove('access_token');
       window.location.reload();
     })
   };
