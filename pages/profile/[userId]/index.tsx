@@ -1,21 +1,22 @@
-import { 
-  GetServerSidePropsContext, 
-  InferGetServerSidePropsType 
-}                                     from "next";
-import { 
+import {
+  GetServerSidePropsContext,
+  InferGetServerSidePropsType
+} from "next";
+import {
   PrivateAccountWindow,
-  ProfileNavigationPanel, 
-  ProfileRecipesContent, 
-  ProfileUserData, 
-  useFollowState, 
+  ProfileNavigationPanel,
+  ProfileRecipesContent,
+  ProfileUserData,
+  useFollowState,
   useUsers
-}                                     from "@/modules/profile";
+} from "@/modules/profile";
 import { useGetRecipesByUserIdQuery } from "@/lib/api/recipeApi";
-import { serverSideTranslations }     from "next-i18next/serverSideTranslations";
-import { useTranslation }             from "next-i18next";
-import { useRouter }                  from "next/router";
-import { MainLayout }                 from "@/modules/layouts";
-import { Loader }                     from "@/components/Loader";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { useTranslation } from "next-i18next";
+import { useRouter } from "next/router";
+import { MainLayout } from "@/modules/layouts";
+import { Loader } from "@/components/Loader";
+import { useGetMyAllUnreadedNotificationsQuery } from "@/lib/api/notificationApi";
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const userId = ctx.params?.userId;
@@ -30,17 +31,18 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 }
 
 const Profile = ({ userId }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  const { t }  = useTranslation('common');
+  const { t } = useTranslation('common');
   const router = useRouter();
 
   const sortBy = router.query.sortBy;
 
-  const { user, userMe, isLoadingUser, isMeLoading }                                           = useUsers(userId);
+  const { user, userMe, isLoadingUser, isMeLoading } = useUsers(userId);
   const { followState, followRequestState, isLoadingFollowState, isLoadingFollowRequestState } = useFollowState(userId);
 
+  const { data: notifications, isLoading: isLoadingNotifications } = useGetMyAllUnreadedNotificationsQuery();
   const { data: recipes, isLoading: isLoadingRecipes, isFetching: isFetchingRecipes } = useGetRecipesByUserIdQuery({ userId: userId as string, sortBy: sortBy !== undefined ? sortBy as string : 'desc' });
 
-  if (isMeLoading || isLoadingFollowState || isLoadingRecipes || isLoadingUser || isLoadingFollowRequestState) {
+  if (isMeLoading || isLoadingFollowState || isLoadingRecipes || isLoadingUser || isLoadingFollowRequestState || isLoadingNotifications) {
     return <Loader className="absolute top-0 left-0" />
   }
 
@@ -51,8 +53,10 @@ const Profile = ({ userId }: InferGetServerSidePropsType<typeof getServerSidePro
       pageDescription={`${user?.name} ${t('meta-profile-description')}`}
       metaTitle={`${user?.name} | Culinarybook`}
       containerSize="full"
+      user={userMe}
+      notifications={notifications}
     >
-      <ProfileUserData 
+      <ProfileUserData
         data={user}
         followRequestState={followRequestState}
         selfId={userMe?.id}
@@ -60,11 +64,11 @@ const Profile = ({ userId }: InferGetServerSidePropsType<typeof getServerSidePro
       />
       {!isPrivateAccount ? (
         <>
-          <ProfileNavigationPanel 
+          <ProfileNavigationPanel
             userId={userId}
             selfId={userMe?.id}
           />
-          <ProfileRecipesContent 
+          <ProfileRecipesContent
             isLoading={isLoadingRecipes || isFetchingRecipes}
             data={recipes}
           />

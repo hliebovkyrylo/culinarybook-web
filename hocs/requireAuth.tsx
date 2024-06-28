@@ -1,16 +1,11 @@
-import { useRouter }         from "next/router";
+import { useRouter } from "next/router";
 import { FunctionComponent } from "react";
-import { Loader }            from "@/components/Loader";
-import { useGetMeQuery }     from "@/lib/api/userApi";
+import { useGetMeQuery } from "@/lib/api/userApi";
 
 export const RequireAuth = <Props extends object>(Component: FunctionComponent<Props>) => (props: Props) => {
-  const { data: user, isLoading: isMeLoading } = useGetMeQuery();
+  const { data: user } = useGetMeQuery();
 
   const router = useRouter();
-
-  if (isMeLoading) {
-    return <Loader className="absolute top-0 left-0" />
-  }
 
   if (user?.isVerified === false) {
     router.push('/verify-account');

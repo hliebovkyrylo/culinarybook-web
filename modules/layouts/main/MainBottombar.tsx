@@ -1,17 +1,14 @@
-import { sidebarLinks }           from "@/constants";
-import { useGetMeQuery }          from "@/lib/api/userApi";
-import Link                       from "next/link";
-import { useTranslation }         from "next-i18next";
-import { useRouter }              from "next/router";
-import { Loader }                 from "@/components/Loader";
+import { sidebarLinks } from "@/constants";
+import Link from "next/link";
+import { useTranslation } from "next-i18next";
+import { useRouter } from "next/router";
+import { IUserMe } from "@/typings/user";
 
-export const MainBottombar = () => {
+export const MainBottombar = ({ user }: { user?: IUserMe }) => {
   const { t } = useTranslation('common');
 
-  const router    = useRouter();
-  const pathname  = router.pathname;
-
-  const { data: user, isLoading } = useGetMeQuery();
+  const router = useRouter();
+  const pathname = router.pathname;
 
   const links = sidebarLinks.map(link => {
     let route = link.route;
@@ -22,10 +19,6 @@ export const MainBottombar = () => {
     }
     return { ...link, route };
   });
-
-  if (isLoading) {
-    return <Loader className="absolute left-0 top-0" />
-  }
 
   return (
     <footer className="bottombar">

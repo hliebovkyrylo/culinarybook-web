@@ -7,36 +7,33 @@ import {
   MoonIcon,
   SavedIcon,
   SunIcon
-}                              from "@/icons";
-import { 
-  Button, 
-  DropdownMenu, 
-  DropdownMenuContent, 
-  DropdownMenuItem, 
-  DropdownMenuPortal, 
-  DropdownMenuSub, 
-  DropdownMenuSubContent, 
-  DropdownMenuSubTrigger, 
-  DropdownMenuTrigger 
-}                              from "@/components/ui";
-import Image                   from "next/image";
-import Link                    from "next/link";
-import { useTheme }            from "next-themes";
-import { useTranslation }      from "next-i18next";
-import { useSignOutMutation }  from "@/lib/api/authApi";
-import { useGetMeQuery }       from "@/lib/api/userApi";
-import { useRouter }           from "next/router";
-import { Loader }              from "@/components/Loader";
+} from "@/icons";
+import {
+  Button,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuPortal,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuTrigger
+} from "@/components/ui";
+import Image from "next/image";
+import Link from "next/link";
+import { useTheme } from "next-themes";
+import { useTranslation } from "next-i18next";
+import { useSignOutMutation } from "@/lib/api/authApi";
+import { useRouter } from "next/router";
+import { Loader } from "@/components/Loader";
 import Cookie from "js-cookie";
-import { useGetMyAllUnreadedNotificationsQuery } from "@/lib/api/notificationApi";
+import { IUserMe } from "@/typings/user";
+import { INotification } from "@/typings/notification";
 
-export const MainTopbar = () => {
+export const MainTopbar = ({ user, notifications }: { user?: IUserMe, notifications?: INotification[] }) => {
   const { t, i18n } = useTranslation('common');
 
-  const router   = useRouter();
-
-  const { data: user, isLoading } = useGetMeQuery();
-  const { data: notifications, isLoading: isLoadingNotifications } = useGetMyAllUnreadedNotificationsQuery();
+  const router = useRouter();
 
   const [signOut, { isLoading: isLoadingSignOut, isSuccess }] = useSignOutMutation();
 
@@ -60,7 +57,7 @@ export const MainTopbar = () => {
     router.push(router.pathname, router.asPath, { locale: lng });
   };
 
-  if (isLoading || isLoadingSignOut || isSuccess || isLoadingNotifications) {
+  if (isLoadingSignOut || isSuccess) {
     return <Loader className="absolute left-0 top-0 z-[100]" />
   }
 
@@ -97,10 +94,10 @@ export const MainTopbar = () => {
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-56">
                 <DropdownMenuItem onClick={handleChangeTheme} className={`${theme === 'light' && 'gap-1'}`}>
-                  {theme === 'light' 
-                    ? <MoonIcon /> 
+                  {theme === 'light'
+                    ? <MoonIcon />
                     : <SunIcon />
-                  } 
+                  }
                   {t('theme')}
                 </DropdownMenuItem>
                 <DropdownMenuSub>

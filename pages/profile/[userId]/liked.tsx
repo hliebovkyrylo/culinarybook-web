@@ -1,21 +1,22 @@
-import { Loader }                 from "@/components/Loader"
-import { RequireAuth }            from "@/hocs/requireAuth"
-import { useGetMyLikedQuery }     from "@/lib/api/recipeApi"
-import { MainLayout }             from "@/modules/layouts"
-import { 
-  ProfileNavigationPanel, 
-  ProfileRecipesContent, 
-  ProfileUserData, 
-  useFollowState, 
-  useUsers 
-}                                 from "@/modules/profile"
-import { 
-  GetServerSidePropsContext, 
-  InferGetServerSidePropsType 
-}                                 from "next"
-import { useTranslation }         from "next-i18next"
+import { Loader } from "@/components/Loader"
+import { RequireAuth } from "@/hocs/requireAuth"
+import { useGetMyAllUnreadedNotificationsQuery } from "@/lib/api/notificationApi"
+import { useGetMyLikedQuery } from "@/lib/api/recipeApi"
+import { MainLayout } from "@/modules/layouts"
+import {
+  ProfileNavigationPanel,
+  ProfileRecipesContent,
+  ProfileUserData,
+  useFollowState,
+  useUsers
+} from "@/modules/profile"
+import {
+  GetServerSidePropsContext,
+  InferGetServerSidePropsType
+} from "next"
+import { useTranslation } from "next-i18next"
 import { serverSideTranslations } from "next-i18next/serverSideTranslations"
-import { useRouter }              from "next/router"
+import { useRouter } from "next/router"
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const userId = ctx.params?.userId;
@@ -30,15 +31,16 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 }
 
 const Liked = ({ userId }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  const { t }  = useTranslation('common');
+  const { t } = useTranslation('common');
   const router = useRouter();
 
   const { user, userMe, isLoadingUser, isMeLoading } = useUsers(userId);
   const { followState, followRequestState, isLoadingFollowState, isLoadingFollowRequestState } = useFollowState(userId);
 
   const { data: recipes, isLoading: isLoadingLikedRecipes } = useGetMyLikedQuery();
+  const { data: notifications, isLoading: isLoadingNotifications } = useGetMyAllUnreadedNotificationsQuery();
 
-  if (isLoadingUser || isMeLoading || isLoadingFollowState || isLoadingFollowRequestState) {
+  if (isLoadingUser || isMeLoading || isLoadingFollowState || isLoadingFollowRequestState || isLoadingNotifications) {
     return <Loader className="absolute top-0 left-0" />
   }
 
@@ -51,18 +53,20 @@ const Liked = ({ userId }: InferGetServerSidePropsType<typeof getServerSideProps
       metaTitle={`${user?.name} - Liked | Culinarybook`}
       pageDescription={`${user?.name} ${t('meta-profile-description')}`}
       containerSize="full"
+      user={userMe}
+      notifications={notifications}
     >
-      <ProfileUserData 
+      <ProfileUserData
         data={user}
         selfId={userMe?.id}
         followState={followState}
         followRequestState={followRequestState}
       />
-      <ProfileNavigationPanel 
+      <ProfileNavigationPanel
         userId={userId}
         selfId={userMe?.id}
       />
-      <ProfileRecipesContent 
+      <ProfileRecipesContent
         data={recipes}
         isLoading={isLoadingLikedRecipes}
       />

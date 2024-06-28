@@ -1,35 +1,36 @@
-import { 
-  useGetLikeStateQuery, 
-  useGetRecipeLikesQuery,  
-}                                      from "@/lib/api/likeApi";
-import { 
-  CommentsContent, 
-  CreateCommentForm, 
-  RecipeData, 
-  StepsData 
-}                                      from "@/modules/recipe";
-import { 
-  useGetRecipeQuery, 
-  useGetStepsQuery 
-}                                      from "@/lib/api/recipeApi";
-import { 
-  GetServerSidePropsContext, 
-  InferGetServerSidePropsType 
-}                                      from "next";
-import { useGetSaveStateQuery }        from "@/lib/api/saveApi";
-import { PrivateRecipe }               from "@/components/recipe";
-import { useGetCommentsQuery }         from "@/lib/api/commentApi";
-import Image                           from "next/image";
-import { useEffect, useState }         from "react";
-import { useTranslation }              from "next-i18next";
-import { useGetMeQuery }               from "@/lib/api/userApi";
-import { serverSideTranslations }      from "next-i18next/serverSideTranslations";
-import { MainLayout }                  from "@/modules/layouts";
-import { Loader }                      from "@/components/Loader";
+import {
+  useGetLikeStateQuery,
+  useGetRecipeLikesQuery,
+} from "@/lib/api/likeApi";
+import {
+  CommentsContent,
+  CreateCommentForm,
+  RecipeData,
+  StepsData
+} from "@/modules/recipe";
+import {
+  useGetRecipeQuery,
+  useGetStepsQuery
+} from "@/lib/api/recipeApi";
+import {
+  GetServerSidePropsContext,
+  InferGetServerSidePropsType
+} from "next";
+import { useGetSaveStateQuery } from "@/lib/api/saveApi";
+import { PrivateRecipe } from "@/components/recipe";
+import { useGetCommentsQuery } from "@/lib/api/commentApi";
+import Image from "next/image";
+import { useEffect, useState } from "react";
+import { useTranslation } from "next-i18next";
+import { useGetMeQuery } from "@/lib/api/userApi";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { MainLayout } from "@/modules/layouts";
+import { Loader } from "@/components/Loader";
+import { useGetMyAllUnreadedNotificationsQuery } from "@/lib/api/notificationApi";
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const recipeId = ctx.params?.recipeId;
-  const locale   = ctx.locale;
+  const locale = ctx.locale;
 
   return {
     props: {
@@ -40,14 +41,15 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 }
 
 const Recipe = ({ recipeId }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  const { t }  = useTranslation('common');
+  const { t } = useTranslation('common');
 
   const { data: user, isLoading: isLoadingUser } = useGetMeQuery();
 
-  const { data: recipe, isLoading: isLoadingRecipe }                 = useGetRecipeQuery(recipeId)
-  const { data: steps, isLoading: isLoadingSteps }                   = useGetStepsQuery(recipeId);
+  const { data: recipe, isLoading: isLoadingRecipe } = useGetRecipeQuery(recipeId)
+  const { data: steps, isLoading: isLoadingSteps } = useGetStepsQuery(recipeId);
   const { data: comments, isLoading: isLoadingComments, isFetching } = useGetCommentsQuery(recipeId);
-  const { data: likes, isLoading: isLoadingLikes }                   = useGetRecipeLikesQuery(recipeId);
+  const { data: likes, isLoading: isLoadingLikes } = useGetRecipeLikesQuery(recipeId);
+  const { data: notifications, isLoading: isLoadingNotifications } = useGetMyAllUnreadedNotificationsQuery();
 
   const { data: likeState, isLoading: isLoadingLikeState } = useGetLikeStateQuery(recipeId);
   const { data: saveState, isLoading: isLoadingSaveState } = useGetSaveStateQuery(recipeId);
@@ -60,7 +62,7 @@ const Recipe = ({ recipeId }: InferGetServerSidePropsType<typeof getServerSidePr
 
   const isBackgroundApplied = recipe?.applyBackground;
 
-  if (isLoadingLikes || isLoadingLikeState || isLoadingSaveState || isLoadingUser || isLoadingRecipe) {
+  if (isLoadingLikes || isLoadingLikeState || isLoadingSaveState || isLoadingUser || isLoadingRecipe || isLoadingNotifications) {
     return <Loader className="absolute top-0 left-0" />
   }
 
@@ -69,18 +71,20 @@ const Recipe = ({ recipeId }: InferGetServerSidePropsType<typeof getServerSidePr
   if (!recipe?.isPublic) {
     return <PrivateRecipe />
   }
-  
+
   return (
     <MainLayout
       pageTitle={''}
       pageDescription={recipe.ingradients}
       metaTitle={`${recipe.title} | Culinarybook`}
       containerSize="full"
+      user={user}
+      notifications={notifications}
     >
       {isBackgroundApplied && (
         <Image src={recipe.image} alt="Background image" width={1000} height={1000} className=" absolute top-0 left-0 w-full h-full object-cover -z-10 blur-sm opacity-10" />
       )}
-      <RecipeData 
+      <RecipeData
         data={recipe}
         averageGrade={comments && comments?.length > 0 ? comments.reduce((sum, comment) => sum + comment.grade, 0) / comments.length : 0}
         isOwner={isRecipeOwner}
@@ -93,7 +97,7 @@ const Recipe = ({ recipeId }: InferGetServerSidePropsType<typeof getServerSidePr
       <div className="mt-12">
         <h3 className="link-text font-semibold my-5">{t('title-comment')}</h3>
         <CreateCommentForm averageRating={4} />
-        <CommentsContent 
+        <CommentsContent
           data={comments}
           isLoading={isLoadingAllComments}
           recipeOwnerId={recipe.ownerId}
