@@ -26,7 +26,7 @@ const Home = () => {
     refetchOnReconnect: true,
     refetchOnFocus: true
   });
-  const { data: user, isLoading: isMeLoading } = useGetMeQuery(undefined, {
+  const { data: user, isLoading: isMeLoading, isFetching } = useGetMeQuery(undefined, {
     refetchOnMountOrArgChange: true,
     refetchOnReconnect: true,
     refetchOnFocus: true
@@ -37,7 +37,7 @@ const Home = () => {
 
   const isLoading = isLoadingRecipes || isLoadingUsers;
 
-  if (isMeLoading || isLoadingNotifications) {
+  if (isMeLoading || isLoadingNotifications || isFetching) {
     return <Loader className="absolute top-0 left-0" />
   }
 
