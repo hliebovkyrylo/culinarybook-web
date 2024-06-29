@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/utils/utils";
 import { forwardRef } from "react";
 
 interface RecipeTextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
