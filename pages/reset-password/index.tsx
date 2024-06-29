@@ -1,7 +1,7 @@
-import { useTranslation }         from "next-i18next";
+import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { AuthorizationLayout }    from "@/modules/layouts";
-import { ResetPasswordForm }      from "@/modules/auth";
+import { AuthorizationLayout } from "@/modules/layouts";
+import { ResetPasswordForm } from "@/modules/auth";
 
 export const getServerSideProps = async ({ locale }: { locale: string }) => ({
   props: {

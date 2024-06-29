@@ -1,18 +1,18 @@
 import { IUser, IUserFollower } from "@/typings/user";
-import { api }                  from ".";
+import { api } from ".";
 
-export type IUserPreviewResponse  = IUser[];
+export type IUserPreviewResponse = IUser[];
 export type IUserFollowerResponse = IUserFollower[];
 
 export interface IGetUsersRequest {
-  page : number;
+  page: number;
   limit: number;
 };
 
 export interface IGetUsersRequestById {
-  userId   : string;
-  page    ?: number;
-  limit   ?: number;
+  userId: string;
+  page?: number;
+  limit?: number;
   username?: string;
 };
 
@@ -25,7 +25,7 @@ export interface IGetFollowRequestStateResponse {
 }
 
 export interface IFollowRequestAnsqwear {
-  userId : string;
+  userId: string;
   allowed: boolean;
 }
 
@@ -85,7 +85,7 @@ export const {
   useFollowMutation,
   useFollowRequestAnswearMutation,
   useGetUserFollowersQuery,
-  useGetUserFollowingsQuery, 
+  useGetUserFollowingsQuery,
   useGetFollowStateQuery,
   useUnfollowMutation,
   useGetFollowRequestStateQuery,

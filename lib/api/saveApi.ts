@@ -9,14 +9,14 @@ export const saveApi = api.injectEndpoints({
     createSave: builder.mutation<void, string>({
       query: (recipeId) => ({
         method: 'POST',
-        url   : `/save/create/${recipeId}`
+        url: `/save/create/${recipeId}`
       }),
       invalidatesTags: ['user', 'recipe']
     }),
     removeSave: builder.mutation<void, string>({
       query: (recipeId) => ({
         method: 'DELETE',
-        url   : `/save/delete/${recipeId}`
+        url: `/save/delete/${recipeId}`
       }),
       invalidatesTags: ['user', 'recipe']
     }),

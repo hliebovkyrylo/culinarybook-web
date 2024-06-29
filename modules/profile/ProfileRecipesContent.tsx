@@ -1,10 +1,10 @@
 import { RecipeCard, RecipeCardSkeleton } from "@/components/recipes";
-import { IRecipePreview }                 from "@/typings/recipe";
-import { useTranslation }                 from "next-i18next";
+import { IRecipePreview } from "@/typings/recipe";
+import { useTranslation } from "next-i18next";
 
 interface IProfileRecipesContent {
   isLoading: boolean;
-  data    ?: IRecipePreview[];
+  data?: IRecipePreview[];
 }
 
 export const ProfileRecipesContent = ({

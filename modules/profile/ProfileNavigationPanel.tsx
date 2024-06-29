@@ -1,25 +1,25 @@
-import { profileLinks }                       from "@/constants";
+import { profileLinks } from "@/constants";
 import { ArrowSortDownIcon, ArrowSortUpIcon } from "@/icons";
-import { useTranslation }                     from "next-i18next";
-import Link                                   from "next/link";
-import { useRouter }                          from "next/router";
-import { useState }                           from "react";
+import { useTranslation } from "next-i18next";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { useState } from "react";
 
 interface IProfileNavigationPanel {
-  userId    : string,
+  userId: string,
   className?: string,
-  selfId   ?: string;
+  selfId?: string;
 }
 
 export const ProfileNavigationPanel = ({
-  userId, 
+  userId,
   className,
   selfId
 }: IProfileNavigationPanel) => {
   const { t } = useTranslation('common');
   const router = useRouter();
 
-  const pathname    = router.asPath;
+  const pathname = router.asPath;
   const currentSort = router.query.sortBy;
 
   const [sortBy, setSortBy] = useState<string>('desc');

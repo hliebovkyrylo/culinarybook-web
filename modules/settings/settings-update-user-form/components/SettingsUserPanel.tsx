@@ -1,14 +1,14 @@
 import { CameraIcon } from "@/icons";
-import Image          from "next/image"
-import { useRef }     from "react";
+import Image from "next/image"
+import { useRef } from "react";
 
 interface ISettingsPanel {
-  selectedUserImage         ?: File | null;
-  selectedBackgroundImage   ?: File | null;
-  handleUserImageChange      : (event: React.ChangeEvent<HTMLInputElement>) => void;
+  selectedUserImage?: File | null;
+  selectedBackgroundImage?: File | null;
+  handleUserImageChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handleBackgroundImageChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  userImage                  : string;
-  userBackgroundImage        : string;
+  userImage: string;
+  userBackgroundImage: string;
 }
 
 export const SettingsUserPanel = ({
@@ -19,8 +19,8 @@ export const SettingsUserPanel = ({
   userBackgroundImage,
   userImage
 }: ISettingsPanel) => {
-  const inputUserImgRef       = useRef<HTMLInputElement | null>(null); 
-  const inputBackgroundImgRef = useRef<HTMLInputElement | null>(null); 
+  const inputUserImgRef = useRef<HTMLInputElement | null>(null);
+  const inputBackgroundImgRef = useRef<HTMLInputElement | null>(null);
 
   return (
     <div className="w-full second-background py-3 px-6 rounded-lg relative overflow-hidden">

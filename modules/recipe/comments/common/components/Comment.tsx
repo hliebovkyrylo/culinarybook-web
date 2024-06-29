@@ -1,25 +1,25 @@
-import { 
-  ChevronDownIcon, 
-  ChevronUpIcon, 
-  StarIcon, 
-  TrashIcon 
-}                         from "@/icons";
-import { useGetMeQuery }  from "@/lib/api/userApi";
-import Image              from "next/image";
-import Link               from "next/link";
+import {
+  ChevronDownIcon,
+  ChevronUpIcon,
+  StarIcon,
+  TrashIcon
+} from "@/icons";
+import { useGetMeQuery } from "@/lib/api/userApi";
+import Image from "next/image";
+import Link from "next/link";
 import { useTranslation } from "react-i18next";
 
 interface IComment {
-  userImage           : string;
-  username            : string;
-  userId              : string;
-  recipeOwnerId       : string;
-  numbersOfReplies    : number;
-  rating             ?: number;
-  commentText         : string;
-  onClickOpenReplies ?: () => void;
-  isOpenReplies      ?: boolean;
-  onClickReply        : () => void;
+  userImage: string;
+  username: string;
+  userId: string;
+  recipeOwnerId: string;
+  numbersOfReplies: number;
+  rating?: number;
+  commentText: string;
+  onClickOpenReplies?: () => void;
+  isOpenReplies?: boolean;
+  onClickReply: () => void;
   onClickDeleteComment: () => void;
 }
 
@@ -57,10 +57,10 @@ export const Comment = ({
         <p>{commentText}</p>
         <div className="flex items-center">
           {numbersOfReplies > 0 && (
-            <button onClick={onClickOpenReplies} className="flex items-center leftsidebar__text !text-base !p-0 mr-6">{isOpenReplies 
+            <button onClick={onClickOpenReplies} className="flex items-center leftsidebar__text !text-base !p-0 mr-6">{isOpenReplies
               ? (
                 <ChevronUpIcon className="w-4 icon-color mr-1" />
-              ) 
+              )
               : (
                 <ChevronDownIcon className="w-4 icon-color mr-1" />
               )

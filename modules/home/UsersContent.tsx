@@ -1,10 +1,10 @@
 import { CreatorCard, CreatorCardSkeleton } from "@/components/users";
-import { IUser }                            from "@/typings/user"
-import { useTranslation }                   from "next-i18next";
-import { Swiper, SwiperSlide }              from "swiper/react";
+import { IUser } from "@/typings/user"
+import { useTranslation } from "next-i18next";
+import { Swiper, SwiperSlide } from "swiper/react";
 
 interface IUserContent {
-  data     : IUser[] | undefined;
+  data: IUser[] | undefined;
   isLoading: boolean;
 };
 

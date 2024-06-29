@@ -1,11 +1,11 @@
 import { CameraIcon } from "@/icons"
-import Image          from "next/image";
+import Image from "next/image";
 
 interface IRecipeCreateCover {
-  recipeImage  : string | null;
-  isError     ?: boolean;
-  errorMessage?:string
-  onClick      : () => void;
+  recipeImage: string | null;
+  isError?: boolean;
+  errorMessage?: string
+  onClick: () => void;
 }
 
 export const RecipeCreateCover = ({

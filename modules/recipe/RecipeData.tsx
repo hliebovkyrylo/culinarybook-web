@@ -1,38 +1,38 @@
-import { 
-  Bookmark, 
-  BookmarkSolidicon, 
-  ClockIcon, 
-  HeartRegularIcon, 
-  HeartSolidIcon, 
-  MedalIcon, 
-  PenToSquare, 
-  StarIcon, 
-  UntesilsIcon 
-}                              from "@/icons";
-import { 
-  useCreateLikeMutation, 
-  useRemoveLikeMutation 
-}                              from "@/lib/api/likeApi";
-import { 
-  useCreateSaveMutation, 
-  useRemoveSaveMutation 
-}                              from "@/lib/api/saveApi";
-import Image                   from "next/image";
-import { foodTypeImages }      from "./constants";
-import Link                    from "next/link";
-import { IRecipe }             from "@/typings/recipe";
-import { useTranslation }      from "next-i18next";
+import {
+  Bookmark,
+  BookmarkSolidicon,
+  ClockIcon,
+  HeartRegularIcon,
+  HeartSolidIcon,
+  MedalIcon,
+  PenToSquare,
+  StarIcon,
+  UntesilsIcon
+} from "@/icons";
+import {
+  useCreateLikeMutation,
+  useRemoveLikeMutation
+} from "@/lib/api/likeApi";
+import {
+  useCreateSaveMutation,
+  useRemoveSaveMutation
+} from "@/lib/api/saveApi";
+import Image from "next/image";
+import { foodTypeImages } from "./constants";
+import Link from "next/link";
+import { IRecipe } from "@/typings/recipe";
+import { useTranslation } from "next-i18next";
 import { useEffect, useState } from "react";
-import { useRouter }           from "next/router";
+import { useRouter } from "next/router";
 
 interface IRecipeData {
-  data           : IRecipe | undefined;
-  isAuth         : boolean;
-  averageGrade   : number;
-  likeState      : any;
-  saveState      : any
-  likes          : any
-  isOwner        : boolean;
+  data: IRecipe | undefined;
+  isAuth: boolean;
+  averageGrade: number;
+  likeState: any;
+  saveState: any
+  likes: any
+  isOwner: boolean;
 }
 
 export const RecipeData = ({
@@ -47,14 +47,14 @@ export const RecipeData = ({
   const { t } = useTranslation("common");
   const router = useRouter();
 
-  const [ createLike ] = useCreateLikeMutation();
-  const [ removeLike ] = useRemoveLikeMutation();
-  const [ createSave ] = useCreateSaveMutation();
-  const [ removeSave ] = useRemoveSaveMutation();
+  const [createLike] = useCreateLikeMutation();
+  const [removeLike] = useRemoveLikeMutation();
+  const [createSave] = useCreateSaveMutation();
+  const [removeSave] = useRemoveSaveMutation();
 
-  const [ isLiked, setIsLiked ]      = useState<boolean>(!!likeState?.isLiked);
-  const [ isSaved, setIsSaved ]      = useState<boolean>(!!saveState?.isSaved);
-  const [ likesCount, setLikesCount] = useState(likes?.length || 0); 
+  const [isLiked, setIsLiked] = useState<boolean>(!!likeState?.isLiked);
+  const [isSaved, setIsSaved] = useState<boolean>(!!saveState?.isSaved);
+  const [likesCount, setLikesCount] = useState(likes?.length || 0);
 
   useEffect(() => {
     setIsLiked(!!likeState?.isLiked);
@@ -80,7 +80,7 @@ export const RecipeData = ({
       } else {
         setIsLiked(false);
         setLikesCount(likesCount - 1);
-        
+
         await removeLike(data?.id as string);
       }
     }
@@ -92,16 +92,16 @@ export const RecipeData = ({
     } else {
       if (!isSaved) {
         setIsSaved(true);
-  
+
         await createSave(data?.id as string);
       } else {
         setIsSaved(false);
-  
+
         await removeSave(data?.id as string);
       }
     }
   };
-  let defaultBgImage = foodTypeImages[data?.typeOfFood || ''] || '/assets/meat.jpg'; 
+  let defaultBgImage = foodTypeImages[data?.typeOfFood || ''] || '/assets/meat.jpg';
   return (
     <>
       <div className="flex max-xl:flex-col">

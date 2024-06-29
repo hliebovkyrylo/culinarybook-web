@@ -1,18 +1,18 @@
-import { 
-  ClipboardIcon, 
-  UsersIcon 
-}            from "@/icons";
+import {
+  ClipboardIcon,
+  UsersIcon
+} from "@/icons";
 import Image from "next/image";
-import Link  from "next/link";
+import Link from "next/link";
 
 interface ICreatorCard {
-  id         : string;
-  userImage  : string;
-  name       : string;
-  followers  : number;
-  recipes    : number;
-  className ?: string;
-  userBanner : string;
+  id: string;
+  userImage: string;
+  name: string;
+  followers: number;
+  recipes: number;
+  className?: string;
+  userBanner: string;
 }
 
 export const CreatorCard = ({

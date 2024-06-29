@@ -1,14 +1,14 @@
 import { useTranslation } from "next-i18next";
-import { Montserrat }     from "next/font/google";
-import Head               from "next/head";
-import Link               from "next/link";
+import { Montserrat } from "next/font/google";
+import Head from "next/head";
+import Link from "next/link";
 
 interface IAuthorizationLayout {
-  children        : React.ReactNode;
-  pageTitle       : string;
-  metaTitle      ?: string;
+  children: React.ReactNode;
+  pageTitle: string;
+  metaTitle?: string;
   pageDescription?: string;
-  applyHomeButton : boolean;
+  applyHomeButton: boolean;
 }
 
 const montserrat = Montserrat({ subsets: ['latin'] });

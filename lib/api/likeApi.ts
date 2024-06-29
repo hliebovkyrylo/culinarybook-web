@@ -1,4 +1,3 @@
-import { url } from "inspector";
 import { api } from ".";
 
 export interface ILikeStateResponse {
@@ -6,8 +5,8 @@ export interface ILikeStateResponse {
 };
 
 export interface ILikeResponse {
-  id      : string;
-  userId  : string;
+  id: string;
+  userId: string;
   recipeId: string;
 };
 
@@ -16,14 +15,14 @@ export const likeApi = api.injectEndpoints({
     createLike: builder.mutation<void, string>({
       query: (recipeId) => ({
         method: 'POST',
-        url   : `/like/create/${recipeId}`
+        url: `/like/create/${recipeId}`
       }),
       invalidatesTags: ['recipe']
     }),
     removeLike: builder.mutation<void, string>({
       query: (recipeId) => ({
         method: 'DELETE',
-        url   : `/like/${recipeId}/remove`
+        url: `/like/${recipeId}/remove`
       }),
       invalidatesTags: ['recipe']
     }),

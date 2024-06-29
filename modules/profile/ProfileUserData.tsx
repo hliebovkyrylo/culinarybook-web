@@ -1,21 +1,21 @@
-import { Button, Dialog }              from "@/components/ui";
-import { 
-  useCancelFollowRequestMutation, 
-  useFollowMutation, 
-  useUnfollowMutation 
-}                                      from "@/lib/api/followApi";
-import { IUser }                       from "@/typings/user";
-import { useTranslation }              from "next-i18next";
-import Image                           from "next/image";
-import Link                            from "next/link";
-import { useRouter }                   from "next/router";
-import { useEffect, useState }         from "react";
+import { Button, Dialog } from "@/components/ui";
+import {
+  useCancelFollowRequestMutation,
+  useFollowMutation,
+  useUnfollowMutation
+} from "@/lib/api/followApi";
+import { IUser } from "@/typings/user";
+import { useTranslation } from "next-i18next";
+import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
 interface IProfileUserData {
-  data               : IUser | undefined;
+  data: IUser | undefined;
   followRequestState?: any;
-  selfId            ?: string;
-  followState       ?: any;
+  selfId?: string;
+  followState?: any;
 }
 
 export const ProfileUserData = ({
@@ -24,21 +24,21 @@ export const ProfileUserData = ({
   selfId,
   followState,
 }: IProfileUserData) => {
-  const { t }  = useTranslation("common");
+  const { t } = useTranslation("common");
   const router = useRouter();
 
-  const [ follow ]              = useFollowMutation();
-  const [ unfollow ]            = useUnfollowMutation();
-  const [ cancelFollowRequest ] = useCancelFollowRequestMutation();
+  const [follow] = useFollowMutation();
+  const [unfollow] = useUnfollowMutation();
+  const [cancelFollowRequest] = useCancelFollowRequestMutation();
 
   const [followStateButtonText, setFollowStateButtonText] = useState<boolean>(followState?.isFollowed as boolean)
-  const [isRequestSent, setIsRequestSent]                 = useState<boolean>(followRequestState?.isFollowRequestSent as boolean);
+  const [isRequestSent, setIsRequestSent] = useState<boolean>(followRequestState?.isFollowRequestSent as boolean);
 
-  const [ numberOfFollowers, setNumberOfFollowers ]   = useState(data?.followersCount || 0);
-  const [ numberOfFollowings, setNumberOfFollowings ] = useState(data?.followingsCount || 0);
+  const [numberOfFollowers, setNumberOfFollowers] = useState(data?.followersCount || 0);
+  const [numberOfFollowings, setNumberOfFollowings] = useState(data?.followingsCount || 0);
 
-  const [isOpenConfirm, setIsOpenConfirm]         = useState<boolean>(false);
-  const [confirmText, setConfirmText]             = useState<string>('');
+  const [isOpenConfirm, setIsOpenConfirm] = useState<boolean>(false);
+  const [confirmText, setConfirmText] = useState<string>('');
   const [confirmButtonText, setConfirmButtonText] = useState<string>('')
 
   useEffect(() => {
@@ -60,18 +60,18 @@ export const ProfileUserData = ({
       if (!followState?.isFollowed && !data?.isPrivate) {
         setFollowStateButtonText(true);
         setIsOpenConfirm(false);
-  
+
         setNumberOfFollowers(numberOfFollowers + 1);
         await follow(data?.id as string)
       } else if (data?.isPrivate && !followState?.isFollowed && !followRequestState?.isFollowRequestSent) {
         setIsRequestSent(true)
         await follow(data?.id as string)
-  
+
       } else if (followRequestState?.isFollowRequestSent) {
         setIsOpenConfirm(true)
         setConfirmText(`${t('cancel-follow-request')} "${data?.username}"?`)
         setConfirmButtonText(t('cancel-confirm'))
-  
+
       } else {
         setIsOpenConfirm(true)
         setConfirmText(`${t('confirm-unfollow')} "${data?.username}"?`)
@@ -93,8 +93,8 @@ export const ProfileUserData = ({
       } else {
         setFollowStateButtonText(false);
         setNumberOfFollowers(numberOfFollowers - 1);
-        
-        await unfollow(data?.id as string); 
+
+        await unfollow(data?.id as string);
       }
     }
   }
@@ -108,7 +108,7 @@ export const ProfileUserData = ({
         <Image src={data && data?.image !== '' ? data?.image : "/assets/user_placeholder.jpg"} alt="User image" className="object-cover rounded-full w-40 h-40 max-[537px]:w-20 max-[537px]:h-20" width={160} height={160} />
         <div className="w-full max-w-[390px] h-36 flex flex-col justify-around">
           <div className="flex items-center flex-wrap max-[609px]:items-start max-[609px]:flex-col">
-            <p className="default-text text-left flex justify-start max-[409px]:w-full">@{data?.username}</p> 
+            <p className="default-text text-left flex justify-start max-[409px]:w-full">@{data?.username}</p>
             {(data?.id !== selfId) && (
               <Button text={isRequestSent ? t('follow-request') : !followStateButtonText ? t('follow-button') : t('follow-button-already')} state="default" onClick={handleFollow} className={`!w-48 h-8 flex opacity-70 items-center justify-center ml-4 max-[609px]:ml-0 max-[609px]:mt-1 ${(followStateButtonText || isRequestSent) && "!bg-[#29292b] !text-white font-normal"}`} />
             )}

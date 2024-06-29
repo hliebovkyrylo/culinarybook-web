@@ -1,5 +1,5 @@
 import { XMarkIcon } from "@/icons"
-import Link          from "next/link"
+import Link from "next/link"
 import { useRouter } from "next/navigation";
 
 export const FollowsWindow = ({ children, title, userId }: { children: React.ReactNode, title: string, userId: string }) => {

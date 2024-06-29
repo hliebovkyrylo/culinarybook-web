@@ -17,7 +17,6 @@ import {
   InferGetServerSidePropsType
 } from "next";
 import { useGetSaveStateQuery } from "@/lib/api/saveApi";
-import { PrivateRecipe } from "@/components/recipe";
 import { useGetCommentsQuery } from "@/lib/api/commentApi";
 import Image from "next/image";
 import { useEffect, useState } from "react";
@@ -27,6 +26,7 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { MainLayout } from "@/modules/layouts";
 import { Loader } from "@/components/Loader";
 import { useGetMyAllUnreadedNotificationsQuery } from "@/lib/api/notificationApi";
+import { PrivateRecipe } from "@/components/recipes";
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const recipeId = ctx.params?.recipeId;

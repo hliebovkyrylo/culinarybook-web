@@ -1,10 +1,10 @@
-import { useTranslation }         from "next-i18next";
+import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { AuthorizationLayout }    from "@/modules/layouts";
-import { VerifyAccountForm }      from "@/modules/auth";
-import { useGetMeQuery }          from "@/lib/api/userApi";
-import { Loader }                 from "@/components/Loader";
-import { useRouter }              from "next/router";
+import { AuthorizationLayout } from "@/modules/layouts";
+import { VerifyAccountForm } from "@/modules/auth";
+import { useGetMeQuery } from "@/lib/api/userApi";
+import { Loader } from "@/components/Loader";
+import { useRouter } from "next/router";
 
 export const getServerSideProps = async ({ locale }: { locale: string }) => ({
   props: {

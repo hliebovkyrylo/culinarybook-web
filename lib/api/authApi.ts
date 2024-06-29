@@ -1,11 +1,11 @@
 import { api } from ".";
 
 export interface ISignUpRequest {
-  email   : string;
+  email: string;
   username: string;
-  name    : string;
+  name: string;
   password: string;
-  image   : string;
+  image: string;
 };
 
 export interface IAuthResponse {
@@ -17,7 +17,7 @@ export interface IVerifyAccountRequest {
 };
 
 export interface ISignInRequest {
-  email   : string;
+  email: string;
   password: string;
 };
 
@@ -31,18 +31,18 @@ export interface IForgotPasswordRequest {
 
 export interface ICanResetPasswordRequest {
   email: string;
-  code : string; 
+  code: string;
 };
 
 export interface IResetPasswordRequest {
-  password       : string;
+  password: string;
   confirmPassword: string;
-  email          : string;
+  email: string;
 };
 
 export interface IChangePasswordRequest {
-  oldPassword       : string;
-  newPassword       : string;
+  oldPassword: string;
+  newPassword: string;
   confirmNewPassword: string;
 }
 
@@ -51,7 +51,7 @@ export const authApi = api.injectEndpoints({
     signUp: builder.mutation<IAuthResponse, ISignUpRequest>({
       query: (body) => ({
         method: 'POST',
-        url   : '/auth/sign-up',
+        url: '/auth/sign-up',
         body
       }),
       invalidatesTags: ['user', 'recipe']
@@ -59,14 +59,14 @@ export const authApi = api.injectEndpoints({
     sendCode: builder.mutation<string, void>({
       query: () => ({
         method: 'POST',
-        url   : '/auth/send-code'
+        url: '/auth/send-code'
       }),
       invalidatesTags: ['user', 'recipe']
     }),
     verifyAccount: builder.mutation<void, IVerifyAccountRequest>({
       query: (body) => ({
         method: 'POST',
-        url   :  '/auth/verify-email',
+        url: '/auth/verify-email',
         body
       }),
       invalidatesTags: ['user', 'recipe']
@@ -74,7 +74,7 @@ export const authApi = api.injectEndpoints({
     signIn: builder.mutation<IAuthResponse, ISignInRequest>({
       query: (body) => ({
         method: 'POST',
-        url   : '/auth/sign-in',
+        url: '/auth/sign-in',
         body
       }),
       invalidatesTags: ['user', 'recipe']
@@ -82,7 +82,7 @@ export const authApi = api.injectEndpoints({
     forgotPassword: builder.mutation<void, IForgotPasswordRequest>({
       query: (body) => ({
         method: 'POST',
-        url   : '/auth/forgot-password',
+        url: '/auth/forgot-password',
         body
       }),
       invalidatesTags: ['user', 'recipe']
@@ -90,8 +90,8 @@ export const authApi = api.injectEndpoints({
     canResetPassword: builder.mutation<void, ICanResetPasswordRequest>({
       query: ({ email, code }) => ({
         method: 'PATCH',
-        url   : `/auth/canReset-password/${email}`,
-        body  : {
+        url: `/auth/canReset-password/${email}`,
+        body: {
           code,
         }
       }),
@@ -100,8 +100,8 @@ export const authApi = api.injectEndpoints({
     resetPassword: builder.mutation<void, IResetPasswordRequest>({
       query: ({ password, confirmPassword, email }) => ({
         method: 'PATCH',
-        url   : `/auth/reset-password/${email}`,
-        body  : {
+        url: `/auth/reset-password/${email}`,
+        body: {
           password,
           confirmPassword
         }
@@ -125,8 +125,8 @@ export const authApi = api.injectEndpoints({
   })
 });
 
-export const { 
-  useSignUpMutation, 
+export const {
+  useSignUpMutation,
   useSendCodeMutation,
   useVerifyAccountMutation,
   useSignInMutation,

@@ -1,13 +1,13 @@
-import useFormatDaysAgo   from "@/hooks/useFormatDaysAgo";
+import useFormatDaysAgo from "@/hooks/useFormatDaysAgo";
 import { useTranslation } from "next-i18next";
-import Image              from "next/image";
-import Link               from "next/link";
+import Image from "next/image";
+import Link from "next/link";
 
 interface INotificationAllowRequest {
-  userImage  : string;
-  username   : string;
-  userId     : string;
-  createdAt  : Date;
+  userImage: string;
+  username: string;
+  userId: string;
+  createdAt: Date;
 }
 
 export const NotificationAllowRequest = ({

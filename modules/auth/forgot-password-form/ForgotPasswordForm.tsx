@@ -1,20 +1,20 @@
 import { useForgotPasswordMutation } from "@/lib/api/authApi";
-import { useRouter }                 from "next/router";
-import { useForm }                   from "react-hook-form";
-import { 
-  ForgotPasswordFormData, 
-  forgotPasswordSchema 
-}                                    from "./schemas/forgotPasswordSchema";
-import { zodResolver }               from "@hookform/resolvers/zod";
-import { useCallback }               from "react";
-import { RtkError }                  from "@/typings/error";
-import { useTranslation }            from "next-i18next";
-import { Button, Input }             from "@/components/ui";
-import cookie                        from "js-cookie";
-import { Loader }                    from "@/components/Loader";
+import { useRouter } from "next/router";
+import { useForm } from "react-hook-form";
+import {
+  ForgotPasswordFormData,
+  forgotPasswordSchema
+} from "./schemas/forgotPasswordSchema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useCallback } from "react";
+import { RtkError } from "@/typings/error";
+import { useTranslation } from "next-i18next";
+import { Button, Input } from "@/components/ui";
+import cookie from "js-cookie";
+import { Loader } from "@/components/Loader";
 
 export const ForgotPasswordForm = () => {
-  const { t }  = useTranslation('common');
+  const { t } = useTranslation('common');
   const router = useRouter();
 
   const [forgotPassword, { isLoading: isSendCodeLoading, isSuccess }] = useForgotPasswordMutation();

@@ -1,29 +1,29 @@
 import { IComment, ICommentReply } from "@/typings/comment";
-import { api }                     from ".";
+import { api } from ".";
 import { IUser } from "@/typings/user";
 
 export interface ICreateCommentRequest {
   commentText: string;
-  grade      : number;
-  recipeId   : string;
+  grade: number;
+  recipeId: string;
 };
 
 export interface ICreateCommentReplyRequest {
   commentText: string;
-  commentId  : string;
-  userId     : string;
+  commentId: string;
+  userId: string;
 };
 
-export type ICommentResponse      = IComment;
+export type ICommentResponse = IComment;
 export type ICommentReplyResponse = ICommentReply;
 
 export interface IGetCommentsResponse {
-  id            : string;
-  user          : IUser;
-  commentText   : string;
-  grade         : number;
-  createdAt     : Date;
-  commentReply  : ICommentReply[];
+  id: string;
+  user: IUser;
+  commentText: string;
+  grade: number;
+  createdAt: Date;
+  commentReply: ICommentReply[];
 }
 
 export const commentApi = api.injectEndpoints({

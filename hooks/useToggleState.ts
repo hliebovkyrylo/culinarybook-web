@@ -2,7 +2,7 @@ import { useState } from "react";
 
 type StateSetter = (id: string) => void;
 
-export const useToggleState = (initialState: { [key: string]: boolean }): [ { [key: string]: boolean }, StateSetter ] => {
+export const useToggleState = (initialState: { [key: string]: boolean }): [{ [key: string]: boolean }, StateSetter] => {
   const [state, setState] = useState<{ [key: string]: boolean }>(initialState);
 
   const toggleState = (id: string) => {

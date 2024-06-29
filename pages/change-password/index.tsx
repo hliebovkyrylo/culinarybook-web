@@ -1,8 +1,8 @@
-import { useTranslation }         from "next-i18next";
+import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { AuthorizationLayout }    from "@/modules/layouts";
-import { ChangePasswordForm }     from "@/modules/auth";
-import { RequireAuth }            from "@/hocs/requireAuth";
+import { AuthorizationLayout } from "@/modules/layouts";
+import { ChangePasswordForm } from "@/modules/auth";
+import { RequireAuth } from "@/hocs/requireAuth";
 
 export const getServerSideProps = async ({ locale }: { locale: string }) => ({
   props: {
@@ -11,7 +11,7 @@ export const getServerSideProps = async ({ locale }: { locale: string }) => ({
 })
 
 const ChangePassword = () => {
-  const { t }  = useTranslation('common');
+  const { t } = useTranslation('common');
   return (
     <AuthorizationLayout
       pageTitle={t('title-change')}

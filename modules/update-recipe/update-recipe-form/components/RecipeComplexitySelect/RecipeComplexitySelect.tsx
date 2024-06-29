@@ -1,12 +1,12 @@
-import { 
-  Select, 
-  SelectContent, 
-  SelectGroup, 
-  SelectItem, 
-  SelectTrigger, 
-  SelectValue 
-}                              from "@/components/ui/select"
-import { useTranslation }      from "next-i18next"
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from "@/components/ui/select"
+import { useTranslation } from "next-i18next"
 import { Control, Controller } from 'react-hook-form';
 
 type RecipeComplexitySelectProps = {
@@ -15,7 +15,7 @@ type RecipeComplexitySelectProps = {
 
 export const RecipeComplexitySelect = ({ control }: RecipeComplexitySelectProps) => {
   const { t } = useTranslation("common");
-  
+
   return (
     <Controller
       control={control}

@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import { useTranslation }      from "react-i18next";
+import { useTranslation } from "react-i18next";
 
 function useFormatDaysAgo() {
-  const { t }                         = useTranslation();
+  const { t } = useTranslation();
   const [currentDate, setCurrentDate] = useState(new Date());
 
   useEffect(() => {
@@ -17,8 +17,8 @@ function useFormatDaysAgo() {
 
   const millisecondsInSecond = 1000;
   const millisecondsInMinute = millisecondsInSecond * 60;
-  const millisecondsInHour   = millisecondsInMinute * 60;
-  const millisecondsInDay    = millisecondsInHour * 24;
+  const millisecondsInHour = millisecondsInMinute * 60;
+  const millisecondsInDay = millisecondsInHour * 24;
 
   return function formatDaysAgo(createdAt: Date | string) {
     if (typeof createdAt === "string") {
@@ -26,10 +26,10 @@ function useFormatDaysAgo() {
     }
 
     const differenceInMilliseconds = currentDate.getTime() - createdAt?.getTime();
-    const secondsDifference        = Math.floor(differenceInMilliseconds / millisecondsInSecond);
-    const minutesDifference        = Math.floor(differenceInMilliseconds / millisecondsInMinute);
-    const hoursDifference          = Math.floor(differenceInMilliseconds / millisecondsInHour);
-    const daysDifference           = Math.floor(differenceInMilliseconds / millisecondsInDay);
+    const secondsDifference = Math.floor(differenceInMilliseconds / millisecondsInSecond);
+    const minutesDifference = Math.floor(differenceInMilliseconds / millisecondsInMinute);
+    const hoursDifference = Math.floor(differenceInMilliseconds / millisecondsInHour);
+    const daysDifference = Math.floor(differenceInMilliseconds / millisecondsInDay);
 
     function getTranslationKeyAndValue(differance: number, timeUnit: string) {
       if (timeUnit === 'time-hour-ago') {
@@ -58,7 +58,7 @@ function useFormatDaysAgo() {
       return getTranslationKeyAndValue(daysDifference, 'time-many-day');
     } else if (daysDifference <= 30) {
       const weeks = Math.floor(daysDifference / 7);
-      
+
       return getTranslationKeyAndValue(weeks, 'time-weeks');
     } else if (daysDifference < 365) {
       const months = Math.floor(daysDifference / 30);

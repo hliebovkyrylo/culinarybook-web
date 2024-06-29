@@ -1,10 +1,10 @@
-import { useRouter }           from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 interface ISearchInput {
   placeholder: string;
-  leftIcon   : React.ReactNode;
-  routeType ?: string;
+  leftIcon: React.ReactNode;
+  routeType?: string;
   searchType?: string;
 }
 
@@ -14,7 +14,7 @@ export const SearchInput = ({
   routeType,
   searchType,
 }: ISearchInput) => {
-  const router              = useRouter();
+  const router = useRouter();
   const [search, setSearch] = useState("");
 
   useEffect(() => {

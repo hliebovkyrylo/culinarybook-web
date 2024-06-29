@@ -1,16 +1,16 @@
-import Link               from "next/link";
-import useFormatDaysAgo   from '@/hooks/useFormatDaysAgo';
-import Image              from "next/image";
+import Link from "next/link";
+import useFormatDaysAgo from '@/hooks/useFormatDaysAgo';
+import Image from "next/image";
 import { useTranslation } from "next-i18next";
 
 interface INotificationComment {
-  userImage  : string;
+  userImage: string;
   commentText: string;
-  username   : string;
+  username: string;
   recipeImage: string;
-  recipeId   : string;
-  userId     : string;
-  createdAt  : Date;
+  recipeId: string;
+  userId: string;
+  createdAt: Date;
 }
 
 export const NotificationComment = ({

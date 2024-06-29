@@ -1,18 +1,18 @@
 import { ClockIcon, MedalIcon } from "@/icons";
-import Image                    from "next/image";
-import Link                     from "next/link";
-import { useState }             from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { useState } from "react";
 
 interface IRecipeCard {
-  id         : string;
-  recipeName : string;
+  id: string;
+  recipeName: string;
   recipeImage: string;
-  foodType   : string;
+  foodType: string;
   cookingTime: string;
-  complexity : string;
+  complexity: string;
   authorImage: string;
-  authorName : string;
-  className ?: string;
+  authorName: string;
+  className?: string;
 }
 
 export const RecipeCard = ({
@@ -28,7 +28,7 @@ export const RecipeCard = ({
 }: IRecipeCard) => {
   const [isHovered, setIsHovered] = useState<boolean>(false);
 
-  const foodTypeImages: {[ key: string ]: string} = {
+  const foodTypeImages: { [key: string]: string } = {
     "Meat": '/assets/meat.jpg',
     "Мясо": '/assets/meat.jpg',
     "М'ясо": '/assets/meat.jpg',
@@ -59,18 +59,18 @@ export const RecipeCard = ({
     'Риба': '/assets/fish.jpg',
   };
 
-  let defaultBgImage = foodTypeImages[foodType] || '/assets/meat.jpg';  
+  let defaultBgImage = foodTypeImages[foodType] || '/assets/meat.jpg';
 
   return (
     <article className={`recipecard overflow-hidden ${className}`} onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
       <Link href={`/recipe/${id}`}>
         <div className="overflow-hidden">
-          <Image 
+          <Image
             className={`rounded-tl-xl w-full h-[125px] object-cover rounded-tr-xl transition-all ${isHovered && "scale-110"}`}
-            src={recipeImage === "" ? defaultBgImage : recipeImage} 
-            alt="Recipe photo" 
-            width={230} 
-            height={125} 
+            src={recipeImage === "" ? defaultBgImage : recipeImage}
+            alt="Recipe photo"
+            width={230}
+            height={125}
             priority
           />
         </div>

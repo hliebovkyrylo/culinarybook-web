@@ -1,4 +1,4 @@
-import { LockIcon }       from "@/icons"
+import { LockIcon } from "@/icons"
 import { useTranslation } from "next-i18next"
 
 export const PrivateAccountWindow = () => {

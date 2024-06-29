@@ -1,8 +1,8 @@
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { AuthorizationLayout }    from "@/modules/layouts";
-import { ConfirmCodeForm }        from "@/modules/auth";
-import { useTranslation }         from "next-i18next";
-import { RequireGuest }           from "@/hocs/requireGuest";
+import { AuthorizationLayout } from "@/modules/layouts";
+import { ConfirmCodeForm } from "@/modules/auth";
+import { useTranslation } from "next-i18next";
+import { RequireGuest } from "@/hocs/requireGuest";
 
 export const getServerSideProps = async ({ locale }: { locale: string }) => ({
   props: {

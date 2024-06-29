@@ -1,15 +1,15 @@
-import useFormatDaysAgo   from "@/hooks/useFormatDaysAgo";
-import { Button }         from "@/components/ui";
-import Image              from "next/image";
-import Link               from "next/link";
+import useFormatDaysAgo from "@/hooks/useFormatDaysAgo";
+import { Button } from "@/components/ui";
+import Image from "next/image";
+import Link from "next/link";
 import { useTranslation } from "next-i18next";
 
 interface INotificationFollowRequest {
-  userId              : string;
-  username            : string;
-  createdAt           : Date;
-  userImage           : string;
-  onClickAllowRequest : () => void;
+  userId: string;
+  username: string;
+  createdAt: Date;
+  userImage: string;
+  onClickAllowRequest: () => void;
   onClickRejectRequest: () => void;
 }
 
@@ -21,7 +21,7 @@ export const NotificationFollowRequest = ({
   onClickAllowRequest,
   onClickRejectRequest
 }: INotificationFollowRequest) => {
-  const { t }         = useTranslation('common');
+  const { t } = useTranslation('common');
   const formatDaysAgo = useFormatDaysAgo();
   return (
     <article className="w-full min-h-[64px] second-background flex items-center py-2 px-3 rounded-lg mb-2">

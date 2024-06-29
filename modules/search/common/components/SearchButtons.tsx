@@ -1,6 +1,6 @@
 import { useTranslation } from "next-i18next";
-import Link               from "next/link"
-import { useRouter }      from "next/router";
+import Link from "next/link"
+import { useRouter } from "next/router";
 
 export const SearchButtons = ({ className }: { className?: string }) => {
   const router = useRouter();
@@ -9,7 +9,7 @@ export const SearchButtons = ({ className }: { className?: string }) => {
   const { t } = useTranslation("common");
 
   const isActiveRecipesSearch = pathname === `/search/recipes`;
-  const isActiveUsersSearch   = pathname === `/search/users`;
+  const isActiveUsersSearch = pathname === `/search/users`;
 
   return (
     <div className={`flex ${className}`}>

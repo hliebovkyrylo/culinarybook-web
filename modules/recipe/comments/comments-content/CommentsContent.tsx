@@ -1,26 +1,26 @@
-import { IComment }                 from "@/typings/comment"
+import { IComment } from "@/typings/comment"
 import { Comment, CommentSkeleton } from "../common";
-import { useToggleState }           from "@/hooks/useToggleState";
-import { useCallback, useState }    from "react";
-import { zodResolver }              from "@hookform/resolvers/zod";
-import { Button, Input }            from "@/components/ui";
-import { useTranslation }           from "next-i18next";
-import { 
-  CreateCommentReplyFormData, 
-  createCommentReplySchema 
-}                                   from "./schemas/createCommentReplySchema";
-import { 
-  useCreateCommentReplyMutation, 
-  useDeleteCommentMutation, 
-  useDeleteCommentReplyMutation 
-}                                   from "@/lib/api/commentApi";
-import { useRouter }                from "next/router";
-import { useForm }                  from "react-hook-form";
-import Cookies                      from "js-cookie";
+import { useToggleState } from "@/hooks/useToggleState";
+import { useCallback, useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Button, Input } from "@/components/ui";
+import { useTranslation } from "next-i18next";
+import {
+  CreateCommentReplyFormData,
+  createCommentReplySchema
+} from "./schemas/createCommentReplySchema";
+import {
+  useCreateCommentReplyMutation,
+  useDeleteCommentMutation,
+  useDeleteCommentReplyMutation
+} from "@/lib/api/commentApi";
+import { useRouter } from "next/router";
+import { useForm } from "react-hook-form";
+import Cookies from "js-cookie";
 
 interface ICommentsContent {
-  data         : IComment[] | undefined;
-  isLoading    : boolean;
+  data: IComment[] | undefined;
+  isLoading: boolean;
   recipeOwnerId: string
 }
 
@@ -30,8 +30,8 @@ export const CommentsContent = ({
   recipeOwnerId
 }: ICommentsContent) => {
   const accessToken = Cookies.get('access_token');
-  const { t }       = useTranslation("common");
-  const router      = useRouter();
+  const { t } = useTranslation("common");
+  const router = useRouter();
 
   const [openReplies, toggleOpenReplies] = useToggleState({});
   const handleOpenReplies = (commentId: string) => {
@@ -39,8 +39,8 @@ export const CommentsContent = ({
   };
 
   const [selectedCommentId, setSelectedCommentId] = useState('');
-  const [selectedUserId, setSelectedUserId]       = useState('');
-  const [openInputId, setOpenInputId]             = useState<string>();
+  const [selectedUserId, setSelectedUserId] = useState('');
+  const [openInputId, setOpenInputId] = useState<string>();
 
   const { handleSubmit: handleSubmitReply, register: registerReply, formState: { isValid: isValidReply }, reset: resetReply, setValue: setReplyValue } = useForm<CreateCommentReplyFormData>({
     defaultValues: {
@@ -49,10 +49,10 @@ export const CommentsContent = ({
     resolver: zodResolver(createCommentReplySchema),
   });
 
-  const [ createCommentReply, { isLoading: isLoadingCreatingCommentsReplies } ] = useCreateCommentReplyMutation();
+  const [createCommentReply, { isLoading: isLoadingCreatingCommentsReplies }] = useCreateCommentReplyMutation();
 
-  const [ deleteComment, { isLoading: isLoadingDeleteComment } ]             = useDeleteCommentMutation();
-  const [ deleteCommentReply, { isLoading: isLoadingDeletingCommentReply } ] = useDeleteCommentReplyMutation();
+  const [deleteComment, { isLoading: isLoadingDeleteComment }] = useDeleteCommentMutation();
+  const [deleteCommentReply, { isLoading: isLoadingDeletingCommentReply }] = useDeleteCommentReplyMutation();
 
   const onClickDeleteComment = async (commentId: string) => {
     await deleteComment(commentId);

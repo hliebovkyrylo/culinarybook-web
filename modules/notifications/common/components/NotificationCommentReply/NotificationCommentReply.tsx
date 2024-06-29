@@ -1,16 +1,16 @@
-import useFormatDaysAgo   from "@/hooks/useFormatDaysAgo";
+import useFormatDaysAgo from "@/hooks/useFormatDaysAgo";
 import { useTranslation } from "next-i18next";
-import Image              from "next/image";
-import Link               from "next/link";
+import Image from "next/image";
+import Link from "next/link";
 
 interface INotificationCommentReply {
-  userImage  : string;
+  userImage: string;
   commentText: string;
-  username   : string;
+  username: string;
   recipeImage: string;
-  recipeId   : string;
-  userId     : string;
-  createdAt  : Date;
+  recipeId: string;
+  userId: string;
+  createdAt: Date;
 }
 
 export const NotificationCommentReply = ({
@@ -23,7 +23,7 @@ export const NotificationCommentReply = ({
   createdAt,
 }: INotificationCommentReply) => {
   const { t } = useTranslation('common');
-  
+
   const formatDaysAgo = useFormatDaysAgo();
   return (
     <article className="w-full min-h-[64px] second-background flex items-center py-2 px-3 rounded-lg mb-2">

@@ -1,17 +1,15 @@
-"use client"
-
-import useFormatDaysAgo   from "@/hooks/useFormatDaysAgo";
+import useFormatDaysAgo from "@/hooks/useFormatDaysAgo";
 import { useTranslation } from "next-i18next";
-import Image              from "next/image";
-import Link               from "next/link";
+import Image from "next/image";
+import Link from "next/link";
 
 interface INotificationLike {
-  userImage  : string;
-  username   : string;
+  userImage: string;
+  username: string;
   recipeImage: string;
-  recipeId   : string;
-  userId     : string;
-  createdAt  : Date;
+  recipeId: string;
+  userId: string;
+  createdAt: Date;
 }
 
 export const NotificationLike = ({

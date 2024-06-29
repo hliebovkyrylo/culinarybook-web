@@ -1,17 +1,17 @@
-import { useGetMeQuery }  from "@/lib/api/userApi";
-import { Button }         from "@/components/ui";
-import Image              from "next/image";
-import Link               from "next/link";
+import { useGetMeQuery } from "@/lib/api/userApi";
+import { Button } from "@/components/ui";
+import Image from "next/image";
+import Link from "next/link";
 import { useTranslation } from "react-i18next";
 
 interface IFollowerCard {
-  username  : string;
-  userId    : string;
-  name      : string;
-  userImage : string;
+  username: string;
+  userId: string;
+  name: string;
+  userImage: string;
   isFollowed: boolean;
   className?: string;
-  onClick  ?: () => void;
+  onClick?: () => void;
 }
 
 export const FollowerCard = ({
@@ -29,7 +29,7 @@ export const FollowerCard = ({
     <article className={`flex justify-between items-center rounded-md px-3 py-2 follower-card-bg ${className}`}>
       <div className="flex">
         <Link href={`/profile/${userId}`}>
-          <Image src={userImage === '' ? '/assets/testuserimage.jpg'  : userImage} alt="User image" width={48} height={48} className="w-12 h-12 object-cover rounded-full mr-2" />
+          <Image src={userImage === '' ? '/assets/testuserimage.jpg' : userImage} alt="User image" width={48} height={48} className="w-12 h-12 object-cover rounded-full mr-2" />
         </Link>
         <div>
           <Link href={`/profile/${userId}`}>{username}</Link>

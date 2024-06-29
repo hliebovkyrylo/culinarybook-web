@@ -1,42 +1,42 @@
-import { useTranslation }          from "next-i18next";
-import { useFieldArray, useForm }  from "react-hook-form";
-import { 
-  CreateRecipeAndStepFormData, 
-  createRecipeAndStepSchema 
-}                                  from "./schemas/createRecipeSchema";
-import { zodResolver }             from "@hookform/resolvers/zod";
-import { useRouter }               from "next/router";
-import { 
-  useCreateRecipeMutation, 
-  useCreateStepsMutation 
-}                                  from "@/lib/api/recipeApi";
-import { 
-  useCallback, 
-  useRef, 
-  useState 
-}                                  from "react";
-import { RtkError }                from "@/typings/error";
-import { useUploadImageMutation }  from "@/lib/api/uploadImageApi";
-import { 
-  RecipeAccessSelect, 
-  RecipeAddStepButton, 
-  RecipeBgImageApplySelect, 
-  RecipeComplexitySelect, 
-  RecipeCreateCover, 
-  RecipeTypeSelect 
-}                                  from "./components";
-import { 
-  ClockIcon, 
-  FileIcon, 
-  ImageIcon, 
-  LockIcon, 
-  SecondMedalIcon, 
-  TrashIcon, 
-  UntesilsIcon 
-}                                  from "@/icons";
+import { useTranslation } from "next-i18next";
+import { useFieldArray, useForm } from "react-hook-form";
+import {
+  CreateRecipeAndStepFormData,
+  createRecipeAndStepSchema
+} from "./schemas/createRecipeSchema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/router";
+import {
+  useCreateRecipeMutation,
+  useCreateStepsMutation
+} from "@/lib/api/recipeApi";
+import {
+  useCallback,
+  useRef,
+  useState
+} from "react";
+import { RtkError } from "@/typings/error";
+import { useUploadImageMutation } from "@/lib/api/uploadImageApi";
+import {
+  RecipeAccessSelect,
+  RecipeAddStepButton,
+  RecipeBgImageApplySelect,
+  RecipeComplexitySelect,
+  RecipeCreateCover,
+  RecipeTypeSelect
+} from "./components";
+import {
+  ClockIcon,
+  FileIcon,
+  ImageIcon,
+  LockIcon,
+  SecondMedalIcon,
+  TrashIcon,
+  UntesilsIcon
+} from "@/icons";
 import { Button, Input, Textarea } from "@/components/ui";
-import { baseUrl }                 from "@/lib/api";
-import { Loader }                  from "@/components/Loader";
+import { baseUrl } from "@/lib/api";
+import { Loader } from "@/components/Loader";
 
 export const CreateRecipeForm = () => {
   const { t } = useTranslation('common');
@@ -46,20 +46,20 @@ export const CreateRecipeForm = () => {
   const inputFileRef = useRef<HTMLInputElement | null>(null);
 
   const [createRecipe, { isLoading: isCreatingRecipe, isSuccess }] = useCreateRecipeMutation();
-  const [createSteps, { isLoading: isCreatingSteps }]              = useCreateStepsMutation();
-  const [uploadImage, { isLoading: isLoadingUploadingImage }]      = useUploadImageMutation();
+  const [createSteps, { isLoading: isCreatingSteps }] = useCreateStepsMutation();
+  const [uploadImage, { isLoading: isLoadingUploadingImage }] = useUploadImageMutation();
 
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
 
   const { handleSubmit, register, setError, formState: { errors, isValid }, setValue, control } = useForm<CreateRecipeAndStepFormData>({
     defaultValues: {
-      title          : '',
-      image          : '',
-      coockingTime   : '',
-      complexity     : '',
-      typeOfFood     : '',
-      ingradients    : '',
-      isPublic       : true,
+      title: '',
+      image: '',
+      coockingTime: '',
+      complexity: '',
+      typeOfFood: '',
+      ingradients: '',
+      isPublic: true,
       applyBackground: true,
       steps: [{
         stepNumber: 1,

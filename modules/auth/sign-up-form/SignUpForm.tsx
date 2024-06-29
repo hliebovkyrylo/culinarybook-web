@@ -1,33 +1,33 @@
 import { useSendCodeMutation, useSignUpMutation } from "@/lib/api/authApi";
-import { useRouter }                              from "next/router";
-import { useForm }                                from "react-hook-form";
-import { SignUpFormData, signUpSchema }           from "./schemas/signUpSchema";
-import { zodResolver }                            from "@hookform/resolvers/zod";
-import { useCallback }                            from "react";
-import { RtkError }                               from "@/typings/error";
-import { useTranslation }                         from "next-i18next";
-import { Button, Input }                          from "@/components/ui";
-import { AuthGoogleButton, AuthIconButton }       from "../common";
-import { EyeIcon, SlashEyeIcon }                  from "@/icons";
-import Link                                       from "next/link";
-import { baseUrl }                                from "@/lib/api";
-import { usePasswordVisibility }                  from "../common/hooks/usePasswordVisibility";
-import Cookies                                    from "js-cookie";
+import { useRouter } from "next/router";
+import { useForm } from "react-hook-form";
+import { SignUpFormData, signUpSchema } from "./schemas/signUpSchema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useCallback } from "react";
+import { RtkError } from "@/typings/error";
+import { useTranslation } from "next-i18next";
+import { Button, Input } from "@/components/ui";
+import { AuthGoogleButton, AuthIconButton } from "../common";
+import { EyeIcon, SlashEyeIcon } from "@/icons";
+import Link from "next/link";
+import { baseUrl } from "@/lib/api";
+import { usePasswordVisibility } from "../common/hooks/usePasswordVisibility";
+import Cookies from "js-cookie";
 
 export const SignUpForm = () => {
-  const { t }  = useTranslation("common");
+  const { t } = useTranslation("common");
   const router = useRouter();
 
-  const [signUp, { isLoading: isSignUpLoading, isSuccess }]                        = useSignUpMutation();
+  const [signUp, { isLoading: isSignUpLoading, isSuccess }] = useSignUpMutation();
   const [sendCode, { isLoading: isSendCodeLoading, isSuccess: isSuccessCodeSent }] = useSendCodeMutation();
 
   const { handleSubmit, setError, formState: { errors, isValid }, register } = useForm<SignUpFormData>({
     defaultValues: {
-      email          : '',
-      username       : '',
-      name           : '',
-      password       : '',
-      image          : '',
+      email: '',
+      username: '',
+      name: '',
+      password: '',
+      image: '',
       confirmPassword: ''
     },
     resolver: zodResolver(signUpSchema)

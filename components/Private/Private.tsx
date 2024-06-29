@@ -1,6 +1,6 @@
 import { LockIcon } from "@/icons"
-import { cn } from "@/lib/utils/utils"
-import Link         from "next/link"
+import { cn } from "@/lib/utils"
+import Link from "next/link"
 
 export const Private = ({ className, type }: { className?: string, type: string }) => {
   return (

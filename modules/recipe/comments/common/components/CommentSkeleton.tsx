@@ -9,7 +9,7 @@ export const CommentSkeleton = ({ className }: { className?: string }) => {
           <div className="w-24 h-4 dark:bg-[#1d1d1d] bg-[#c9c9c9] rounded-md" />
           <div className="flex ml-2">
             {[...Array(5)].map((_, index) => (
-            <StarIcon className="w-3 dark:fill-[#1d1d1d] fill-[#c9c9c9]" key={index} />
+              <StarIcon className="w-3 dark:fill-[#1d1d1d] fill-[#c9c9c9]" key={index} />
             ))}
           </div>
         </div>

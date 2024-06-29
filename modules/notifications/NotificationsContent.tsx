@@ -1,19 +1,19 @@
-import { 
-  NotificationAllowRequest, 
-  NotificationComment, 
+import {
+  NotificationAllowRequest,
+  NotificationComment,
   NotificationCommentReply,
-  NotificationFollow, 
-  NotificationFollowRequest, 
-  NotificationLike, 
-  NotificationSave, 
-  NotificationSkeleton 
-}                                          from "./common";
-import { INotification }                   from "@/typings/notification"
-import { useTranslation }                  from "next-i18next";
+  NotificationFollow,
+  NotificationFollowRequest,
+  NotificationLike,
+  NotificationSave,
+  NotificationSkeleton
+} from "./common";
+import { INotification } from "@/typings/notification"
+import { useTranslation } from "next-i18next";
 import { useFollowRequestAnswearMutation } from "@/lib/api/followApi";
 
 interface INotificationsContent {
-  data    ?: INotification[];
+  data?: INotification[];
   isLoading: boolean;
 }
 
@@ -23,7 +23,7 @@ export const NotificationsContent = ({
 }: INotificationsContent) => {
   const { t } = useTranslation('common');
 
-  const [ followRequestAnswear, { isLoading: isLoadingFollowRequest } ] = useFollowRequestAnswearMutation();
+  const [followRequestAnswear, { isLoading: isLoadingFollowRequest }] = useFollowRequestAnswearMutation();
 
   const handleAllowRequest = async (userId: string) => {
     await followRequestAnswear({ allowed: true, userId: userId });

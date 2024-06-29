@@ -1,9 +1,9 @@
 import { CreatorCard, CreatorCardSkeleton } from "@/components/users";
-import { IUser }                            from "@/typings/user";
+import { IUser } from "@/typings/user";
 
 interface ISearchUsersContent {
-  data         : IUser[] | undefined;
-  isLoading    : boolean;
+  data: IUser[] | undefined;
+  isLoading: boolean;
   isLoadingMore: boolean;
 }
 

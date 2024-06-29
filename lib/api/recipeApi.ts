@@ -1,21 +1,21 @@
 import { IRecipe, IRecipePreview, IStep } from "@/typings/recipe";
-import { api }                            from ".";
+import { api } from ".";
 
 export type ICreateRecipeRequest = Omit<IRecipe, "id" | "ownerId">;
 export type IUpdateRecipeRequest = Omit<IRecipe, "ownerId">;
 
-export type IRecipeResponse         = IRecipe;
+export type IRecipeResponse = IRecipe;
 export type IRecipesPreviewResponse = IRecipePreview[];
 
 export interface IRecipeQueryRequest {
-  page      ?: number;
-  limit     ?: number;
+  page?: number;
+  limit?: number;
   recipeName?: string;
 };
 
 export interface IRecipeQueryTitleRequest {
   title: string;
-  page : number;
+  page: number;
   limit: number;
 };
 
@@ -27,14 +27,14 @@ export interface IRecipeRequest {
 export interface ICreateStepRequest {
   recipeId: string;
   steps: {
-    id            ?: string,
-    stepNumber     : number,
+    id?: string,
+    stepNumber: number,
     stepDescription: string,
   }[];
 };
 
 export interface IUpdateStepsRequest {
-  stepId         : string;
+  stepId: string;
   stepDescription: string;
 };
 
@@ -44,7 +44,7 @@ export const recipeApi = api.injectEndpoints({
   endpoints: (builder) => ({
     createRecipe: builder.mutation<IRecipeResponse, ICreateRecipeRequest>({
       query: (body) => ({
-        url   : '/recipe/create',
+        url: '/recipe/create',
         method: 'POST',
         body
       }),
@@ -58,16 +58,16 @@ export const recipeApi = api.injectEndpoints({
     }),
     updateRecipe: builder.mutation<IRecipeResponse, IUpdateRecipeRequest>({
       query: ({ id, ...rest }) => ({
-        method: 'PATCH', 
-        url   : `/recipe/${id}/update`,
-        body  : rest
+        method: 'PATCH',
+        url: `/recipe/${id}/update`,
+        body: rest
       }),
       invalidatesTags: ['recipe']
     }),
     deleteRecipe: builder.mutation<void, string>({
       query: (recipeId) => ({
         method: 'DELETE',
-        url   : `/recipe/${recipeId}/delete`
+        url: `/recipe/${recipeId}/delete`
       }),
       invalidatesTags: ['recipe']
     }),
@@ -90,7 +90,7 @@ export const recipeApi = api.injectEndpoints({
         body: steps,
       }),
       invalidatesTags: ['recipe']
-    }),        
+    }),
     getSteps: builder.query<IStepsResponse, string>({
       query: (recipeId) => ({
         url: `/recipe/${recipeId}/steps`
@@ -99,7 +99,7 @@ export const recipeApi = api.injectEndpoints({
     }),
     updateSteps: builder.mutation<IStepsResponse, IUpdateStepsRequest[]>({
       query: (body) => ({
-        url   : '/recipe/update/steps',
+        url: '/recipe/update/steps',
         method: 'PATCH',
         body
       }),
@@ -107,8 +107,8 @@ export const recipeApi = api.injectEndpoints({
     }),
     deleteStep: builder.mutation<void, string>({
       query: (stepId) => ({
-        method: 'DELETE', 
-        url   : `/recipe/step/delete/${stepId}`
+        method: 'DELETE',
+        url: `/recipe/step/delete/${stepId}`
       }),
       invalidatesTags: ['recipe']
     }),
@@ -139,7 +139,7 @@ export const recipeApi = api.injectEndpoints({
   })
 });
 
-export const { 
+export const {
   useCreateRecipeMutation,
   useCreateStepsMutation,
   useDeleteRecipeMutation,

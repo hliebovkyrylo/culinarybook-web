@@ -1,1 +1,0 @@
-export * from "../../../modules/recipe/comments/common/components/CommentSkeleton";

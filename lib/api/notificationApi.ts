@@ -1,7 +1,7 @@
 import { INotification } from "@/typings/notification";
 import { api } from ".";
 
-export type NotificationsResponse = INotification[];  
+export type NotificationsResponse = INotification[];
 
 export const notificationApi = api.injectEndpoints({
   endpoints: (builder) => ({

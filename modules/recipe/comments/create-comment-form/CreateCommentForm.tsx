@@ -1,21 +1,21 @@
-import { useCallback, useState }    from "react";
-import { useForm }                  from "react-hook-form";
-import { 
-  CreateCommentFormData, 
-  createCommentSchema 
-}                                   from "./schemas/createCommentSchema";
-import { zodResolver }              from "@hookform/resolvers/zod";
-import { useRouter }                from "next/router";
+import { useCallback, useState } from "react";
+import { useForm } from "react-hook-form";
+import {
+  CreateCommentFormData,
+  createCommentSchema
+} from "./schemas/createCommentSchema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/router";
 import { useCreateCommentMutation } from "@/lib/api/commentApi";
-import { RtkError }                 from "@/typings/error";
-import { useTranslation }           from "next-i18next";
-import { Button, Input }            from "@/components/ui";
-import { CommentRating }            from "./components";
-import Cookies                      from "js-cookie";
+import { RtkError } from "@/typings/error";
+import { useTranslation } from "next-i18next";
+import { Button, Input } from "@/components/ui";
+import { CommentRating } from "./components";
+import Cookies from "js-cookie";
 
 export const CreateCommentForm = ({ averageRating }: { averageRating: number }) => {
   const accessToken = Cookies.get('access_token');
-  const { t }       = useTranslation("common");
+  const { t } = useTranslation("common");
 
   const [rating, setRating] = useState<number>(averageRating);
   const router = useRouter();

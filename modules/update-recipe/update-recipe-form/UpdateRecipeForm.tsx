@@ -1,53 +1,53 @@
-import { IRecipe, IStep }                  from "@/typings/recipe";
-import { useFieldArray, useForm }          from "react-hook-form";
-import { 
-  UpdateRecipeAndStepFormData, 
-  updateRecipeAndStepSchema 
-}                                          from "./schemas";
-import { zodResolver }                     from "@hookform/resolvers/zod";
-import { useCallback, useRef, useState }   from "react";
-import { 
-  useCreateStepsMutation, 
-  useDeleteRecipeMutation, 
-  useDeleteStepMutation, 
-  useUpdateRecipeMutation, 
-  useUpdateStepsMutation 
-}                                          from "@/lib/api/recipeApi";
-import { useRouter }                       from "next/router";
-import { RtkError }                        from "@/typings/error";
-import { useTranslation }                  from "next-i18next";
-import { 
-  RecipeAccessSelect, 
-  RecipeAddStepButton, 
-  RecipeBgImageApplySelect, 
-  RecipeComplexitySelect, 
-  RecipeCreateCover, 
-  RecipeTypeSelect 
-}                                          from "./components";
-import { 
-  ClockIcon, 
-  FileIcon, 
-  ImageIcon, 
-  LockIcon, 
-  SecondMedalIcon, 
-  TrashIcon, 
-  UntesilsIcon 
-}                                          from "@/icons";
+import { IRecipe, IStep } from "@/typings/recipe";
+import { useFieldArray, useForm } from "react-hook-form";
+import {
+  UpdateRecipeAndStepFormData,
+  updateRecipeAndStepSchema
+} from "./schemas";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useCallback, useRef, useState } from "react";
+import {
+  useCreateStepsMutation,
+  useDeleteRecipeMutation,
+  useDeleteStepMutation,
+  useUpdateRecipeMutation,
+  useUpdateStepsMutation
+} from "@/lib/api/recipeApi";
+import { useRouter } from "next/router";
+import { RtkError } from "@/typings/error";
+import { useTranslation } from "next-i18next";
+import {
+  RecipeAccessSelect,
+  RecipeAddStepButton,
+  RecipeBgImageApplySelect,
+  RecipeComplexitySelect,
+  RecipeCreateCover,
+  RecipeTypeSelect
+} from "./components";
+import {
+  ClockIcon,
+  FileIcon,
+  ImageIcon,
+  LockIcon,
+  SecondMedalIcon,
+  TrashIcon,
+  UntesilsIcon
+} from "@/icons";
 import { Button, Dialog, Input, Textarea } from "@/components/ui";
-import { useUploadImageMutation }          from "@/lib/api/uploadImageApi";
-import { baseUrl }                         from "@/lib/api";
-import { Loader }                          from "@/components/Loader";
+import { useUploadImageMutation } from "@/lib/api/uploadImageApi";
+import { baseUrl } from "@/lib/api";
+import { Loader } from "@/components/Loader";
 
 interface IUpdateRecipeForm {
   recipe?: IRecipe;
-  steps ?: IStep[];
+  steps?: IStep[];
 }
 
 export const UpdateRecipeForm = ({
   recipe,
   steps
 }: IUpdateRecipeForm) => {
-  const { t }  = useTranslation('common');
+  const { t } = useTranslation('common');
   const router = useRouter();
 
   const inputFileRef = useRef<HTMLInputElement | null>(null);
@@ -57,11 +57,11 @@ export const UpdateRecipeForm = ({
   const [isOpenConfirm, setIsOpenConfirm] = useState<boolean>(false);
 
   const [uploadImage, { isLoading: isLoadingUploadingImage }] = useUploadImageMutation();
-  const [deleteStep, { isLoading: isLoadingDeleteStep }]      = useDeleteStepMutation();
-  const [deleteRecipe, { isLoading: isLoadingDeleteRecipe }]  = useDeleteRecipeMutation();
-  const [updateRecipe, { isLoading: isUpdatingRecipe }]       = useUpdateRecipeMutation();
-  const [createSteps, { isLoading: isCreatingSteps }]         = useCreateStepsMutation();
-  const [updateSteps, { isLoading: isUpdatingSteps }]         = useUpdateStepsMutation();
+  const [deleteStep, { isLoading: isLoadingDeleteStep }] = useDeleteStepMutation();
+  const [deleteRecipe, { isLoading: isLoadingDeleteRecipe }] = useDeleteRecipeMutation();
+  const [updateRecipe, { isLoading: isUpdatingRecipe }] = useUpdateRecipeMutation();
+  const [createSteps, { isLoading: isCreatingSteps }] = useCreateStepsMutation();
+  const [updateSteps, { isLoading: isUpdatingSteps }] = useUpdateStepsMutation();
 
   const handleDeleteStep = (index: number) => {
     if (steps) {
@@ -76,15 +76,15 @@ export const UpdateRecipeForm = ({
 
   const { handleSubmit, register, setError, formState: { errors, isValid }, control } = useForm<UpdateRecipeAndStepFormData>({
     defaultValues: {
-      title          : recipe?.title,
-      image          : recipe?.image,
-      coockingTime   : recipe?.coockingTime,
-      complexity     : recipe?.complexity,
-      typeOfFood     : recipe?.typeOfFood,
-      ingradients    : recipe?.ingradients,
-      isPublic       : recipe?.isPublic,
+      title: recipe?.title,
+      image: recipe?.image,
+      coockingTime: recipe?.coockingTime,
+      complexity: recipe?.complexity,
+      typeOfFood: recipe?.typeOfFood,
+      ingradients: recipe?.ingradients,
+      isPublic: recipe?.isPublic,
       applyBackground: recipe?.applyBackground,
-      steps          : steps
+      steps: steps
     },
     resolver: zodResolver(updateRecipeAndStepSchema)
   });
@@ -101,7 +101,7 @@ export const UpdateRecipeForm = ({
         const formData = new FormData();
         formData.append('image', selectedImage);
         const response = await uploadImage(formData).unwrap();
-        imageUrl       = baseUrl + response.imageUrl;
+        imageUrl = baseUrl + response.imageUrl;
       }
 
       values.image = imageUrl;
@@ -110,10 +110,10 @@ export const UpdateRecipeForm = ({
         const recipeId = recipe.id;
 
         const existingSteps = values.steps.filter((step) => step.id);
-        const newSteps      = values.steps.filter((step) => !step.id);
+        const newSteps = values.steps.filter((step) => !step.id);
 
         const formattedExistingSteps = existingSteps.map((step) => ({
-          stepId         : step.id!,
+          stepId: step.id!,
           stepDescription: step.stepDescription
         }));
 

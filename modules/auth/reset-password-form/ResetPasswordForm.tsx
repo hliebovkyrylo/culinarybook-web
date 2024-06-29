@@ -1,29 +1,29 @@
-import { 
-  ResetPasswordFormData, 
-  resetPasswordSchema 
-}                                   from "./schemas/resetPasswordSchema";
+import {
+  ResetPasswordFormData,
+  resetPasswordSchema
+} from "./schemas/resetPasswordSchema";
 import { useResetPasswordMutation } from "@/lib/api/authApi";
-import { useGetMeQuery }            from "@/lib/api/userApi";
-import { useRouter }                from "next/router";
-import { useForm }                  from "react-hook-form";
-import { zodResolver }              from "@hookform/resolvers/zod";
-import { useCallback }              from "react";
-import { RtkError }                 from "@/typings/error";
-import { useTranslation }           from "next-i18next";
-import { usePasswordVisibility }    from "../common/hooks";
-import { Button, Input }            from "@/components/ui";
-import { AuthIconButton }           from "../common";
-import { EyeIcon, SlashEyeIcon }    from "@/icons";
-import cookie                       from "js-cookie";
-import { Loader }                   from "@/components/Loader";
+import { useGetMeQuery } from "@/lib/api/userApi";
+import { useRouter } from "next/router";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useCallback } from "react";
+import { RtkError } from "@/typings/error";
+import { useTranslation } from "next-i18next";
+import { usePasswordVisibility } from "../common/hooks";
+import { Button, Input } from "@/components/ui";
+import { AuthIconButton } from "../common";
+import { EyeIcon, SlashEyeIcon } from "@/icons";
+import cookie from "js-cookie";
+import { Loader } from "@/components/Loader";
 
 export const ResetPasswordForm = () => {
-  const { t }                     = useTranslation("common");
+  const { t } = useTranslation("common");
   const { data: user, isLoading } = useGetMeQuery();
 
   const router = useRouter();
 
-  const [ resetPassword, { isLoading: isResetPasswordLoading, isSuccess } ] = useResetPasswordMutation();
+  const [resetPassword, { isLoading: isResetPasswordLoading, isSuccess }] = useResetPasswordMutation();
 
   const { handleSubmit, register, setError, formState: { errors, isValid } } = useForm<ResetPasswordFormData>({
     defaultValues: {
@@ -36,7 +36,7 @@ export const ResetPasswordForm = () => {
   const userEmail = cookie.get('userEmail');
 
   const onSubmit = useCallback((async (values: ResetPasswordFormData) => {
-    resetPassword({...values, email: userEmail as string}).unwrap().then(() => {
+    resetPassword({ ...values, email: userEmail as string }).unwrap().then(() => {
       router.push('/sign-in');
       cookie.remove('userEmail');
     }).catch((error: RtkError) => {
@@ -68,7 +68,7 @@ export const ResetPasswordForm = () => {
       <div className="relative">
         <Input
           type={passwordInputType}
-          color={errors.root ? 'danger': 'default'}
+          color={errors.root ? 'danger' : 'default'}
           placeholder={t('new-password-placeholder')}
           {...register('password')}
         />
@@ -82,7 +82,7 @@ export const ResetPasswordForm = () => {
       <div className="relative">
         <Input
           type={confirmPasswordInputType}
-          color={errors.root ? 'danger': 'default'}
+          color={errors.root ? 'danger' : 'default'}
           placeholder={t('confirm-new-password-placeholder')}
           {...register('confirmPassword')}
         />

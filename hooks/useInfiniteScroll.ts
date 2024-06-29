@@ -1,4 +1,4 @@
-import { useEffect }   from "react";
+import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 
 export const useInfiniteScroll = (newItems: any, setItems: any, numberOfItems: number, setPage: any, setIsLoading: any) => {
@@ -9,7 +9,7 @@ export const useInfiniteScroll = (newItems: any, setItems: any, numberOfItems: n
         const uniqueNewItems = newItems.filter(
           (newItem: any) => !prevItems.some((prevItem: any) => prevItem.id === newItem.id)
         );
-  
+
         return [...prevItems, ...uniqueNewItems];
       });
     }
@@ -19,7 +19,7 @@ export const useInfiniteScroll = (newItems: any, setItems: any, numberOfItems: n
 
   const handleScroll = () => {
     const scrollHeight = document.documentElement.scrollHeight;
-    const scrollTop    = document.documentElement.scrollTop;
+    const scrollTop = document.documentElement.scrollTop;
     const clientHeight = document.documentElement.clientHeight;
 
     if (scrollTop + clientHeight >= scrollHeight) {

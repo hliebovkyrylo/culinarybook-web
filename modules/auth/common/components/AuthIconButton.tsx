@@ -1,8 +1,8 @@
 interface IAuthIconButton {
-  firstIcon : React.ReactNode;
+  firstIcon: React.ReactNode;
   secondIcon: React.ReactNode;
-  inputType : string;
-  onClick   : () => void
+  inputType: string;
+  onClick: () => void
 };
 
 export const AuthIconButton = ({

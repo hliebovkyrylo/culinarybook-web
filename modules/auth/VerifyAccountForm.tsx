@@ -1,25 +1,25 @@
-import { 
-  useSendCodeMutation, 
-  useSignOutMutation, 
-  useVerifyAccountMutation 
-}                                from "@/lib/api/authApi";
-import { Button, InputOTP }      from "@/components/ui";
-import { ArrowRightSquare }      from "@/icons";
-import { useGetMeQuery }         from "@/lib/api/userApi";
-import { RtkError }              from "@/typings/error";
-import { useTranslation }        from "next-i18next";
-import { useRouter }             from "next/router";
+import {
+  useSendCodeMutation,
+  useSignOutMutation,
+  useVerifyAccountMutation
+} from "@/lib/api/authApi";
+import { Button, InputOTP } from "@/components/ui";
+import { ArrowRightSquare } from "@/icons";
+import { useGetMeQuery } from "@/lib/api/userApi";
+import { RtkError } from "@/typings/error";
+import { useTranslation } from "next-i18next";
+import { useRouter } from "next/router";
 import { useCallback, useState } from "react";
-import { useForm }               from "react-hook-form";
-import { Loader }                from "@/components/Loader";
+import { useForm } from "react-hook-form";
+import { Loader } from "@/components/Loader";
 
 export const VerifyAccountForm = () => {
-  const { t }                     = useTranslation();
+  const { t } = useTranslation();
   const { data: user, isLoading } = useGetMeQuery();
 
   const router = useRouter();
 
-  const [sendCode, { isSuccess: isSent }]          = useSendCodeMutation();
+  const [sendCode, { isSuccess: isSent }] = useSendCodeMutation();
   const [signOut, { isLoading: isLoadingSignOut }] = useSignOutMutation();
 
   const [verifyAccount, { isLoading: IsLoadingVerify, isSuccess }] = useVerifyAccountMutation();

@@ -1,25 +1,25 @@
-import { Button, Input }                    from "@/components/ui"
-import { useTranslation }                   from "next-i18next"
+import { Button, Input } from "@/components/ui"
+import { useTranslation } from "next-i18next"
 import { AuthGoogleButton, AuthIconButton } from "../common";
-import { EyeIcon, SlashEyeIcon }            from "@/icons";
-import Link                                 from "next/link";
-import { useSignInMutation }                from "@/lib/api/authApi";
-import { useForm }                          from "react-hook-form";
-import { zodResolver }                      from "@hookform/resolvers/zod";
-import { SignInFormData, signInSchema }     from "./schemas/signInSchema";
-import { useCallback }                      from "react";
-import { useRouter }                        from "next/router";
-import { RtkError }                         from "@/typings/error";
-import { baseUrl }                          from "@/lib/api";
-import { usePasswordVisibility }            from "../common/hooks/usePasswordVisibility";
-import Cookies                              from "js-cookie";
+import { EyeIcon, SlashEyeIcon } from "@/icons";
+import Link from "next/link";
+import { useSignInMutation } from "@/lib/api/authApi";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { SignInFormData, signInSchema } from "./schemas/signInSchema";
+import { useCallback } from "react";
+import { useRouter } from "next/router";
+import { RtkError } from "@/typings/error";
+import { baseUrl } from "@/lib/api";
+import { usePasswordVisibility } from "../common/hooks/usePasswordVisibility";
+import Cookies from "js-cookie";
 
 export const SignInForm = () => {
-  const { t }  = useTranslation("common");
+  const { t } = useTranslation("common");
   const router = useRouter();
 
-  const [ signIn, { isLoading: isSignInLoading, isSuccess } ] = useSignInMutation();
-  
+  const [signIn, { isLoading: isSignInLoading, isSuccess }] = useSignInMutation();
+
   const handleLogin = () => {
     router.push(`${baseUrl}/auth/google`)
   };
@@ -28,7 +28,7 @@ export const SignInForm = () => {
 
   const { handleSubmit, setError, formState: { errors, isValid }, register } = useForm<SignInFormData>({
     defaultValues: {
-      email   : '',
+      email: '',
       password: '',
     },
     resolver: zodResolver(signInSchema)
@@ -51,18 +51,18 @@ export const SignInForm = () => {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-2">
       <label className="text-red-500 text-sm">{errors.email?.message}</label>
-      <Input 
-        color="default" 
-        placeholder={t('email-placeholder')} 
+      <Input
+        color="default"
+        placeholder={t('email-placeholder')}
         {...register('email')}
         disabled={isSignInLoading || isSuccess}
       />
       <div className="relative">
         <label className="text-red-500 text-sm">{errors.password?.message}</label>
-        <Input 
-          type={passwordInputType} 
-          color="default" 
-          placeholder={t('password-placeholder')} 
+        <Input
+          type={passwordInputType}
+          color="default"
+          placeholder={t('password-placeholder')}
           {...register('password')}
           disabled={isSignInLoading || isSuccess}
         />

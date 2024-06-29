@@ -3,8 +3,8 @@ import { useState } from "react";
 
 interface ICommentRating {
   averageRating: number;
-  rating       : number;
-  onClick      : (value: number) => void;
+  rating: number;
+  onClick: (value: number) => void;
 }
 
 export const CommentRating = ({

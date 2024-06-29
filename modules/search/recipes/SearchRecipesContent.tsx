@@ -1,9 +1,9 @@
 import { RecipeCard, RecipeCardSkeleton } from "@/components/recipes";
-import { IRecipePreview }                 from "@/typings/recipe"
+import { IRecipePreview } from "@/typings/recipe"
 
 interface ISearchRecipesContent {
-  data         : IRecipePreview[] | undefined;
-  isLoading    : boolean;
+  data: IRecipePreview[] | undefined;
+  isLoading: boolean;
   isLoadingMore: boolean;
 }
 

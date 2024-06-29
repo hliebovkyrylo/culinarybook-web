@@ -1,17 +1,17 @@
-import { zodResolver }                          from "@hookform/resolvers/zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { UpdateUserFormData, updateUserSchema } from "./schemas";
-import { useForm }                              from "react-hook-form";
-import { useUpdateUserMutation }                from "@/lib/api/userApi";
-import { useCallback, useState }                from "react";
-import { baseUrl }                              from "@/lib/api";
-import { useUploadImageMutation }               from "@/lib/api/uploadImageApi";
-import { RtkError }                             from "@/typings/error";
-import { useTranslation }                       from "next-i18next";
-import { Button, Checkbox, Input }              from "@/components/ui";
-import Link                                     from "next/link";
-import { ArrowRightSquare, LockIcon }           from "@/icons";
-import { SettingsUserPanel }                    from "./components";
-import { IUserMe }                              from "@/typings/user";
+import { useForm } from "react-hook-form";
+import { useUpdateUserMutation } from "@/lib/api/userApi";
+import { useCallback, useState } from "react";
+import { baseUrl } from "@/lib/api";
+import { useUploadImageMutation } from "@/lib/api/uploadImageApi";
+import { RtkError } from "@/typings/error";
+import { useTranslation } from "next-i18next";
+import { Button, Checkbox, Input } from "@/components/ui";
+import Link from "next/link";
+import { ArrowRightSquare, LockIcon } from "@/icons";
+import { SettingsUserPanel } from "./components";
+import { IUserMe } from "@/typings/user";
 
 const handleImageChange = (setImage: React.Dispatch<React.SetStateAction<File | null>>) => (e: React.ChangeEvent<HTMLInputElement>) => {
   if (e.target.files?.length) {
@@ -22,10 +22,10 @@ const handleImageChange = (setImage: React.Dispatch<React.SetStateAction<File | 
 export const SettingsUpdateUserForm = ({ user }: { user?: IUserMe }) => {
   const { t } = useTranslation('common');
 
-  const [updateUser, { isLoading: isLoadingUpdateUser }]      = useUpdateUserMutation();
+  const [updateUser, { isLoading: isLoadingUpdateUser }] = useUpdateUserMutation();
   const [uploadImage, { isLoading: isLoadingUploadingImage }] = useUploadImageMutation();
 
-  const [selectedUserImage, setSelectedUserImage]             = useState<File | null>(null);
+  const [selectedUserImage, setSelectedUserImage] = useState<File | null>(null);
   const [selectedBackgroundImage, setSelectedBackgroundImage] = useState<File | null>(null);
 
   const [checked, setChecked] = useState<boolean>(!!user?.isPrivate);
@@ -58,7 +58,7 @@ export const SettingsUpdateUserForm = ({ user }: { user?: IUserMe }) => {
       backgroundImageUrl = baseUrl + response.imageUrl;
     }
 
-    values.image           = userImageUrl;
+    values.image = userImageUrl;
     values.backgroundImage = backgroundImageUrl;
     updateUser({
       ...values,

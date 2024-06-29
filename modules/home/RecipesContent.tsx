@@ -1,11 +1,11 @@
 import { RecipeCard, RecipeCardSkeleton } from "@/components/recipes";
-import { IRecipePreview }                 from "@/typings/recipe";
-import { useTranslation }                 from "next-i18next";
-import { Swiper, SwiperSlide }            from "swiper/react";
+import { IRecipePreview } from "@/typings/recipe";
+import { useTranslation } from "next-i18next";
+import { Swiper, SwiperSlide } from "swiper/react";
 
 interface IRecipesContent {
   isLoading: boolean;
-  data     : IRecipePreview[] | undefined;
+  data: IRecipePreview[] | undefined;
 }
 
 export const RecipesContent = ({

@@ -1,28 +1,28 @@
 import { IUser, IUserMe } from "@/typings/user";
-import { api }            from ".";
+import { api } from ".";
 
-export type IUserMeResponse  = IUserMe;
-export type IUserResponse    = IUser;
-export type IUsersResponse   = IUser[];
+export type IUserMeResponse = IUserMe;
+export type IUserResponse = IUser;
+export type IUsersResponse = IUser[];
 
 export interface IUpdateUserRequest {
-  username       : string;
-  name           : string;
-  image          : string;
+  username: string;
+  name: string;
+  image: string;
   backgroundImage: string;
-  isPrivate      : boolean;
+  isPrivate: boolean;
 };
 
 export interface IGetUsersRequest {
-  page     : number;
-  limit    : number;
+  page: number;
+  limit: number;
   username?: string;
 };
 
 export interface IGetUsersByUsernameRequest {
   username: string;
-  page    : number;
-  limit   : number;
+  page: number;
+  limit: number;
 };
 
 export const userApi = api.injectEndpoints({
@@ -41,7 +41,7 @@ export const userApi = api.injectEndpoints({
     }),
     updateUser: builder.mutation<IUserMeResponse, IUpdateUserRequest>({
       query: (body) => ({
-        url   : '/user/update',
+        url: '/user/update',
         method: 'PATCH',
         body
       }),
@@ -68,7 +68,7 @@ export const userApi = api.injectEndpoints({
   })
 });
 
-export const { 
+export const {
   useGetMeQuery,
   useGetUserQuery,
   useGetRecommendedUsersQuery,

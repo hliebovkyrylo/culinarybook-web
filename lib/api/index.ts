@@ -36,7 +36,7 @@ const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQue
       if (!args.headers) {
         args.headers = {}
       }
-      
+
       if (args.headers instanceof Headers) {
         args.headers.set('Authorization', newAccessToken)
       } else if (Array.isArray(args.headers)) {

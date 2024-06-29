@@ -1,24 +1,24 @@
-import { 
-  ChangePasswordFormData, 
-  changePasswordSchema 
-}                                    from "./schemas/changePasswordSchema";
-import { 
-  AuthIconButton, 
-  usePasswordVisibility 
-}                                    from "../common";
+import {
+  ChangePasswordFormData,
+  changePasswordSchema
+} from "./schemas/changePasswordSchema";
+import {
+  AuthIconButton,
+  usePasswordVisibility
+} from "../common";
 import { useChangePasswordMutation } from "@/lib/api/authApi";
-import { useRouter }                 from "next/router";
-import { useForm }                   from "react-hook-form";
-import { zodResolver }               from "@hookform/resolvers/zod";
-import { useCallback }               from "react";
-import { RtkError }                  from "@/typings/error";
-import { useTranslation }            from "next-i18next";
-import { Button, Input }             from "@/components/ui";
-import { EyeIcon, SlashEyeIcon }     from "@/icons";
-import { Loader }                    from "@/components/Loader";
+import { useRouter } from "next/router";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useCallback } from "react";
+import { RtkError } from "@/typings/error";
+import { useTranslation } from "next-i18next";
+import { Button, Input } from "@/components/ui";
+import { EyeIcon, SlashEyeIcon } from "@/icons";
+import { Loader } from "@/components/Loader";
 
 export const ChangePasswordForm = () => {
-  const { t }  = useTranslation("common");
+  const { t } = useTranslation("common");
   const router = useRouter();
 
   const [changePassword, { isLoading: isLoadingChangingPassword, isSuccess }] = useChangePasswordMutation();

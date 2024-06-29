@@ -1,15 +1,15 @@
-import useFormatDaysAgo   from "@/hooks/useFormatDaysAgo";
+import useFormatDaysAgo from "@/hooks/useFormatDaysAgo";
 import { useTranslation } from "next-i18next";
-import Image              from "next/image";
-import Link               from "next/link";
+import Image from "next/image";
+import Link from "next/link";
 
 interface INotificationSave {
-  userImage  : string;
-  username   : string;
+  userImage: string;
+  username: string;
   recipeImage: string;
-  recipeId   : string;
-  userId     : string;
-  createdAt  : Date;
+  recipeId: string;
+  userId: string;
+  createdAt: Date;
 }
 
 export const NotificationSave = ({
@@ -42,7 +42,7 @@ export const NotificationSave = ({
           </div>
         </div>
         <Link href={`/recipe/${recipeId}`}>
-        <Image src={recipeImage !== '' ? recipeImage : '/assets/no-image.png'} className="object-cover rounded-md w-12 h-12" alt="Recipe image" width={48} height={48} />
+          <Image src={recipeImage !== '' ? recipeImage : '/assets/no-image.png'} className="object-cover rounded-md w-12 h-12" alt="Recipe image" width={48} height={48} />
         </Link>
       </div>
     </article>
