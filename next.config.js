@@ -5,9 +5,8 @@ module.exports = {
   images: {
     remotePatterns: [
       {
-        protocol: process.env.NODE_ENV === 'development' ? 'http' : 'https',
-        hostname: process.env.NODE_ENV === 'development' ? 'localhost' : process.env.NEXT_PUBLIC_APP_API_URL,
-        pathname: '**'
+        protocol: 'https',
+        hostname: process.env.NEXT_PUBLIC_IMAGE_HOSTNAME,
       }
     ]
   },
