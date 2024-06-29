@@ -25,7 +25,7 @@ export const NotificationFollow = ({
       <div className="flex justify-between w-full">
         <div className="flex justify-between">
           <Link className="mr-3" href={`/profile/${userId}`}>
-            <Image src={userImage !== '' ? userImage : '/assets/defaulUserImage.jpg'} className="object-cover rounded-full w-12 h-12" alt="User image" width={48} height={48} />
+            <Image src={userImage || '/assets/defaulUserImage.jpg'} className="object-cover rounded-full w-12 h-12" alt="User image" width={48} height={48} />
           </Link>
           <div>
             <div>

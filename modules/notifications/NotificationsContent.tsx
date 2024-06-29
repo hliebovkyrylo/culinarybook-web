@@ -48,9 +48,9 @@ export const NotificationsContent = ({
                 return (
                   <NotificationFollow
                     key={notification.id}
-                    username={notification.notificationCreator.username}
-                    userImage={notification.notificationCreator.image}
-                    userId={notification.notificationCreator.id}
+                    username={notification.notificationCreator?.username}
+                    userImage={notification.notificationCreator?.image}
+                    userId={notification.notificationCreator?.id}
                     createdAt={notification.createdAt}
                   />
                 )
@@ -58,11 +58,11 @@ export const NotificationsContent = ({
                 return (
                   <NotificationLike
                     key={notification.id}
-                    username={notification.notificationCreator.username}
-                    userImage={notification.notificationCreator.image}
+                    username={notification.notificationCreator?.username}
+                    userImage={notification.notificationCreator?.image}
                     recipeId={notification.recipeId}
-                    recipeImage={notification.recipe.image}
-                    userId={notification.notificationCreator.id}
+                    recipeImage={notification.recipe?.image}
+                    userId={notification.notificationCreator?.id}
                     createdAt={notification.createdAt}
                   />
                 )
@@ -70,11 +70,11 @@ export const NotificationsContent = ({
                 return (
                   <NotificationComment
                     key={notification.id}
-                    username={notification.notificationCreator.username}
-                    userImage={notification.notificationCreator.image}
+                    username={notification.notificationCreator?.username}
+                    userImage={notification.notificationCreator?.image}
                     commentText={notification.noficationData}
                     recipeId={notification.recipeId}
-                    recipeImage={notification.recipe.image}
+                    recipeImage={notification.recipe?.image}
                     userId={notification.userId}
                     createdAt={notification.createdAt}
                   />
@@ -83,22 +83,22 @@ export const NotificationsContent = ({
                 return (
                   <NotificationFollowRequest
                     key={notification.id}
-                    username={notification.notificationCreator.username}
-                    userImage={notification.notificationCreator.image}
+                    username={notification.notificationCreator?.username}
+                    userImage={notification.notificationCreator?.image}
                     userId={notification.userId}
                     createdAt={notification.createdAt}
-                    onClickAllowRequest={() => handleAllowRequest(notification.notificationCreator.id)}
-                    onClickRejectRequest={() => handleRejectRequest(notification.notificationCreator.id)}
+                    onClickAllowRequest={() => handleAllowRequest(notification.notificationCreator?.id)}
+                    onClickRejectRequest={() => handleRejectRequest(notification.notificationCreator?.id)}
                   />
                 )
               case 'save':
                 return (
                   <NotificationSave
                     key={notification.id}
-                    username={notification.notificationCreator.username}
+                    username={notification.notificationCreator?.username}
                     recipeId={notification.recipeId}
-                    recipeImage={notification.recipe.image}
-                    userImage={notification.notificationCreator.image}
+                    recipeImage={notification.recipe?.image}
+                    userImage={notification.notificationCreator?.image}
                     userId={notification.userId}
                     createdAt={notification.createdAt}
                   />
@@ -107,11 +107,11 @@ export const NotificationsContent = ({
                 return (
                   <NotificationCommentReply
                     key={notification.id}
-                    username={notification.notificationCreator.username}
-                    userImage={notification.notificationCreator.image}
+                    username={notification.notificationCreator?.username}
+                    userImage={notification.notificationCreator?.image}
                     commentText={notification.noficationData}
                     recipeId={notification.recipeId}
-                    recipeImage={notification.recipe.image}
+                    recipeImage={notification.recipe?.image}
                     userId={notification.userId}
                     createdAt={notification.createdAt}
                   />
@@ -120,9 +120,9 @@ export const NotificationsContent = ({
                 return (
                   <NotificationAllowRequest
                     key={notification.id}
-                    username={notification.notificationCreator.username}
-                    userImage={notification.notificationCreator.image}
-                    userId={notification.notificationCreator.id}
+                    username={notification.notificationCreator?.username}
+                    userImage={notification.notificationCreator?.image}
+                    userId={notification.notificationCreator?.id}
                     createdAt={notification.createdAt}
                   />
                 )
