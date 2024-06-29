@@ -35,7 +35,6 @@ import {
   UntesilsIcon
 } from "@/icons";
 import { Button, Input, Textarea } from "@/components/ui";
-import { baseUrl } from "@/lib/api";
 import { Loader } from "@/components/Loader";
 
 export const CreateRecipeForm = () => {
@@ -97,7 +96,7 @@ export const CreateRecipeForm = () => {
         const formData = new FormData();
         formData.append('image', selectedImage);
         const response = await uploadImage(formData).unwrap();
-        imageUrl = baseUrl + response.imageUrl;
+        imageUrl = response.imageUrl;
       }
 
       values.image = imageUrl;

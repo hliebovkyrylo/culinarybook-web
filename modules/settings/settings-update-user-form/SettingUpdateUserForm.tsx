@@ -3,7 +3,6 @@ import { UpdateUserFormData, updateUserSchema } from "./schemas";
 import { useForm } from "react-hook-form";
 import { useUpdateUserMutation } from "@/lib/api/userApi";
 import { useCallback, useState } from "react";
-import { baseUrl } from "@/lib/api";
 import { useUploadImageMutation } from "@/lib/api/uploadImageApi";
 import { RtkError } from "@/typings/error";
 import { useTranslation } from "next-i18next";
@@ -48,14 +47,14 @@ export const SettingsUpdateUserForm = ({ user }: { user?: IUserMe }) => {
       const formData = new FormData();
       formData.append('image', selectedUserImage);
       const response = await uploadImage(formData).unwrap();
-      userImageUrl = baseUrl + response.imageUrl;
+      userImageUrl = response.imageUrl;
     }
 
     if (selectedBackgroundImage) {
       const formData = new FormData();
       formData.append('image', selectedBackgroundImage);
       const response = await uploadImage(formData).unwrap();
-      backgroundImageUrl = baseUrl + response.imageUrl;
+      backgroundImageUrl = response.imageUrl;
     }
 
     values.image = userImageUrl;

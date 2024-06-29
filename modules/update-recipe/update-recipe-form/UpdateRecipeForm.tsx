@@ -35,7 +35,6 @@ import {
 } from "@/icons";
 import { Button, Dialog, Input, Textarea } from "@/components/ui";
 import { useUploadImageMutation } from "@/lib/api/uploadImageApi";
-import { baseUrl } from "@/lib/api";
 import { Loader } from "@/components/Loader";
 
 interface IUpdateRecipeForm {
@@ -101,7 +100,7 @@ export const UpdateRecipeForm = ({
         const formData = new FormData();
         formData.append('image', selectedImage);
         const response = await uploadImage(formData).unwrap();
-        imageUrl = baseUrl + response.imageUrl;
+        imageUrl = response.imageUrl;
       }
 
       values.image = imageUrl;
