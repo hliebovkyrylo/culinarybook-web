@@ -29,7 +29,7 @@ const Notifications = () => {
   });
   const { data: notifications, isLoading: isLoadingNotifications } = useGetMyAllNotificationsQuery();
 
-  if (isLoadingUser || isLoadingNotifications || isLoadingUnreadedNotifications) {
+  if (isLoadingUser || isLoadingUnreadedNotifications) {
     return <Loader className="absolute top-0 left-0" />
   }
 
