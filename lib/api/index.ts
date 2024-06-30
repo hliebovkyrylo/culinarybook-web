@@ -23,34 +23,35 @@ const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQue
   let result = await baseQuery(args, api, extraOptions);
 
   if (result.error && result.error.data && (result.error.data as ApiError).code === 'jwt-expired') {
-    const refreshResult = await baseQuery({ url: '/auth/refresh-token', method: 'POST' }, api, extraOptions);
+    try {
+      const refreshResult = await baseQuery({ url: '/auth/refresh-token', method: 'POST' }, api, extraOptions);
 
-    if (refreshResult.data) {
-      const newAccessToken = (refreshResult.data as IAuthResponse).access_token;
+      if (refreshResult.data) {
+        const newAccessToken = (refreshResult.data as IAuthResponse).access_token;
 
-      Cookies.set('access_token', (refreshResult.data as IAuthResponse).access_token);
+        Cookies.set('access_token', (refreshResult.data as IAuthResponse).access_token);
 
-      if (typeof args === 'string') {
-        args = { url: args }
+        if (typeof args === 'string') {
+          args = { url: args }
+        }
+        if (!args.headers) {
+          args.headers = {}
+        }
+
+        if (args.headers instanceof Headers) {
+          args.headers.set('Authorization', newAccessToken)
+        } else if (Array.isArray(args.headers)) {
+          args.headers.push(['Authorization', newAccessToken])
+        } else {
+          args.headers['Authorization'] = newAccessToken
+        }
+
+        result = await baseQuery(args, api, extraOptions);
       }
-      if (!args.headers) {
-        args.headers = {}
-      }
-
-      if (args.headers instanceof Headers) {
-        args.headers.set('Authorization', newAccessToken)
-      } else if (Array.isArray(args.headers)) {
-        args.headers.push(['Authorization', newAccessToken])
-      } else {
-        args.headers['Authorization'] = newAccessToken
-      }
-
-      result = await baseQuery(args, api, extraOptions);
-    } else {
+    } catch (error) {
       Cookies.remove('access_token');
     }
   }
-
   return result;
 }
 
