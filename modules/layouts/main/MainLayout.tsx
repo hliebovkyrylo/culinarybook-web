@@ -38,6 +38,15 @@ export const MainLayout = ({
       <Head>
         <title>{metaTitle}</title>
         <meta name="description" content={pageDescription} />
+        <meta property="og:title" content={metaTitle} />
+        <meta property="og:description" content={pageDescription} />
+        <meta property="og:image" name="og:image" content={`/api/og?title=${metaTitle}&amp;description=${{pageDescription}}`} />
+        <meta property="og:site_name" content="Culinarybook" />
+        <meta property="og:url" content="culinarybook.website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={metaTitle} />
+        <meta name="twitter:description" content={pageDescription} />
+        <meta name="keywords" content="Culinarybook, culinarybook, culinary book, Culinary book, рецепты, кулинария, еда, блюда, готовка, завтрак, обед, ужин, десерты, выпечка, напитки, салаты, супы, основные блюда, закуски, вегетарианские рецепты, мясо, рыба, паста, соусы, рецепти, кулінарія, їжа, страви, готування, сніданок, обід, вечеря, десерти, випічка, напої, салати, супи, основні страви, закуски, вегетаріанські рецепти, м'ясо, риба, паста, соуси, recipes, cooking, food, dishes, cuisine, breakfast, lunch, dinner, desserts, baking, drinks, salads, soups, main courses, appetizers, vegetarian recipes, meat, fish, pasta, sauces" />
       </Head>
       <MainTopbar user={user} notifications={notifications} />
       <div className="flex flex-row">
