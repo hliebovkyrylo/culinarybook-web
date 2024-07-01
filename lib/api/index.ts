@@ -29,7 +29,7 @@ const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQue
       if (refreshResult.data) {
         const newAccessToken = (refreshResult.data as IAuthResponse).access_token;
 
-        Cookies.set('access_token', (refreshResult.data as IAuthResponse).access_token);
+        Cookies.set('access_token', newAccessToken, { maxAge: 2 * 24 * 60 * 60 });
 
         if (typeof args === 'string') {
           args = { url: args }
