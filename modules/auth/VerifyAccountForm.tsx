@@ -12,6 +12,7 @@ import { useRouter } from "next/router";
 import { useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Loader } from "@/components/Loader";
+import Cookies from "js-cookie";
 
 export const VerifyAccountForm = () => {
   const { t } = useTranslation();
@@ -40,6 +41,7 @@ export const VerifyAccountForm = () => {
 
   const onClickSignOut = () => {
     signOut().unwrap().then(() => {
+      Cookies.remove('access_token');
       router.push('/');
     }).catch((error) => {
       console.log(error);
