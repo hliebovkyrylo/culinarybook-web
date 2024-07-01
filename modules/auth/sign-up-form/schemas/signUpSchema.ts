@@ -2,9 +2,10 @@ import { z } from "zod";
 
 export const signUpSchema = z.object({
   email: z.string().email(),
-  username: z.string().min(2).refine(value => !/\s/.test(value), {
-    message: "The username must not contain spaces"
-  }),
+  username: z.string()
+    .min(2)
+    .regex(/^[a-zA-Z0-9_]+$/, "Only English letters, numbers, and underscores are allowed")
+    .transform(value => value.toLowerCase()),
   name: z.string().min(2),
   password: z.string().min(8),
   image: z.string(),
