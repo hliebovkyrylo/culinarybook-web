@@ -38,7 +38,7 @@ export const SignUpForm = () => {
   const onSubmit = useCallback(async (values: Omit<SignUpFormData, "confirmPassword">) => {
     signUp(values).unwrap()
       .then((res) => {
-        Cookies.set('access_token', res.access_token, { expires: 2 * 24 * 60 * 60 })
+        Cookies.set('access_token', res.access_token, { expires: 2 })
         sendCode().unwrap().then(() => {
           router.push("/verify-account")
         })

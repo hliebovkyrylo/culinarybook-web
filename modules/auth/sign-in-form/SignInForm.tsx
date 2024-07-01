@@ -36,7 +36,7 @@ export const SignInForm = () => {
 
   const onSubmit = useCallback(async (values: SignInFormData) => {
     signIn(values).unwrap().then((res) => {
-      Cookies.set('access_token', res.access_token, { expires: 2 * 24 * 60 * 60 })
+      Cookies.set('access_token', res.access_token, { expires: 2 })
       router.push('/');
     }).catch((error: RtkError) => {
       if (error.data.code === 'wrong-data') {
