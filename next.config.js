@@ -7,6 +7,10 @@ module.exports = {
       {
         protocol: 'https',
         hostname: process.env.NEXT_PUBLIC_IMAGE_HOSTNAME,
+      },
+      {
+        protocol: 'https',
+        hostname: process.env.NEXT_PUBLIC_SECOND_IMAGE_HOSTNAME,
       }
     ]
   },
