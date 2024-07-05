@@ -22,7 +22,7 @@ export const useInfiniteScroll = (newItems: any, setItems: any, numberOfItems: n
     const scrollTop = document.documentElement.scrollTop;
     const clientHeight = document.documentElement.clientHeight;
 
-    if (scrollTop + clientHeight >= scrollHeight) {
+    if (scrollTop + clientHeight >= scrollHeight - 150) {
       if (newItems && newItems.length === numberOfItems) {
         setIsLoading(true);
         setPage((prevPage: number) => prevPage + 1);
