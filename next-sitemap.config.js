@@ -1,6 +1,7 @@
 /** @type {import('next-sitemap').IConfig} */
 module.exports = {
   siteUrl: process.env.SITE_URL,
+  generateIndexSitemap: false,
   generateRobotsTxt: true,
   alternateRefs: [
     {
@@ -35,7 +36,6 @@ module.exports = {
     ],
     additionalSitemaps: [
       `${process.env.SITE_URL}/sitemap.xml`,
-      `${process.env.SITE_URL}/sitemap-0.xml`,
     ],
   },
 }
