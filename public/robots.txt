@@ -1,0 +1,17 @@
+User-agent: *
+Disallow: /confirm-code
+Disallow: /forgot-password
+Disallow: /change-password
+Disallow: /reset-password
+Disallow: /ru/verify-account
+Disallow: /ru/confirm-code
+Disallow: /ru/forgot-password
+Disallow: /ru/change-password
+Disallow: /ru/reset-password
+Disallow: /ru/verify-account
+Disallow: /uk/verify-account
+Disallow: /uk/confirm-code
+Disallow: /uk/forgot-password
+Disallow: /uk/change-password
+Disallow: /uk/reset-password
+Disallow: /uk/verify-account
