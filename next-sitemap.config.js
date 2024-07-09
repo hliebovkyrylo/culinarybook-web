@@ -1,7 +1,8 @@
 /** @type {import('next-sitemap').IConfig} */
 module.exports = {
   siteUrl: process.env.SITE_URL,
-  generateIndexSitemap: false,
+  generateIndexSitemap: true,
+  sitemapsSize: 50000,
   generateRobotsTxt: true,
   alternateRefs: [
     {
@@ -54,9 +55,11 @@ module.exports = {
     ],
     additionalSitemaps: [
       `${process.env.SITE_URL}/sitemap.xml`,
+      `${process.env.SITE_URL}/sitemap-0.xml`,
     ],
   },
   additionalPaths: async () => {
+    const result = []
     const userResponse = await fetch(`${process.env.NEXT_PUBLIC_APP_API_URL}/user/get/users/ids`, {
       method: 'GET'
     });
@@ -68,32 +71,38 @@ module.exports = {
 
     const languages = ['', 'ru', 'uk'];
 
-    const userPaths = users.usersIds.flatMap(user => 
-      languages.map(lang => ({
-        loc: `/${lang}${lang ? '/' : ''}profile/${user.id}/followings`,
-        lastmod: new Date().toISOString(),
-        changefreq: 'daily',
-        priority: 0.7,
-        alternateRefs: languages.map(altLang => ({
-          href: `${process.env.SITE_URL}/${altLang}${altLang ? '/' : ''}profile/${user.id}/followings`,
-          hreflang: altLang || 'x-default'
-        }))
-      }))
-    );
+    users.usersIds.forEach(user => {
+      languages.forEach(lang => {
+        result.push({
+          loc: `/${lang}${lang ? '/' : ''}profile/${user.id}`,
+          lastmod: new Date().toISOString(),
+          changefreq: 'daily',
+          priority: 0.7,
+          alternateRefs: languages.map(altLang => ({
+            href: `${process.env.SITE_URL}/${altLang}${altLang ? '/' : ''}profile/${user.id}`,
+            hreflang: altLang || 'x-default'
+          })),
+        });
+      });
+    });
 
-    const recipePaths = recipes.recipesIds.flatMap(recipe => 
-      languages.map(lang => ({
-        loc: `/${lang}${lang ? '/' : ''}recipe/${recipe.id}`,
-        lastmod: new Date().toISOString(),
-        changefreq: 'daily',
-        priority: 0.7,
-        alternateRefs: languages.map(altLang => ({
-          href: `${process.env.SITE_URL}/${altLang}${altLang ? '/' : ''}recipe/${recipe.id}`,
-          hreflang: altLang || 'x-default'
-        }))
-      }))
-    );
+    recipes.recipesIds.forEach(recipe => {
+      languages.forEach(lang => {
+        result.push({
+          loc: `/${lang}${lang ? '/' : ''}recipe/${recipe.id}`,
+          lastmod: new Date().toISOString(),
+          changefreq: 'daily',
+          priority: 0.7,
+          alternateRefs: languages.map(altLang => ({
+            href: `${process.env.SITE_URL}/${altLang}${altLang ? '/' : ''}recipe/${recipe.id}`,
+            hreflang: altLang || 'x-default'
+          })),
+        });
+      });
+    });
 
-    return [...userPaths, ...recipePaths];
+    return result;
   },
+  sitemapSize: 50000,
+  outDir: 'public',
 }
