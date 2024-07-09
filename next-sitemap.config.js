@@ -28,6 +28,7 @@ module.exports = {
           '/profile/*/liked',
           '/profile/*/saved',
           '/update-recipe/*',
+          '/create-recipe',
           '/ru/confirm-code',
           '/ru/forgot-password',
           '/ru/change-password',
@@ -37,6 +38,7 @@ module.exports = {
           '/ru/profile/*/liked',
           '/ru/profile/*/saved',
           '/ru/update-recipe/*',
+          '/ru/create-recipe',
           '/uk/confirm-code',
           '/uk/forgot-password',
           '/uk/change-password',
@@ -46,6 +48,7 @@ module.exports = {
           '/uk/profile/*/liked',
           '/uk/profile/*/saved',
           '/uk/update-recipe/*',
+          '/uk/create-recipe',
         ],
       },
     ],
@@ -69,6 +72,8 @@ module.exports = {
       languages.map(lang => ({
         loc: `/${lang}${lang ? '/' : ''}profile/${user.id}/followings`,
         lastmod: new Date().toISOString(),
+        changefreq: 'daily',
+        priority: 0.7,
         alternateRefs: languages.map(altLang => ({
           href: `${process.env.SITE_URL}/${altLang}${altLang ? '/' : ''}profile/${user.id}/followings`,
           hreflang: altLang || 'x-default'
@@ -80,6 +85,8 @@ module.exports = {
       languages.map(lang => ({
         loc: `/${lang}${lang ? '/' : ''}recipe/${recipe.id}`,
         lastmod: new Date().toISOString(),
+        changefreq: 'daily',
+        priority: 0.7,
         alternateRefs: languages.map(altLang => ({
           href: `${process.env.SITE_URL}/${altLang}${altLang ? '/' : ''}recipe/${recipe.id}`,
           hreflang: altLang || 'x-default'
