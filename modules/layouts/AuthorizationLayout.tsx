@@ -34,7 +34,7 @@ export const AuthorizationLayout = ({
         <meta property="og:description" content={pageDescription} />
         <meta property="og:image" name="og:image" content='/favicon.ico' />
         <meta property="og:site name" content="Culinarybook" />
-        <meta property="og:url" content="culinarybook.website" />
+        <meta property="og:url" content={`https://www.culinarybook.website${router.asPath}`} />
         <meta name="twitter:card" content="summary" />
         <meta name="twitter:description" content={pageDescription} />
         <meta name="twitter:title" content={metaTitle} />
@@ -42,7 +42,7 @@ export const AuthorizationLayout = ({
         <meta name="twitter:site" content='@culinarybook' />
         <meta name="keywords" content="Culinarybook, culinarybook, culinary book, Culinary book, рецепты, кулинария, еда, блюда, готовка, завтрак, обед, ужин, десерты, выпечка, напитки, салаты, супы, основные блюда, закуски, вегетарианские рецепты, мясо, рыба, паста, соусы, рецепти, кулінарія, їжа, страви, готування, сніданок, обід, вечеря, десерти, випічка, напої, салати, супи, основні страви, закуски, вегетаріанські рецепти, м'ясо, риба, паста, соуси, recipes, cooking, food, dishes, cuisine, breakfast, lunch, dinner, desserts, baking, drinks, salads, soups, main courses, appetizers, vegetarian recipes, meat, fish, pasta, sauces" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="canonical" href={router.asPath} />
+        <link rel="canonical" href={`https://www.culinarybook.website${router.asPath}`} />
       </Head>
       <section className="dark:bg-neutral-900 p-8 w-full max-w-[360px] bg-[#DFDFDF] max-[390px]:mx-4">
         <h1 className="text-2xl mb-3">{pageTitle}</h1>
