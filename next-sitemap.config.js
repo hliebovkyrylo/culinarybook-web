@@ -3,7 +3,7 @@ module.exports = {
   siteUrl: process.env.SITE_URL,
   generateIndexSitemap: true,
   changefreq: 'daily',
-  sitemapsSize: 50,
+  sitemapsSize: 5000,
   generateRobotsTxt: true,
   alternateRefs: [
     {
