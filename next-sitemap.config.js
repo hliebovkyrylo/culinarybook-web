@@ -68,47 +68,58 @@ module.exports = {
     ],
   },
   additionalPaths: async () => {
-    const result = []
-    const userResponse = await fetch(`${process.env.NEXT_PUBLIC_APP_API_URL}/user/get/users/ids`, {
-      method: 'GET'
-    });
-    const recipesResponse = await fetch(`${process.env.NEXT_PUBLIC_APP_API_URL}/recipe/get/recipes/ids`, {
-      method: 'GET'
-    });
-    const users = await userResponse.json();
-    const recipes = await recipesResponse.json();
+    const result = [];
+    try {
+      const userResponse = await fetch(`${process.env.NEXT_PUBLIC_APP_API_URL}/user/get/users/ids`, {
+        method: 'GET'
+      });
+      const recipesResponse = await fetch(`${process.env.NEXT_PUBLIC_APP_API_URL}/recipe/get/recipes/ids`, {
+        method: 'GET'
+      });
 
-    const languages = ['', 'ru', 'uk'];
+      if (!userResponse.ok || !recipesResponse.ok) {
+        console.error('Failed to fetch data from the API');
+        return result;
+      }
 
-    users.usersIds.forEach(user => {
-      languages.forEach(lang => {
-        result.push({
-          loc: `/${lang}${lang ? '/' : ''}profile/${user.id}`,
-          lastmod: new Date().toISOString(),
-          changefreq: 'daily',
-          priority: 0.7,
-          alternateRefs: languages.map(altLang => ({
-            href: `${process.env.SITE_URL}/${altLang}${altLang ? '/' : ''}profile/${user.id}`,
-            hreflang: altLang || 'x-default'
-          })),
+      const users = await userResponse.json();
+      const recipes = await recipesResponse.json();
+
+      const languages = ['', 'ru', 'uk'];
+
+      users.usersIds.forEach(user => {
+        languages.forEach(lang => {
+          result.push({
+            loc: `/${lang}${lang ? '/' : ''}profile/${user.id}`,
+            lastmod: new Date().toISOString(),
+            changefreq: 'daily',
+            priority: 0.7,
+            alternateRefs: languages.map(altLang => ({
+              href: `${process.env.SITE_URL}/${altLang}${altLang ? '/' : ''}profile/${user.id}`,
+              hreflang: altLang || 'x-default'
+            })),
+          });
         });
       });
-    });
 
-    recipes.recipesIds.forEach(recipe => {
-      languages.forEach(lang => {
-        result.push({
-          loc: `/${lang}${lang ? '/' : ''}recipe/${recipe.id}`,
-          lastmod: new Date().toISOString(),
-          changefreq: 'daily',
-          priority: 0.7,
-          alternateRefs: languages.map(altLang => ({
-            href: `${process.env.SITE_URL}/${altLang}${altLang ? '/' : ''}recipe/${recipe.id}`,
-            hreflang: altLang || 'x-default'
-          })),
+      recipes.recipesIds.forEach(recipe => {
+        languages.forEach(lang => {
+          result.push({
+            loc: `/${lang}${lang ? '/' : ''}recipe/${recipe.id}`,
+            lastmod: new Date().toISOString(),
+            changefreq: 'daily',
+            priority: 0.7,
+            alternateRefs: languages.map(altLang => ({
+              href: `${process.env.SITE_URL}/${altLang}${altLang ? '/' : ''}recipe/${recipe.id}`,
+              hreflang: altLang || 'x-default'
+            })),
+          });
         });
       });
-    });
+
+    } catch (error) {
+      console.error('Error fetching or parsing data', error);
+    }
 
     return result;
   },
