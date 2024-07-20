@@ -33,7 +33,7 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "constants/index.js"
-  ],
+, "pages/sitemap.xml.js"  ],
   "exclude": [
     "node_modules"
   ]
