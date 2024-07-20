@@ -3,7 +3,7 @@ module.exports = {
   siteUrl: process.env.SITE_URL,
   generateIndexSitemap: true,
   changefreq: 'daily',
-  sitemapsSize: 5000,
+  sitemapsSize: 50,
   generateRobotsTxt: true,
   alternateRefs: [
     {
@@ -66,10 +66,6 @@ module.exports = {
         ],
       },
     ],
-    additionalSitemaps: [
-      `${process.env.SITE_URL}/sitemap.xml`,
-      `${process.env.SITE_URL}/sitemap-*.xml`,
-    ],
   },
   additionalPaths: async () => {
     const result = []
@@ -116,6 +112,5 @@ module.exports = {
 
     return result;
   },
-  sitemapSize: 50000,
   outDir: 'public',
 }
