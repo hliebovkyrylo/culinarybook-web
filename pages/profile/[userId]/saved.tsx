@@ -17,6 +17,7 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useRouter } from "next/router";
 import { Loader } from "@/components/Loader";
 import { useGetMyAllUnreadedNotificationsQuery } from "@/lib/api/notificationApi";
+import { MetaTags } from "@/modules/meta-tags";
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const userId = ctx.params?.userId;
@@ -49,28 +50,29 @@ const Saved = ({ userId }: InferGetServerSidePropsType<typeof getServerSideProps
     return null;
   }
   return (
-    <MainLayout
-      metaTitle={`${user?.name} - Saved | Culinarybook`}
-      pageDescription={`${user?.name} ${t('meta-profile-description')}`}
-      containerSize="full"
-      user={userMe}
-      notifications={notifications}
-    >
-      <ProfileUserData
-        data={user}
-        followState={followState}
-        followRequestState={followRequestState}
-        selfId={userMe?.id}
-      />
-      <ProfileNavigationPanel
-        userId={userId}
-        selfId={userMe?.id}
-      />
-      <ProfileRecipesContent
-        data={recipes}
-        isLoading={isLoadingRecipes}
-      />
-    </MainLayout>
+    <>
+      <MetaTags title={`${user?.name} - Saved`} description={t('meta-profile-description')} />
+      <MainLayout
+        containerSize="full"
+        user={userMe}
+        notifications={notifications}
+      >
+        <ProfileUserData
+          data={user}
+          followState={followState}
+          followRequestState={followRequestState}
+          selfId={userMe?.id}
+        />
+        <ProfileNavigationPanel
+          userId={userId}
+          selfId={userMe?.id}
+        />
+        <ProfileRecipesContent
+          data={recipes}
+          isLoading={isLoadingRecipes}
+        />
+      </MainLayout>
+    </>
   )
 }
 

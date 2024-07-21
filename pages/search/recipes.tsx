@@ -15,6 +15,7 @@ import { useEffect, useState } from "react";
 import { useGetMeQuery } from "@/lib/api/userApi";
 import { useGetMyAllUnreadedNotificationsQuery } from "@/lib/api/notificationApi";
 import { Loader } from "@/components/Loader";
+import { MetaTags } from "@/modules/meta-tags";
 
 export const getServerSideProps = async ({ locale }: { locale: string }) => ({
   props: {
@@ -56,32 +57,33 @@ const SearchRecipes = () => {
 
   useInfiniteScroll(newRecipes, searchParams ? setFindedRecipes : setRecipes, 12, setPage, setIsLoadingMore);
 
-  if (isLoadingUser || isLoadingNotifications) { 
+  if (isLoadingUser || isLoadingNotifications) {
     return <Loader className="absolute top-0 left-0" />
   }
 
   return (
-    <MainLayout
-      pageTitle={t('title-search')}
-      pageDescription={'search-recipe-meta-description'}
-      containerSize="small"
-      metaTitle={`${t('search-recipe-meta-title')} | Culinarybook`}
-      user={user}
-      notifications={notifications}
-    >
-      <SearchInput
-        placeholder={t('input-placeholder')}
-        leftIcon={<GlassIcon className="absolute top-1.5 left-3 fill-[#666]" />}
-        routeType={"recipes"}
-        searchType={"title"}
-      />
-      <SearchButtons />
-      <SearchRecipesContent
-        data={searchParams ? findedRecipes : recipes}
-        isLoading={isLoading}
-        isLoadingMore={isLoadingMore}
-      />
-    </MainLayout>
+    <>
+      <MetaTags title={t('title-search')} description={'search-recipe-meta-description'} />
+      <MainLayout
+        pageTitle={t('title-search')}
+        containerSize="small"
+        user={user}
+        notifications={notifications}
+      >
+        <SearchInput
+          placeholder={t('input-placeholder')}
+          leftIcon={<GlassIcon className="absolute top-1.5 left-3 fill-[#666]" />}
+          routeType={"recipes"}
+          searchType={"title"}
+        />
+        <SearchButtons />
+        <SearchRecipesContent
+          data={searchParams ? findedRecipes : recipes}
+          isLoading={isLoading}
+          isLoadingMore={isLoadingMore}
+        />
+      </MainLayout>
+    </>
   )
 }
 

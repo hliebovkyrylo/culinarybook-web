@@ -2,6 +2,7 @@ import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { AuthorizationLayout } from "@/modules/layouts";
 import { ResetPasswordForm } from "@/modules/auth";
+import { MetaTags } from "@/modules/meta-tags";
 
 export const getServerSideProps = async ({ locale }: { locale: string }) => ({
   props: {
@@ -12,14 +13,15 @@ export const getServerSideProps = async ({ locale }: { locale: string }) => ({
 const ResetPassword = () => {
   const { t } = useTranslation('common');
   return (
-    <AuthorizationLayout
-      pageTitle={t('title-new-password')}
-      pageDescription=""
-      metaTitle={`${t('title-new-password')} | Culinarybook`}
-      applyHomeButton={false}
-    >
-      <ResetPasswordForm />
-    </AuthorizationLayout>
+    <>
+      <MetaTags title={t('title-new-password')} />
+      <AuthorizationLayout
+        pageTitle={t('title-new-password')}
+        applyHomeButton={false}
+      >
+        <ResetPasswordForm />
+      </AuthorizationLayout>
+    </>
   )
 };
 

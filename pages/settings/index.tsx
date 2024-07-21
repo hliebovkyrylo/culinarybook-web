@@ -3,6 +3,7 @@ import { RequireAuth } from "@/hocs/requireAuth";
 import { useGetMyAllUnreadedNotificationsQuery } from "@/lib/api/notificationApi";
 import { useGetMeQuery } from "@/lib/api/userApi";
 import { MainLayout } from "@/modules/layouts";
+import { MetaTags } from "@/modules/meta-tags";
 import { SettingsUpdateUserForm } from "@/modules/settings";
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
@@ -23,16 +24,17 @@ const Settings = () => {
     return <Loader className="absolute top-0 left-0" />
   }
   return (
-    <MainLayout
-      pageTitle={t('settings')}
-      metaTitle={`${t('settings')} | Culinarybook`}
-      pageDescription=""
-      containerSize="small"
-      user={user}
-      notifications={notifications}
-    >
-      <SettingsUpdateUserForm user={user} />
-    </MainLayout>
+    <>
+      <MetaTags title={t('settings')} />
+      <MainLayout
+        pageTitle={t('settings')}
+        containerSize="small"
+        user={user}
+        notifications={notifications}
+      >
+        <SettingsUpdateUserForm user={user} />
+      </MainLayout>
+    </>
   )
 };
 

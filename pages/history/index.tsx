@@ -6,6 +6,7 @@ import { useGetMyVisitedQuery } from "@/lib/api/recipeApi";
 import { useGetMeQuery } from "@/lib/api/userApi";
 import { HistoryRecipesContent } from "@/modules/history";
 import { MainLayout } from "@/modules/layouts";
+import { MetaTags } from "@/modules/meta-tags";
 import { IRecipePreview } from "@/typings/recipe";
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
@@ -51,10 +52,10 @@ const History = () => {
 
   useInfiniteScroll(newVisitedRecipes, setVisitedRecipes, 12, setPage, setIsLoadingMore);
   return (
-    <MainLayout
+    <>
+      <MetaTags title={t('title-history')} description={t('history-meta-description')} />
+      <MainLayout
       pageTitle={t('title-history')}
-      pageDescription={t('history-meta-description')}
-      metaTitle={`${t('title-history')} | Culinarybook`}
       containerSize="small"
       user={user}
       notifications={notifications}
@@ -65,6 +66,7 @@ const History = () => {
         isLoadingMore={isLoadingMore}
       />
     </MainLayout>
+    </>
   )
 }
 

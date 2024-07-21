@@ -21,6 +21,7 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useRouter } from "next/router";
 import { Loader } from "@/components/Loader";
 import { useGetMyAllUnreadedNotificationsQuery } from "@/lib/api/notificationApi";
+import { MetaTags } from "@/modules/meta-tags";
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const userId = ctx.params?.userId;
@@ -52,38 +53,39 @@ const Followers = ({ userId }: InferGetServerSidePropsType<typeof getServerSideP
     return <Loader className="absolute top-0 left-0" />
   }
   return (
-    <MainLayout
-      metaTitle={`${user?.name} - Followers | Culinarybook`}
-      pageDescription={`${user?.name} ${t('meta-profile-description')}`}
-      containerSize="full"
-      user={userMe}
-      notifications={notifications}
-    >
-      <ProfileUserData
-        data={user}
-        selfId={userMe?.id}
-        followState={followState}
-        followRequestState={followRequestState}
-      />
-      <ProfileNavigationPanel
-        userId={userId}
-        selfId={userMe?.id}
-      />
-      <ProfileRecipesContent
-        data={recipes}
-        isLoading={isLoadingRecipes}
-      />
-      <FollowsWindow title={t('title-followers')} userId={userId}>
-        <FollowsInputSearch
-          pageType="followers"
+    <>
+      <MetaTags title={`${user?.name} - Followers`} description={t('meta-profile-description')} />
+      <MainLayout
+        containerSize="full"
+        user={userMe}
+        notifications={notifications}
+      >
+        <ProfileUserData
+          data={user}
+          selfId={userMe?.id}
+          followState={followState}
+          followRequestState={followRequestState}
+        />
+        <ProfileNavigationPanel
           userId={userId}
+          selfId={userMe?.id}
         />
-        <FollowsUsersContent
-          data={followers}
-          isLoading={isLoadingFollowers}
+        <ProfileRecipesContent
+          data={recipes}
+          isLoading={isLoadingRecipes}
         />
-      </FollowsWindow>
-    </MainLayout>
+        <FollowsWindow title={t('title-followers')} userId={userId}>
+          <FollowsInputSearch
+            pageType="followers"
+            userId={userId}
+          />
+          <FollowsUsersContent
+            data={followers}
+            isLoading={isLoadingFollowers}
+          />
+        </FollowsWindow>
+      </MainLayout>
+    </>
   )
 }
 

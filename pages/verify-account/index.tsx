@@ -6,6 +6,7 @@ import { useGetMeQuery } from "@/lib/api/userApi";
 import { Loader } from "@/components/Loader";
 import { useRouter } from "next/router";
 import Cookies from "js-cookie";
+import { MetaTags } from "@/modules/meta-tags";
 
 export const getServerSideProps = async ({ locale }: { locale: string }) => ({
   props: {
@@ -34,13 +35,15 @@ const VerifyAccount = () => {
     return null;
   }
   return (
-    <AuthorizationLayout
-      pageTitle={t('title-verify')}
-      metaTitle={`${t('title-verify')} | Culinarybook`}
-      applyHomeButton={false}
-    >
-      <VerifyAccountForm />
-    </AuthorizationLayout>
+    <>
+      <MetaTags title={t('title-verify')} />
+      <AuthorizationLayout
+        pageTitle={t('title-verify')}
+        applyHomeButton={false}
+      >
+        <VerifyAccountForm />
+      </AuthorizationLayout>
+    </>
   )
 };
 

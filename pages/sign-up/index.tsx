@@ -3,6 +3,7 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { AuthorizationLayout } from "@/modules/layouts";
 import { SignUpForm } from "@/modules/auth";
 import { RequireGuest } from "@/hocs/requireGuest";
+import { MetaTags } from "@/modules/meta-tags";
 
 export const getServerSideProps = async ({ locale }: { locale: string }) => ({
   props: {
@@ -13,14 +14,15 @@ export const getServerSideProps = async ({ locale }: { locale: string }) => ({
 const SignUp = () => {
   const { t } = useTranslation('common');
   return (
-    <AuthorizationLayout
-      pageTitle={t('title-signup')}
-      pageDescription={t('meta-sign-up-description')}
-      metaTitle={`${t('title-signup')} | Culinarybook`}
-      applyHomeButton={true}
-    >
-      <SignUpForm />
-    </AuthorizationLayout>
+    <>
+      <MetaTags title={t('title-signup')} description={t('meta-sign-up-description')} />
+      <AuthorizationLayout
+        pageTitle={t('title-signup')}
+        applyHomeButton={true}
+      >
+        <SignUpForm />
+      </AuthorizationLayout>
+    </>
   )
 };
 

@@ -6,6 +6,7 @@ import { RequireAuth } from "@/hocs/requireAuth";
 import { useGetMyAllNotificationsQuery, useGetMyAllUnreadedNotificationsQuery } from "@/lib/api/notificationApi";
 import { useGetMeQuery } from "@/lib/api/userApi";
 import { Loader } from "@/components/Loader";
+import { MetaTags } from "@/modules/meta-tags";
 
 
 export const getServerSideProps = async ({ locale }: { locale: string }) => ({
@@ -34,21 +35,22 @@ const Notifications = () => {
   }
 
   return (
-    <MainLayout
-      pageTitle={t('title-notifications')}
-      metaTitle={`${t('user')} - ${t('title-notifications')} | Culinarybook`}
-      pageDescription=""
-      containerSize="small"
-      user={user}
-      notifications={unreadedNotifications}
-    >
-      <section className="w-full h-full p-3 mt-3 rounded-lg overflow-y-auto max-h-[85%] dark:bg-[#222] bg-white">
-        <NotificationsContent
-          data={notifications}
-          isLoading={isLoadingNotifications}
-        />
-      </section>
-    </MainLayout>
+    <>
+      <MetaTags title={`${t('user')} - ${t('title-notifications')}`} />
+      <MainLayout
+        pageTitle={t('title-notifications')}
+        containerSize="small"
+        user={user}
+        notifications={unreadedNotifications}
+      >
+        <section className="w-full h-full p-3 mt-3 rounded-lg overflow-y-auto max-h-[85%] dark:bg-[#222] bg-white">
+          <NotificationsContent
+            data={notifications}
+            isLoading={isLoadingNotifications}
+          />
+        </section>
+      </MainLayout>
+    </>
   )
 }
 

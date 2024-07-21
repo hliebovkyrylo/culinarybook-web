@@ -3,6 +3,7 @@ import { RequireAuth } from "@/hocs/requireAuth"
 import { useGetMyAllUnreadedNotificationsQuery } from "@/lib/api/notificationApi"
 import { useGetMyLikedQuery } from "@/lib/api/recipeApi"
 import { MainLayout } from "@/modules/layouts"
+import { MetaTags } from "@/modules/meta-tags"
 import {
   ProfileNavigationPanel,
   ProfileRecipesContent,
@@ -49,28 +50,29 @@ const Liked = ({ userId }: InferGetServerSidePropsType<typeof getServerSideProps
     return null;
   }
   return (
-    <MainLayout
-      metaTitle={`${user?.name} - Liked | Culinarybook`}
-      pageDescription={`${user?.name} ${t('meta-profile-description')}`}
-      containerSize="full"
-      user={userMe}
-      notifications={notifications}
-    >
-      <ProfileUserData
-        data={user}
-        selfId={userMe?.id}
-        followState={followState}
-        followRequestState={followRequestState}
-      />
-      <ProfileNavigationPanel
-        userId={userId}
-        selfId={userMe?.id}
-      />
-      <ProfileRecipesContent
-        data={recipes}
-        isLoading={isLoadingLikedRecipes}
-      />
-    </MainLayout>
+    <>
+      <MetaTags title={`${user?.name} - Liked`} description={t('meta-profile-description')} />
+      <MainLayout
+        containerSize="full"
+        user={userMe}
+        notifications={notifications}
+      >
+        <ProfileUserData
+          data={user}
+          selfId={userMe?.id}
+          followState={followState}
+          followRequestState={followRequestState}
+        />
+        <ProfileNavigationPanel
+          userId={userId}
+          selfId={userMe?.id}
+        />
+        <ProfileRecipesContent
+          data={recipes}
+          isLoading={isLoadingLikedRecipes}
+        />
+      </MainLayout>
+    </>
   )
 }
 
