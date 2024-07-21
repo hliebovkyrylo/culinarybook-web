@@ -4,11 +4,9 @@ import { useRouter } from "next/router"
 export const MetaTags = ({
   title,
   description,
-  ogImage,
 }: {
   title?: string,
   description?: string,
-  ogImage?: string,
 }) => {
   const router = useRouter();
   return (
@@ -24,13 +22,13 @@ export const MetaTags = ({
       <meta property="og:url" content={`https://www.culinarybook.website${router.asPath}`} />
       <meta property="og:title" content={title} />
       <meta property="og:description" content={description} />
-      <meta property="og:image" content={ogImage} />
+      <meta property="og:image" content={`/api/og?title=${title}&description=${description}`} />
       <meta property="og:type" content="website" />
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:site" content={'@culinarybook'} />
       <meta name="twitter:title" content={title} />
       <meta name="twitter:description" content={description} />
-      <meta name="twitter:image" content={ogImage} />
+      <meta name="twitter:image" content={`/api/og?title=${title}&description=${description}`} />
       <link rel="canonical" href={`https://www.culinarybook.website${router.asPath}`} />
     </Head>
   )
