@@ -15,6 +15,7 @@ import { useEffect, useState } from "react";
 import { useGetMeQuery } from "@/lib/api/userApi";
 import { useGetMyAllUnreadedNotificationsQuery } from "@/lib/api/notificationApi";
 import { Loader } from "@/components/Loader";
+import { MetaTags } from "@/modules/meta-tags";
 
 export const getServerSideProps = async ({ locale }: { locale: string }) => ({
   props: {
@@ -61,27 +62,28 @@ const SearchUsers = () => {
   }
 
   return (
-    <MainLayout
-      pageTitle={t('title-search')}
-      pageDescription={'search-user-meta-description'}
-      containerSize="small"
-      metaTitle={`${t('search-user-meta-title')} | Culinarybook`}
-      user={user}
-      notifications={notifications}
-    >
-      <SearchInput
-        placeholder={t('input-username-placeholder')}
-        leftIcon={<GlassIcon className="absolute top-1.5 left-3 fill-[#666]" />}
-        routeType={"users"}
-        searchType={"username"}
-      />
-      <SearchButtons />
-      <SearchUsersContent
-        data={searchParams ? findedUsers : users}
-        isLoading={isLoading}
-        isLoadingMore={isLoadingMore}
-      />
-    </MainLayout>
+    <>
+      <MetaTags title={t('title-search')} description={'search-user-meta-description'} />
+      <MainLayout
+        pageTitle={t('title-search')}
+        containerSize="small"
+        user={user}
+        notifications={notifications}
+      >
+        <SearchInput
+          placeholder={t('input-username-placeholder')}
+          leftIcon={<GlassIcon className="absolute top-1.5 left-3 fill-[#666]" />}
+          routeType={"users"}
+          searchType={"username"}
+        />
+        <SearchButtons />
+        <SearchUsersContent
+          data={searchParams ? findedUsers : users}
+          isLoading={isLoading}
+          isLoadingMore={isLoadingMore}
+        />
+      </MainLayout>
+    </>
   )
 }
 

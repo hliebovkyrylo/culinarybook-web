@@ -6,6 +6,7 @@ import { RequireAuth } from "@/hocs/requireAuth";
 import { useGetMeQuery } from "@/lib/api/userApi";
 import { useGetMyAllUnreadedNotificationsQuery } from "@/lib/api/notificationApi";
 import { Loader } from "@/components/Loader";
+import { MetaTags } from "@/modules/meta-tags";
 
 export const getServerSideProps = async ({ locale }: { locale: string }) => ({
   props: {
@@ -32,16 +33,17 @@ const CreateRecipe = () => {
   }
 
   return (
-    <MainLayout
-      pageTitle={t('create-recipe')}
-      pageDescription={t('meta-create-recipe-description')}
-      metaTitle={`${t('create-recipe')} | Culinarybook`}
-      containerSize="full"
-      user={user}
-      notifications={notifications}
-    >
-      <CreateRecipeForm />
-    </MainLayout>
+    <>
+      <MetaTags title={t('create-recipe')} description={t('meta-create-recipe-description')} />
+      <MainLayout
+        pageTitle={t('create-recipe')}
+        containerSize="full"
+        user={user}
+        notifications={notifications}
+      >
+        <CreateRecipeForm />
+      </MainLayout>
+    </>
   )
 };
 

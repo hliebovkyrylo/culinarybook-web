@@ -17,6 +17,7 @@ import { useRouter } from "next/router";
 import { MainLayout } from "@/modules/layouts";
 import { Loader } from "@/components/Loader";
 import { useGetMyAllUnreadedNotificationsQuery } from "@/lib/api/notificationApi";
+import { MetaTags } from "@/modules/meta-tags";
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const userId = ctx.params?.userId;
@@ -53,34 +54,35 @@ const Profile = ({ userId }: InferGetServerSidePropsType<typeof getServerSidePro
   const isPrivateAccount = user?.isPrivate && userMe?.id !== userId && !followState?.isFollowed;
 
   return (
-    <MainLayout
-      pageDescription={`${user?.name} ${t('meta-profile-description')}`}
-      metaTitle={`${user?.name} | Culinarybook`}
-      containerSize="full"
-      user={userMe}
-      notifications={notifications}
-    >
-      <ProfileUserData
-        data={user}
-        followRequestState={followRequestState}
-        selfId={userMe?.id}
-        followState={followState}
-      />
-      {!isPrivateAccount ? (
-        <>
-          <ProfileNavigationPanel
-            userId={userId}
-            selfId={userMe?.id}
-          />
-          <ProfileRecipesContent
-            isLoading={isLoadingRecipes || isFetchingRecipes}
-            data={recipes}
-          />
-        </>
-      ) : (
-        <PrivateAccountWindow />
-      )}
-    </MainLayout>
+    <>
+      <MetaTags title={user?.name} description={t('meta-profile-description')} />
+      <MainLayout
+        containerSize="full"
+        user={userMe}
+        notifications={notifications}
+      >
+        <ProfileUserData
+          data={user}
+          followRequestState={followRequestState}
+          selfId={userMe?.id}
+          followState={followState}
+        />
+        {!isPrivateAccount ? (
+          <>
+            <ProfileNavigationPanel
+              userId={userId}
+              selfId={userMe?.id}
+            />
+            <ProfileRecipesContent
+              isLoading={isLoadingRecipes || isFetchingRecipes}
+              data={recipes}
+            />
+          </>
+        ) : (
+          <PrivateAccountWindow />
+        )}
+      </MainLayout>
+    </>
   )
 }
 

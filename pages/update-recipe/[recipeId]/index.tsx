@@ -15,6 +15,7 @@ import { RequireAuth } from "@/hocs/requireAuth";
 import { useGetMeQuery } from "@/lib/api/userApi";
 import { Loader } from "@/components/Loader";
 import { useGetMyAllUnreadedNotificationsQuery } from "@/lib/api/notificationApi";
+import { MetaTags } from "@/modules/meta-tags";
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const recipeId = ctx.params?.recipeId;
@@ -47,19 +48,20 @@ const UpdateRecipe = ({ recipeId }: InferGetServerSidePropsType<typeof getServer
   }
 
   return (
-    <MainLayout
-      pageTitle={t('update-recipe')}
-      metaTitle={`${t('update-recipe')} | Culinarybook`}
-      pageDescription={t('update-recipe-meta-description')}
-      containerSize="full"
-      user={user}
-      notifications={notifications}
-    >
-      <UpdateRecipeForm
-        recipe={recipe}
-        steps={steps}
-      />
-    </MainLayout>
+    <>
+      <MetaTags title={t('update-recipe')} description={t('update-recipe-meta-description')} />
+      <MainLayout
+        pageTitle={t('update-recipe')}
+        containerSize="full"
+        user={user}
+        notifications={notifications}
+      >
+        <UpdateRecipeForm
+          recipe={recipe}
+          steps={steps}
+        />
+      </MainLayout>
+    </>
   )
 };
 

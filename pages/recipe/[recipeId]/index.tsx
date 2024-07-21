@@ -27,6 +27,7 @@ import { MainLayout } from "@/modules/layouts";
 import { Loader } from "@/components/Loader";
 import { useGetMyAllUnreadedNotificationsQuery } from "@/lib/api/notificationApi";
 import { PrivateRecipe } from "@/components/recipes";
+import { MetaTags } from "@/modules/meta-tags";
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const recipeId = ctx.params?.recipeId;
@@ -80,37 +81,38 @@ const Recipe = ({ recipeId }: InferGetServerSidePropsType<typeof getServerSidePr
   }
 
   return (
-    <MainLayout
-      pageTitle={''}
-      pageDescription={recipe.ingradients}
-      metaTitle={`${recipe.title} | Culinarybook`}
-      containerSize="full"
-      user={user}
-      notifications={notifications}
-    >
-      {isBackgroundApplied && (
-        <Image src={recipe.image} alt="Background image" width={1000} height={1000} className=" absolute top-0 left-0 w-full h-full object-cover -z-10 blur-sm opacity-10" />
-      )}
-      <RecipeData
-        data={recipe}
-        averageGrade={comments && comments?.length > 0 ? comments.reduce((sum, comment) => sum + comment.grade, 0) / comments.length : 0}
-        isOwner={isRecipeOwner}
-        isAuth={!!user}
-        likes={likes}
-        likeState={likeState}
-        saveState={saveState}
-      />
-      <StepsData data={steps} isLoading={isLoadingSteps} />
-      <div className="mt-12">
-        <h3 className="link-text font-semibold my-5">{t('title-comment')}</h3>
-        <CreateCommentForm averageRating={4} />
-        <CommentsContent
-          data={comments}
-          isLoading={isLoadingAllComments}
-          recipeOwnerId={recipe.ownerId}
+    <>
+      <MetaTags title={recipe.title} description={steps?.map(step => step.stepDescription).join(' ')} />
+      <MainLayout
+        pageTitle={''}
+        containerSize="full"
+        user={user}
+        notifications={notifications}
+      >
+        {isBackgroundApplied && (
+          <Image src={recipe.image} alt="Background image" width={1000} height={1000} className=" absolute top-0 left-0 w-full h-full object-cover -z-10 blur-sm opacity-10" />
+        )}
+        <RecipeData
+          data={recipe}
+          averageGrade={comments && comments?.length > 0 ? comments.reduce((sum, comment) => sum + comment.grade, 0) / comments.length : 0}
+          isOwner={isRecipeOwner}
+          isAuth={!!user}
+          likes={likes}
+          likeState={likeState}
+          saveState={saveState}
         />
-      </div>
-    </MainLayout>
+        <StepsData data={steps} isLoading={isLoadingSteps} />
+        <div className="mt-12">
+          <h3 className="link-text font-semibold my-5">{t('title-comment')}</h3>
+          <CreateCommentForm averageRating={4} />
+          <CommentsContent
+            data={comments}
+            isLoading={isLoadingAllComments}
+            recipeOwnerId={recipe.ownerId}
+          />
+        </div>
+      </MainLayout>
+    </>
   )
 }
 

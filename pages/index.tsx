@@ -43,32 +43,35 @@ const Home = () => {
   }
 
   return (
-    <MainLayout
-      pageTitle={t('title')}
-      isLoading={isLoading}
-      backgroundImage={(recipes && recipes[0]?.image !== '') ? recipes[0]?.image : ''}
-      containerSize="full"
-      user={user}
-      notifications={notifications}
-    >
-      <div className="mb-28 w-full">
-        <div className="flex items-center justify-between mt-6 mb-3">
-          <span>{user ? t('recipes-headText') : t('second-recipes-headText')}</span>
-          <Link href={'/search/recipes'} className="link-text">{t('link')}</Link>
+    <>
+      <MetaTags title={t('title')} description={t('app-description')} />
+      <MainLayout
+        pageTitle={t('title')}
+        isLoading={isLoading}
+        backgroundImage={(recipes && recipes[0]?.image !== '') ? recipes[0]?.image : ''}
+        containerSize="full"
+        user={user}
+        notifications={notifications}
+      >
+        <div className="mb-28 w-full">
+          <div className="flex items-center justify-between mt-6 mb-3">
+            <span>{user ? t('recipes-headText') : t('second-recipes-headText')}</span>
+            <Link href={'/search/recipes'} className="link-text">{t('link')}</Link>
+          </div>
+          <RecipesContent
+            data={recipes}
+            isLoading={isLoading}
+          />
+          <div className="flex items-center justify-between mt-6 mb-3">
+            <span>{user ? t('users-headText') : t('second-users-headText')}</span>
+          </div>
+          <UsersContent
+            data={users}
+            isLoading={isLoading}
+          />
         </div>
-        <RecipesContent
-          data={recipes}
-          isLoading={isLoading}
-        />
-        <div className="flex items-center justify-between mt-6 mb-3">
-          <span>{user ? t('users-headText') : t('second-users-headText')}</span>
-        </div>
-        <UsersContent
-          data={users}
-          isLoading={isLoading}
-        />
-      </div>
-    </MainLayout>
+      </MainLayout>
+    </>
   )
 }
 
