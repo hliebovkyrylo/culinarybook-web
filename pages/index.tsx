@@ -11,6 +11,7 @@ import { useGetMeQuery } from "@/lib/api/userApi";
 import Link from "next/link";
 import { useGetMyAllUnreadedNotificationsQuery } from "@/lib/api/notificationApi";
 import { Loader } from "@/components/Loader";
+import { MetaTags } from "@/modules/meta-tags";
 
 export const getServerSideProps = async ({ locale }: { locale: string }) => ({
   props: {
@@ -44,11 +45,9 @@ const Home = () => {
   return (
     <MainLayout
       pageTitle={t('title')}
-      pageDescription={t('app-description')}
       isLoading={isLoading}
       backgroundImage={(recipes && recipes[0]?.image !== '') ? recipes[0]?.image : ''}
       containerSize="full"
-      metaTitle={`${t('title')} | Culinarybook`}
       user={user}
       notifications={notifications}
     >
