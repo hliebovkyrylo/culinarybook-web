@@ -12,14 +12,25 @@ import Link from "next/link";
 import { useGetMyAllUnreadedNotificationsQuery } from "@/lib/api/notificationApi";
 import { Loader } from "@/components/Loader";
 import { MetaTags } from "@/modules/meta-tags";
+import { InferGetServerSidePropsType } from "next";
 
-export const getServerSideProps = async ({ locale }: { locale: string }) => ({
-  props: {
-    ...await serverSideTranslations(locale, ['common']),
-  },
-})
+export const getServerSideProps = async ({ locale }: { locale: string }) => {
+  const translations = await serverSideTranslations(locale, ['common']);
+  
+  const commonTranslations = translations._nextI18Next?.initialI18nStore[locale || 'en'].common;
+  
+  return {
+    props: {
+      ...await serverSideTranslations(locale, ['common']),
+      metaTags: {
+        title: commonTranslations.title || 'Culinarybook',
+        description: commonTranslations.description || '',
+      }
+    },
+  }
+}
 
-const Home = () => {
+const Home = ({ metaTags }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const { t } = useTranslation('common');
 
   const { data: notifications, isLoading: isLoadingNotifications } = useGetMyAllUnreadedNotificationsQuery(undefined, {
@@ -44,7 +55,7 @@ const Home = () => {
 
   return (
     <>
-      <MetaTags title={t('title')} description={t('app-description')} />
+      <MetaTags title={metaTags.title} description={metaTags.description} />
       <MainLayout
         pageTitle={t('title')}
         isLoading={isLoading}

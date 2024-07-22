@@ -1,5 +1,6 @@
 import { useTranslation } from "next-i18next";
 import {
+  recipeApi,
   useGetRecipeQuery,
   useGetStepsQuery,
 } from "@/lib/api/recipeApi";
@@ -16,29 +17,46 @@ import { useGetMeQuery } from "@/lib/api/userApi";
 import { Loader } from "@/components/Loader";
 import { useGetMyAllUnreadedNotificationsQuery } from "@/lib/api/notificationApi";
 import { MetaTags } from "@/modules/meta-tags";
+import { wrapper } from "@/lib/store";
 
-export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-  const recipeId = ctx.params?.recipeId;
-  const locale = ctx.locale;
+export const getServerSideProps = wrapper.getServerSideProps(
+  (store) => async (ctx: GetServerSidePropsContext) => {
+    const recipeId = ctx.params?.recipeId as string;
+    const locale = ctx.locale as string;
 
-  return {
-    props: {
-      ...await serverSideTranslations(locale as string, ['common']),
-      recipeId: recipeId as string,
-    },
-  };
-}
+    const translations = await serverSideTranslations(locale, ['common']);
+    const commonTranslations = translations._nextI18Next?.initialI18nStore[locale || 'en'].common;
 
-const UpdateRecipe = ({ recipeId }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+    const recipePromise = store.dispatch(recipeApi.endpoints.getRecipe.initiate(recipeId));
+    const stepsPromise = store.dispatch(recipeApi.endpoints.getSteps.initiate(recipeId));
+
+    await Promise.all([recipePromise, stepsPromise]);
+
+    const recipe = recipeApi.endpoints.getRecipe.select(recipeId)(store.getState() as any);
+    const steps = recipeApi.endpoints.getSteps.select(recipeId)(store.getState() as any);
+
+    return {
+      props: {
+        ...await serverSideTranslations(locale as string, ['common']),
+        recipe: recipe.data,
+        steps: steps.data,
+        metaTags: {
+          title: commonTranslations['update-recipe'] || 'Update recipe',
+          description: commonTranslations['update-recipe-meta-description'] || '',
+        }
+      },
+    };
+  }
+)
+
+const UpdateRecipe = ({ recipe, steps, metaTags }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const { t } = useTranslation('common');
   const router = useRouter();
 
   const { data: user, isLoading: isLoadingUser } = useGetMeQuery();
-  const { data: recipe, isLoading: isLoadingRecipe } = useGetRecipeQuery(recipeId);
-  const { data: steps, isLoading: isLoadingSteps } = useGetStepsQuery(recipeId);
   const { data: notifications, isLoading: isLoadingNotifications } = useGetMyAllUnreadedNotificationsQuery();
 
-  if (isLoadingRecipe || isLoadingSteps || isLoadingUser || isLoadingNotifications) {
+  if (isLoadingUser || isLoadingNotifications) {
     return <Loader className="absolute top-0 left-0 z-[1000]" />;
   }
 
@@ -49,7 +67,7 @@ const UpdateRecipe = ({ recipeId }: InferGetServerSidePropsType<typeof getServer
 
   return (
     <>
-      <MetaTags title={t('update-recipe')} description={t('update-recipe-meta-description')} />
+      <MetaTags title={metaTags.title} description={metaTags.description} />
       <MainLayout
         pageTitle={t('update-recipe')}
         containerSize="full"

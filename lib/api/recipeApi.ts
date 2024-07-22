@@ -155,3 +155,5 @@ export const {
   useUpdateRecipeMutation,
   useUpdateStepsMutation,
 } = recipeApi;
+
+export const { getRecipe, getSteps } = recipeApi.endpoints;

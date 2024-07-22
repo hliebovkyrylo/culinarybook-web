@@ -28,7 +28,6 @@ const MyApp: React.FunctionComponent<AppProps> = ({ Component, ...rest }) => {
             });
           `}
         </Script>
-        <title>Culinarybook</title>
         <Component {...props.pageProps} />
       </ThemeProvider>
     </Provider>

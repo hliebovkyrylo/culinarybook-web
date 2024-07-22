@@ -4,18 +4,28 @@ import { AuthorizationLayout } from "@/modules/layouts";
 import { ChangePasswordForm } from "@/modules/auth";
 import { RequireAuth } from "@/hocs/requireAuth";
 import { MetaTags } from "@/modules/meta-tags";
+import { InferGetServerSidePropsType } from "next";
 
-export const getServerSideProps = async ({ locale }: { locale: string }) => ({
-  props: {
-    ...await serverSideTranslations(locale, ['common']),
-  },
-})
+export const getServerSideProps = async ({ locale }: { locale: string }) => {
+  const translations = await serverSideTranslations(locale, ['common']);
+  
+  const commonTranslations = translations._nextI18Next?.initialI18nStore[locale || 'en'].common;
+  
+  return {
+    props: {
+      ...await serverSideTranslations(locale, ['common']),
+      metaTags: {
+        title: commonTranslations['title-change'] || 'Culinarybook',
+      }
+    },
+  }
+}
 
-const ChangePassword = () => {
+const ChangePassword = ({ metaTags }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const { t } = useTranslation('common');
   return (
     <>
-      <MetaTags title={t('title-change')} />
+      <MetaTags title={metaTags.title} />
       <AuthorizationLayout
         pageTitle={t('title-change')}
         applyHomeButton={true}

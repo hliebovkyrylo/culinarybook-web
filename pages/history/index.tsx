@@ -8,17 +8,28 @@ import { HistoryRecipesContent } from "@/modules/history";
 import { MainLayout } from "@/modules/layouts";
 import { MetaTags } from "@/modules/meta-tags";
 import { IRecipePreview } from "@/typings/recipe";
+import { InferGetServerSidePropsType } from "next";
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useEffect, useState } from "react";
 
-export const getServerSideProps = async ({ locale }: { locale: string }) => ({
-  props: {
-    ...await serverSideTranslations(locale, ['common']),
-  },
-})
+export const getServerSideProps = async ({ locale }: { locale: string }) => {
+  const translations = await serverSideTranslations(locale, ['common']);
+  
+  const commonTranslations = translations._nextI18Next?.initialI18nStore[locale || 'en'].common;
+  
+  return {
+    props: {
+      ...await serverSideTranslations(locale, ['common']),
+      metaTags: {
+        title: commonTranslations['title-notifications'] || 'Culinarybook',
+        description: commonTranslations['history-meta-description'] || '',
+      }
+    },
+  }
+}
 
-const History = () => {
+const History = ({ metaTags }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const { t } = useTranslation('common');
 
   const [page, setPage] = useState<number>(1);
@@ -53,7 +64,7 @@ const History = () => {
   useInfiniteScroll(newVisitedRecipes, setVisitedRecipes, 12, setPage, setIsLoadingMore);
   return (
     <>
-      <MetaTags title={t('title-history')} description={t('history-meta-description')} />
+      <MetaTags title={metaTags.title} description={metaTags.description} />
       <MainLayout
       pageTitle={t('title-history')}
       containerSize="small"

@@ -7,14 +7,25 @@ import { useGetMeQuery } from "@/lib/api/userApi";
 import { useGetMyAllUnreadedNotificationsQuery } from "@/lib/api/notificationApi";
 import { Loader } from "@/components/Loader";
 import { MetaTags } from "@/modules/meta-tags";
+import { InferGetServerSidePropsType } from "next";
 
-export const getServerSideProps = async ({ locale }: { locale: string }) => ({
-  props: {
-    ...await serverSideTranslations(locale, ['common']),
-  },
-})
+export const getServerSideProps = async ({ locale }: { locale: string }) => {
+  const translations = await serverSideTranslations(locale, ['common']);
+  
+  const commonTranslations = translations._nextI18Next?.initialI18nStore[locale || 'en'].common;
+  
+  return {
+    props: {
+      ...await serverSideTranslations(locale, ['common']),
+      metaTags: {
+        title: commonTranslations['create-recipe'] || 'Culinarybook',
+        description: commonTranslations['meta-create-recipe-description'] || '',
+      }
+    },
+  }
+}
 
-const CreateRecipe = () => {
+const CreateRecipe = ({ metaTags }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const { t } = useTranslation('common');
 
   const { data: notifications, isLoading: isLoadingNotifications } = useGetMyAllUnreadedNotificationsQuery(undefined, {
@@ -34,7 +45,7 @@ const CreateRecipe = () => {
 
   return (
     <>
-      <MetaTags title={t('create-recipe')} description={t('meta-create-recipe-description')} />
+      <MetaTags title={metaTags.title} description={metaTags.description} />
       <MainLayout
         pageTitle={t('create-recipe')}
         containerSize="full"
