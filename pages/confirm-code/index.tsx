@@ -3,8 +3,8 @@ import { AuthorizationLayout } from "@/modules/layouts";
 import { ConfirmCodeForm } from "@/modules/auth";
 import { useTranslation } from "next-i18next";
 import { RequireGuest } from "@/hocs/requireGuest";
-import { MetaTags } from "@/modules/meta-tags";
 import { InferGetServerSidePropsType } from "next";
+import { NextSeo } from "next-seo";
 
 export const getServerSideProps = async ({ locale }: { locale: string }) => {
   const translations = await serverSideTranslations(locale, ['common']);
@@ -25,7 +25,17 @@ const ConfirmCode = ({ metaTags }: InferGetServerSidePropsType<typeof getServerS
   const { t } = useTranslation('common');
   return (
     <>
-      <MetaTags title={metaTags.title} />
+      <NextSeo 
+        title={metaTags.title}
+        canonical="https://www.culinarybook.website/confirm-code"
+        openGraph={{
+          url: 'https://www.culinarybook.website/confirm-code',
+          title: metaTags.title,
+          images: [
+            { url: `/api/og?title=${metaTags.title}` },
+          ],
+        }}
+      />
       <AuthorizationLayout
         pageTitle={t('title-confirm')}
         applyHomeButton={true}

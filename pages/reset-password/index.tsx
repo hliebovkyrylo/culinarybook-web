@@ -2,8 +2,8 @@ import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { AuthorizationLayout } from "@/modules/layouts";
 import { ResetPasswordForm } from "@/modules/auth";
-import { MetaTags } from "@/modules/meta-tags";
 import { InferGetServerSidePropsType } from "next";
+import { NextSeo } from "next-seo";
 
 export const getServerSideProps = async ({ locale }: { locale: string }) => {
   const translations = await serverSideTranslations(locale, ['common']);
@@ -24,7 +24,17 @@ const ResetPassword = ({ metaTags }: InferGetServerSidePropsType<typeof getServe
   const { t } = useTranslation('common');
   return (
     <>
-      <MetaTags title={metaTags.title} />
+      <NextSeo 
+        title={metaTags.title}
+        canonical="https://www.culinarybook.website/reset-password"
+        openGraph={{
+          url: 'https://www.culinarybook.website/reset-password',
+          title: metaTags.title,
+          images: [
+            { url: `/api/og?title=${metaTags.title}` },
+          ],
+        }}
+      />
       <AuthorizationLayout
         pageTitle={t('title-new-password')}
         applyHomeButton={false}

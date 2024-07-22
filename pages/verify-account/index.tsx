@@ -6,8 +6,8 @@ import { useGetMeQuery } from "@/lib/api/userApi";
 import { Loader } from "@/components/Loader";
 import { useRouter } from "next/router";
 import Cookies from "js-cookie";
-import { MetaTags } from "@/modules/meta-tags";
 import { InferGetServerSidePropsType } from "next";
+import { NextSeo } from "next-seo";
 
 export const getServerSideProps = async ({ locale }: { locale: string }) => {
   const translations = await serverSideTranslations(locale, ['common']);
@@ -46,7 +46,17 @@ const VerifyAccount = ({ metaTags }: InferGetServerSidePropsType<typeof getServe
   }
   return (
     <>
-      <MetaTags title={metaTags.title} />
+      <NextSeo 
+        title={metaTags.title}
+        canonical="https://www.culinarybook.website/verify-account"
+        openGraph={{
+          url: 'https://www.culinarybook.website/verify-account',
+          title: metaTags.title,
+          images: [
+            { url: `/api/og?title=${metaTags.title}` },
+          ],
+        }}
+      />
       <AuthorizationLayout
         pageTitle={t('title-verify')}
         applyHomeButton={false}

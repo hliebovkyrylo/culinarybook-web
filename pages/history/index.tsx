@@ -6,11 +6,11 @@ import { useGetMyVisitedQuery } from "@/lib/api/recipeApi";
 import { useGetMeQuery } from "@/lib/api/userApi";
 import { HistoryRecipesContent } from "@/modules/history";
 import { MainLayout } from "@/modules/layouts";
-import { MetaTags } from "@/modules/meta-tags";
 import { IRecipePreview } from "@/typings/recipe";
 import { InferGetServerSidePropsType } from "next";
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { NextSeo } from "next-seo";
 import { useEffect, useState } from "react";
 
 export const getServerSideProps = async ({ locale }: { locale: string }) => {
@@ -64,7 +64,19 @@ const History = ({ metaTags }: InferGetServerSidePropsType<typeof getServerSideP
   useInfiniteScroll(newVisitedRecipes, setVisitedRecipes, 12, setPage, setIsLoadingMore);
   return (
     <>
-      <MetaTags title={metaTags.title} description={metaTags.description} />
+      <NextSeo 
+        title={metaTags.title}
+        description={metaTags.description}
+        canonical="https://www.culinarybook.website/history"
+        openGraph={{
+          url: 'https://www.culinarybook.website/history',
+          title: metaTags.title,
+          description: metaTags.description,
+          images: [
+            { url: `/api/og?title=${metaTags.title}&description=${metaTags.description}` },
+          ],
+        }}
+      />
       <MainLayout
       pageTitle={t('title-history')}
       containerSize="small"

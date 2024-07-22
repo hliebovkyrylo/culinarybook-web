@@ -5,7 +5,6 @@ import { useGetMyLikedQuery } from "@/lib/api/recipeApi"
 import { useGetMeQuery, userApi } from "@/lib/api/userApi"
 import { wrapper } from "@/lib/store"
 import { MainLayout } from "@/modules/layouts"
-import { MetaTags } from "@/modules/meta-tags"
 import {
   ProfileNavigationPanel,
   ProfileRecipesContent,
@@ -17,6 +16,7 @@ import {
   InferGetServerSidePropsType
 } from "next"
 import { serverSideTranslations } from "next-i18next/serverSideTranslations"
+import { NextSeo } from "next-seo"
 import { useRouter } from "next/router"
 
 export const getServerSideProps = wrapper.getServerSideProps(
@@ -69,7 +69,19 @@ const Liked = ({ userId, user, metaTags }: InferGetServerSidePropsType<typeof ge
   }
   return (
     <>
-      <MetaTags title={`${metaTags.title} - Liked`} description={metaTags.description} />
+      <NextSeo 
+        title={metaTags.title}
+        description={metaTags.description}
+        canonical={`https://www.culinarybook.website/profile/${userId}/liked`}
+        openGraph={{
+          url: `https://www.culinarybook.website/profile/${userId}/liked`,
+          title: metaTags.title,
+          description: metaTags.description,
+          images: [
+            { url: `/api/og?title=${metaTags.title}&description=${metaTags.description}` },
+          ],
+        }}
+      />
       <MainLayout
         containerSize="full"
         user={userMe}
