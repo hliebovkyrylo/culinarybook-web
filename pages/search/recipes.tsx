@@ -16,14 +16,25 @@ import { useGetMeQuery } from "@/lib/api/userApi";
 import { useGetMyAllUnreadedNotificationsQuery } from "@/lib/api/notificationApi";
 import { Loader } from "@/components/Loader";
 import { MetaTags } from "@/modules/meta-tags";
+import { InferGetServerSidePropsType } from "next";
 
-export const getServerSideProps = async ({ locale }: { locale: string }) => ({
-  props: {
-    ...await serverSideTranslations(locale, ['common']),
-  },
-})
+export const getServerSideProps = async ({ locale }: { locale: string }) => {
+  const translations = await serverSideTranslations(locale, ['common']);
+  
+  const commonTranslations = translations._nextI18Next?.initialI18nStore[locale || 'en'].common;
+  
+  return {
+    props: {
+      ...await serverSideTranslations(locale, ['common']),
+      metaTags: {
+        title: commonTranslations['title-search'] || 'Culinarybook',
+        description: commonTranslations['search-recipe-meta-description'] || '',
+      }
+    },
+  }
+}
 
-const SearchRecipes = () => {
+const SearchRecipes = ({ metaTags }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const { t } = useTranslation("common");
   const router = useRouter();
 
@@ -63,7 +74,7 @@ const SearchRecipes = () => {
 
   return (
     <>
-      <MetaTags title={t('title-search')} description={'search-recipe-meta-description'} />
+      <MetaTags title={metaTags.title} description={metaTags.description} />
       <MainLayout
         pageTitle={t('title-search')}
         containerSize="small"

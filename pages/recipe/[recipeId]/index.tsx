@@ -8,10 +8,7 @@ import {
   RecipeData,
   StepsData
 } from "@/modules/recipe";
-import {
-  useGetRecipeQuery,
-  useGetStepsQuery
-} from "@/lib/api/recipeApi";
+import { recipeApi } from "@/lib/api/recipeApi";
 import {
   GetServerSidePropsContext,
   InferGetServerSidePropsType
@@ -28,24 +25,39 @@ import { Loader } from "@/components/Loader";
 import { useGetMyAllUnreadedNotificationsQuery } from "@/lib/api/notificationApi";
 import { PrivateRecipe } from "@/components/recipes";
 import { MetaTags } from "@/modules/meta-tags";
+import { wrapper } from "@/lib/store";
 
-export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-  const recipeId = ctx.params?.recipeId;
-  const locale = ctx.locale;
+export const getServerSideProps = wrapper.getServerSideProps(
+  (store) => async (ctx: GetServerSidePropsContext) => {
+    const recipeId = ctx.params?.recipeId as string;
+    const locale = ctx.locale;
 
-  return {
-    props: {
-      ...await serverSideTranslations(locale as string, ['common']),
-      recipeId: recipeId as string,
-    },
-  };
-}
+    const recipePromise = store.dispatch(recipeApi.endpoints.getRecipe.initiate(recipeId));
+    const stepsPromise = store.dispatch(recipeApi.endpoints.getSteps.initiate(recipeId));
 
-const Recipe = ({ recipeId }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+    await Promise.all([recipePromise, stepsPromise]);
+
+    const recipe = recipeApi.endpoints.getRecipe.select(recipeId)(store.getState() as any);
+    const steps = recipeApi.endpoints.getSteps.select(recipeId)(store.getState() as any);
+  
+    return {
+      props: {
+        ...await serverSideTranslations(locale as string, ['common']),
+        recipeId,
+        recipe: recipe.data,
+        steps: steps.data,
+        metaTags: {
+          title: recipe.data?.title || 'Recipe',
+          description: steps.data?.map(step => step.stepDescription).join(' ')
+        }
+      },
+    };
+  }
+)
+
+const Recipe = ({ metaTags, recipeId, recipe, steps }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const { t } = useTranslation('common');
 
-  const { data: recipe, isLoading: isLoadingRecipe } = useGetRecipeQuery(recipeId)
-  const { data: steps, isLoading: isLoadingSteps } = useGetStepsQuery(recipeId);
   const { data: comments, isLoading: isLoadingComments, isFetching } = useGetCommentsQuery(recipeId);
   const { data: likes, isLoading: isLoadingLikes } = useGetRecipeLikesQuery(recipeId);
   const { data: notifications, isLoading: isLoadingNotifications } = useGetMyAllUnreadedNotificationsQuery(undefined, {
@@ -70,7 +82,7 @@ const Recipe = ({ recipeId }: InferGetServerSidePropsType<typeof getServerSidePr
 
   const isBackgroundApplied = recipe?.applyBackground;
 
-  if (isLoadingLikes || isLoadingLikeState || isLoadingSaveState || isLoadingUser || isLoadingRecipe || isLoadingNotifications) {
+  if (isLoadingLikes || isLoadingLikeState || isLoadingSaveState || isLoadingUser || isLoadingNotifications) {
     return <Loader className="absolute top-0 left-0" />
   }
 
@@ -82,7 +94,7 @@ const Recipe = ({ recipeId }: InferGetServerSidePropsType<typeof getServerSidePr
 
   return (
     <>
-      <MetaTags title={recipe.title} description={steps?.map(step => step.stepDescription).join(' ')} />
+      <MetaTags title={metaTags.title} description={metaTags.description} />
       <MainLayout
         pageTitle={''}
         containerSize="full"
@@ -101,7 +113,7 @@ const Recipe = ({ recipeId }: InferGetServerSidePropsType<typeof getServerSidePr
           likeState={likeState}
           saveState={saveState}
         />
-        <StepsData data={steps} isLoading={isLoadingSteps} />
+        <StepsData data={steps} />
         <div className="mt-12">
           <h3 className="link-text font-semibold my-5">{t('title-comment')}</h3>
           <CreateCommentForm averageRating={4} />

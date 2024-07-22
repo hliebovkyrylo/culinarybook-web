@@ -7,15 +7,24 @@ import { useGetMyAllNotificationsQuery, useGetMyAllUnreadedNotificationsQuery } 
 import { useGetMeQuery } from "@/lib/api/userApi";
 import { Loader } from "@/components/Loader";
 import { MetaTags } from "@/modules/meta-tags";
+import { InferGetServerSidePropsType } from "next";
 
+export const getServerSideProps = async ({ locale }: { locale: string }) => {
+  const translations = await serverSideTranslations(locale, ['common']);
+  
+  const commonTranslations = translations._nextI18Next?.initialI18nStore[locale || 'en'].common;
+  
+  return {
+    props: {
+      ...await serverSideTranslations(locale, ['common']),
+      metaTags: {
+        title: commonTranslations['title-notifications'] || 'Culinarybook',
+      }
+    },
+  }
+}
 
-export const getServerSideProps = async ({ locale }: { locale: string }) => ({
-  props: {
-    ...await serverSideTranslations(locale, ['common']),
-  },
-})
-
-const Notifications = () => {
+const Notifications = ({ metaTags }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const { t } = useTranslation('common');
 
   const { data: unreadedNotifications, isLoading: isLoadingUnreadedNotifications } = useGetMyAllUnreadedNotificationsQuery(undefined, {
@@ -36,7 +45,7 @@ const Notifications = () => {
 
   return (
     <>
-      <MetaTags title={`${t('user')} - ${t('title-notifications')}`} />
+      <MetaTags title={metaTags.title} />
       <MainLayout
         pageTitle={t('title-notifications')}
         containerSize="small"
