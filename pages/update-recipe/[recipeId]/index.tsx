@@ -1,8 +1,6 @@
 import { useTranslation } from "next-i18next";
 import {
   recipeApi,
-  useGetRecipeQuery,
-  useGetStepsQuery,
 } from "@/lib/api/recipeApi";
 import { useRouter } from "next/navigation";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
@@ -16,8 +14,8 @@ import { RequireAuth } from "@/hocs/requireAuth";
 import { useGetMeQuery } from "@/lib/api/userApi";
 import { Loader } from "@/components/Loader";
 import { useGetMyAllUnreadedNotificationsQuery } from "@/lib/api/notificationApi";
-import { MetaTags } from "@/modules/meta-tags";
 import { wrapper } from "@/lib/store";
+import { NextSeo } from "next-seo";
 
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) => async (ctx: GetServerSidePropsContext) => {
@@ -67,7 +65,19 @@ const UpdateRecipe = ({ recipe, steps, metaTags }: InferGetServerSidePropsType<t
 
   return (
     <>
-      <MetaTags title={metaTags.title} description={metaTags.description} />
+      <NextSeo 
+        title={metaTags.title}
+        description={metaTags.description}
+        canonical={`https://www.culinarybook.website/update-recipe/${recipe?.id}`}
+        openGraph={{
+          url: `https://www.culinarybook.website/update-recipe/${recipe?.id}`,
+          title: metaTags.title,
+          description: metaTags.description,
+          images: [
+            { url: `/api/og?title=${metaTags.title}&description=${metaTags.description}` },
+          ],
+        }}
+      />
       <MainLayout
         pageTitle={t('update-recipe')}
         containerSize="full"

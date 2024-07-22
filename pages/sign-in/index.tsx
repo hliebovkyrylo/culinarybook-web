@@ -3,14 +3,14 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { AuthorizationLayout } from "@/modules/layouts";
 import { SignInForm } from "@/modules/auth";
 import { RequireGuest } from "@/hocs/requireGuest";
-import { MetaTags } from "@/modules/meta-tags";
 import { InferGetServerSidePropsType } from "next";
+import { NextSeo } from "next-seo";
 
 export const getServerSideProps = async ({ locale }: { locale: string }) => {
   const translations = await serverSideTranslations(locale, ['common']);
-  
+
   const commonTranslations = translations._nextI18Next?.initialI18nStore[locale || 'en'].common;
-  
+
   return {
     props: {
       ...await serverSideTranslations(locale, ['common']),
@@ -26,7 +26,19 @@ const SignIn = ({ metaTags }: InferGetServerSidePropsType<typeof getServerSidePr
   const { t } = useTranslation('common');
   return (
     <>
-      <MetaTags title={metaTags.title} description={metaTags.description} />
+      <NextSeo
+        title={metaTags.title}
+        description={metaTags.description}
+        canonical="https://www.culinarybook.website/sign-in"
+        openGraph={{
+          url: 'https://www.culinarybook.website/sign-in',
+          title: metaTags.title,
+          description: metaTags.description,
+          images: [
+            { url: `/api/og?title=${metaTags.title}&description=${metaTags.description}` },
+          ],
+        }}
+      />
       <AuthorizationLayout
         pageTitle={t('signUp-link')}
         applyHomeButton={true}

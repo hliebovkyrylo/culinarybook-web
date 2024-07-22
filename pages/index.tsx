@@ -11,8 +11,8 @@ import { useGetMeQuery } from "@/lib/api/userApi";
 import Link from "next/link";
 import { useGetMyAllUnreadedNotificationsQuery } from "@/lib/api/notificationApi";
 import { Loader } from "@/components/Loader";
-import { MetaTags } from "@/modules/meta-tags";
 import { InferGetServerSidePropsType } from "next";
+import { NextSeo } from 'next-seo';
 
 export const getServerSideProps = async ({ locale }: { locale: string }) => {
   const translations = await serverSideTranslations(locale, ['common']);
@@ -23,8 +23,8 @@ export const getServerSideProps = async ({ locale }: { locale: string }) => {
     props: {
       ...await serverSideTranslations(locale, ['common']),
       metaTags: {
-        title: commonTranslations.title || 'Culinarybook',
-        description: commonTranslations.description || '',
+        title: commonTranslations['title'] || 'Culinarybook',
+        description: commonTranslations['app-description'] || '',
       }
     },
   }
@@ -55,7 +55,19 @@ const Home = ({ metaTags }: InferGetServerSidePropsType<typeof getServerSideProp
 
   return (
     <>
-      <MetaTags title={metaTags.title} description={metaTags.description} />
+      <NextSeo 
+        title={metaTags.title}
+        description={metaTags.description}
+        canonical="https://www.culinarybook.website/"
+        openGraph={{
+          url: 'https://www.culinarybook.website/',
+          title: metaTags.title,
+          description: metaTags.description,
+          images: [
+            { url: `/api/og?title=${metaTags.title}&description=${metaTags.description}` },
+          ],
+        }}
+      />
       <MainLayout
         pageTitle={t('title')}
         isLoading={isLoading}

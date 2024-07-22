@@ -3,8 +3,8 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { AuthorizationLayout } from "@/modules/layouts";
 import { ForgotPasswordForm } from "@/modules/auth";
 import { RequireGuest } from "@/hocs/requireGuest";
-import { MetaTags } from "@/modules/meta-tags";
 import { InferGetServerSidePropsType } from "next";
+import { NextSeo } from "next-seo";
 
 export const getServerSideProps = async ({ locale }: { locale: string }) => {
   const translations = await serverSideTranslations(locale, ['common']);
@@ -25,7 +25,17 @@ const ForgotPassword = ({ metaTags }: InferGetServerSidePropsType<typeof getServ
   const { t } = useTranslation('common');
   return (
     <>
-      <MetaTags title={metaTags.title} />
+      <NextSeo 
+        title={metaTags.title}
+        canonical="https://www.culinarybook.website/forgot-password"
+        openGraph={{
+          url: 'https://www.culinarybook.website/forgot-password',
+          title: metaTags.title,
+          images: [
+            { url: `/api/og?title=${metaTags.title}` },
+          ],
+        }}
+      />
       <AuthorizationLayout
         pageTitle={t('email-title')}
         applyHomeButton={true}

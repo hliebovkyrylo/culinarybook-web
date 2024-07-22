@@ -6,8 +6,8 @@ import { RequireAuth } from "@/hocs/requireAuth";
 import { useGetMeQuery } from "@/lib/api/userApi";
 import { useGetMyAllUnreadedNotificationsQuery } from "@/lib/api/notificationApi";
 import { Loader } from "@/components/Loader";
-import { MetaTags } from "@/modules/meta-tags";
 import { InferGetServerSidePropsType } from "next";
+import { NextSeo } from "next-seo";
 
 export const getServerSideProps = async ({ locale }: { locale: string }) => {
   const translations = await serverSideTranslations(locale, ['common']);
@@ -45,7 +45,19 @@ const CreateRecipe = ({ metaTags }: InferGetServerSidePropsType<typeof getServer
 
   return (
     <>
-      <MetaTags title={metaTags.title} description={metaTags.description} />
+      <NextSeo 
+        title={metaTags.title}
+        description={metaTags.description}
+        canonical="https://www.culinarybook.website/create-recipe"
+        openGraph={{
+          url: 'https://www.culinarybook.website/create-recipe',
+          title: metaTags.title,
+          description: metaTags.description,
+          images: [
+            { url: `/api/og?title=${metaTags.title}&description=${metaTags.description}` },
+          ],
+        }}
+      />
       <MainLayout
         pageTitle={t('create-recipe')}
         containerSize="full"

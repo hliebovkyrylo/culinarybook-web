@@ -6,8 +6,8 @@ import { RequireAuth } from "@/hocs/requireAuth";
 import { useGetMyAllNotificationsQuery, useGetMyAllUnreadedNotificationsQuery } from "@/lib/api/notificationApi";
 import { useGetMeQuery } from "@/lib/api/userApi";
 import { Loader } from "@/components/Loader";
-import { MetaTags } from "@/modules/meta-tags";
 import { InferGetServerSidePropsType } from "next";
+import { NextSeo } from "next-seo";
 
 export const getServerSideProps = async ({ locale }: { locale: string }) => {
   const translations = await serverSideTranslations(locale, ['common']);
@@ -45,7 +45,17 @@ const Notifications = ({ metaTags }: InferGetServerSidePropsType<typeof getServe
 
   return (
     <>
-      <MetaTags title={metaTags.title} />
+      <NextSeo 
+        title={metaTags.title}
+        canonical="https://www.culinarybook.website/notifications"
+        openGraph={{
+          url: 'https://www.culinarybook.website/notifications',
+          title: metaTags.title,
+          images: [
+            { url: `/api/og?title=${metaTags.title}` },
+          ],
+        }}
+      />
       <MainLayout
         pageTitle={t('title-notifications')}
         containerSize="small"

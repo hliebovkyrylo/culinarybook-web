@@ -6,6 +6,9 @@ import { Provider } from 'react-redux'
 import "@/styles/globals.css";
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import Script from 'next/script'
+import NextNProgress from 'nextjs-progressbar';
+import SEO from '../next-seo.config';
+import { DefaultSeo } from 'next-seo'
 
 const MyApp: React.FunctionComponent<AppProps> = ({ Component, ...rest }) => {
   const { store, props } = wrapper.useWrappedStore(rest);
@@ -28,6 +31,8 @@ const MyApp: React.FunctionComponent<AppProps> = ({ Component, ...rest }) => {
             });
           `}
         </Script>
+        <DefaultSeo {...SEO} />
+        <NextNProgress color="#DDDF72" startPosition={0.3} stopDelayMs={200} height={3} showOnShallow={true} />
         <Component {...props.pageProps} />
       </ThemeProvider>
     </Provider>

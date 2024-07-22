@@ -20,9 +20,9 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useRouter } from "next/router";
 import { Loader } from "@/components/Loader";
 import { useGetMyAllUnreadedNotificationsQuery } from "@/lib/api/notificationApi";
-import { MetaTags } from "@/modules/meta-tags";
 import { wrapper } from "@/lib/store";
 import { useGetMeQuery, userApi } from "@/lib/api/userApi";
+import { NextSeo } from "next-seo";
 
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) => async (ctx: GetServerSidePropsContext) => {
@@ -74,7 +74,19 @@ const Followers = ({ userId, user, metaTags }: InferGetServerSidePropsType<typeo
   }
   return (
     <>
-      <MetaTags title={`${metaTags.title} - Followings`} description={metaTags.description} />
+      <NextSeo 
+        title={metaTags.title}
+        description={metaTags.description}
+        canonical={`https://www.culinarybook.website/profile/${userId}/followings`}
+        openGraph={{
+          url: `https://www.culinarybook.website/profile/${userId}/followings`,
+          title: metaTags.title,
+          description: metaTags.description,
+          images: [
+            { url: `/api/og?title=${metaTags.title}&description=${metaTags.description}` },
+          ],
+        }}
+      />
       <MainLayout
         containerSize="full"
         user={userMe}

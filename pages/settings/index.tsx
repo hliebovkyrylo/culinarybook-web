@@ -3,11 +3,11 @@ import { RequireAuth } from "@/hocs/requireAuth";
 import { useGetMyAllUnreadedNotificationsQuery } from "@/lib/api/notificationApi";
 import { useGetMeQuery } from "@/lib/api/userApi";
 import { MainLayout } from "@/modules/layouts";
-import { MetaTags } from "@/modules/meta-tags";
 import { SettingsUpdateUserForm } from "@/modules/settings";
 import { InferGetServerSidePropsType } from "next";
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { NextSeo } from "next-seo";
 
 export const getServerSideProps = async ({ locale }: { locale: string }) => {
   const translations = await serverSideTranslations(locale, ['common']);
@@ -35,7 +35,17 @@ const Settings = ({ metaTags }: InferGetServerSidePropsType<typeof getServerSide
   }
   return (
     <>
-      <MetaTags title={metaTags.title} />
+      <NextSeo 
+        title={metaTags.title}
+        canonical="https://www.culinarybook.website/settings"
+        openGraph={{
+          url: 'https://www.culinarybook.website/settings',
+          title: metaTags.title,
+          images: [
+            { url: `/api/og?title=${metaTags.title}` },
+          ],
+        }}
+      />
       <MainLayout
         pageTitle={t('settings')}
         containerSize="small"
