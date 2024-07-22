@@ -7,6 +7,13 @@ class AppDocument extends Document {
         <Head>
           <meta charSet="utf-8" />
           <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
+          <meta name="robots" content="follow, index" />
+          <meta property="og:type" content="website" />
+          <meta name="twitter:card" content="summary_large_image" />
+          <meta name="twitter:site" content={'@culinarybook'} />
+          <meta property="og:image" content={'/media/og.png'} />
+          <meta name="twitter:image" content={'/media/og.png'} />
+          <meta charSet="utf-8" />
           <link
             rel="icon"
             href={'/icons/app-icon.svg'}
