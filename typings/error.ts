@@ -1,9 +1,9 @@
 export interface ApiError {
-  code   : string;
+  code: string;
   message: string;
-};
+}
 
 export interface RtkError {
-  data  : ApiError;
+  data: ApiError;
   status: number;
-};
+}

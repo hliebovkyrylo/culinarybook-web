@@ -1,15 +1,14 @@
 interface ICheckbox {
   isChecked: boolean;
-  onClick ?: () => void;
+  onClick?: () => void;
 }
 
-export const Checkbox = ({
-  isChecked,
-  onClick,
-}: ICheckbox) => {
+export const Checkbox = ({ isChecked, onClick }: ICheckbox) => {
   return (
     <button type="button" className="checkbox-bg" onClick={onClick}>
-      <span className={`checkbox-item ${isChecked && "checkbox-item-checked "}`} />
+      <span
+        className={`checkbox-item ${isChecked && "checkbox-item-checked "}`}
+      />
     </button>
-  )
-}
+  );
+};

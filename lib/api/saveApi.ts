@@ -5,32 +5,32 @@ interface ISaveResponse {
 }
 
 export const saveApi = api.injectEndpoints({
-  endpoints: builder => ({
+  endpoints: (builder) => ({
     createSave: builder.mutation<void, string>({
       query: (recipeId) => ({
-        method: 'POST',
-        url: `/save/create/${recipeId}`
+        method: "POST",
+        url: `/save/create/${recipeId}`,
       }),
-      invalidatesTags: ['user', 'recipe']
+      invalidatesTags: ["user", "recipe"],
     }),
     removeSave: builder.mutation<void, string>({
       query: (recipeId) => ({
-        method: 'DELETE',
-        url: `/save/delete/${recipeId}`
+        method: "DELETE",
+        url: `/save/delete/${recipeId}`,
       }),
-      invalidatesTags: ['user', 'recipe']
+      invalidatesTags: ["user", "recipe"],
     }),
     getSaveState: builder.query<ISaveResponse, string>({
       query: (recipeId) => ({
-        url: `/save/recipe/${recipeId}/isSaved`
+        url: `/save/recipe/${recipeId}/isSaved`,
       }),
-      providesTags: ['user', 'recipe']
-    })
-  })
+      providesTags: ["user", "recipe"],
+    }),
+  }),
 });
 
 export const {
   useCreateSaveMutation,
   useRemoveSaveMutation,
-  useGetSaveStateQuery
+  useGetSaveStateQuery,
 } = saveApi;

@@ -1,19 +1,26 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 
-export const useInfiniteScroll = (newItems: any, setItems: any, numberOfItems: number, setPage: any, setIsLoading: any) => {
+export const useInfiniteScroll = (
+  newItems: any,
+  setItems: any,
+  numberOfItems: number,
+  setPage: any,
+  setIsLoading: any
+) => {
   const dispatch = useDispatch();
   useEffect(() => {
     if (newItems) {
       setItems((prevItems: any) => {
         const uniqueNewItems = newItems.filter(
-          (newItem: any) => !prevItems.some((prevItem: any) => prevItem.id === newItem.id)
+          (newItem: any) =>
+            !prevItems.some((prevItem: any) => prevItem.id === newItem.id)
         );
 
         return [...prevItems, ...uniqueNewItems];
       });
     }
-  }, [newItems])
+  }, [newItems]);
 
   let lastScrollTop = 0;
 
@@ -32,16 +39,16 @@ export const useInfiniteScroll = (newItems: any, setItems: any, numberOfItems: n
     } else {
       setIsLoading(false);
       if (scrollTop < lastScrollTop) {
-        dispatch({ type: 'recipes/cancel' });
+        dispatch({ type: "recipes/cancel" });
         setIsLoading(false);
       }
     }
-  }
+  };
 
   useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
     return () => {
-      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener("scroll", handleScroll);
     };
   }, [newItems]);
-}
+};

@@ -3,19 +3,19 @@ import { authApi } from "../api/authApi";
 
 export interface IAuthState {
   access_token: string | null;
-};
+}
 
 export const initialAuthState: IAuthState = {
-  access_token: null
+  access_token: null,
 };
 
 export const authSlice = createSlice({
-  name: 'auth',
+  name: "auth",
   initialState: initialAuthState,
   reducers: {
     setAccessToken(state, action: PayloadAction<string | null>) {
-      state.access_token = action.payload
-    }
+      state.access_token = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -31,13 +31,10 @@ export const authSlice = createSlice({
           state.access_token = payload.access_token;
         }
       )
-      .addMatcher(
-        authApi.endpoints.signOut.matchFulfilled,
-        (state) => {
-          state.access_token = null;
-        }
-      )
-  }
+      .addMatcher(authApi.endpoints.signOut.matchFulfilled, (state) => {
+        state.access_token = null;
+      });
+  },
 });
 
 export const { setAccessToken } = authSlice.actions;

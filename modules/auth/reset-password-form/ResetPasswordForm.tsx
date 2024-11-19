@@ -1,6 +1,6 @@
 import {
   ResetPasswordFormData,
-  resetPasswordSchema
+  resetPasswordSchema,
 } from "./schemas/resetPasswordSchema";
 import { useResetPasswordMutation } from "@/lib/api/authApi";
 import { useGetMeQuery } from "@/lib/api/userApi";
@@ -23,44 +23,61 @@ export const ResetPasswordForm = () => {
 
   const router = useRouter();
 
-  const [resetPassword, { isLoading: isResetPasswordLoading, isSuccess }] = useResetPasswordMutation();
+  const [resetPassword, { isLoading: isResetPasswordLoading, isSuccess }] =
+    useResetPasswordMutation();
 
-  const { handleSubmit, register, setError, formState: { errors, isValid } } = useForm<ResetPasswordFormData>({
+  const {
+    handleSubmit,
+    register,
+    setError,
+    formState: { errors, isValid },
+  } = useForm<ResetPasswordFormData>({
     defaultValues: {
-      password: '',
-      confirmPassword: ''
+      password: "",
+      confirmPassword: "",
     },
-    resolver: zodResolver(resetPasswordSchema)
+    resolver: zodResolver(resetPasswordSchema),
   });
 
-  const userEmail = cookie.get('userEmail');
+  const userEmail = cookie.get("userEmail");
 
-  const onSubmit = useCallback((async (values: ResetPasswordFormData) => {
-    resetPassword({ ...values, email: userEmail as string }).unwrap().then(() => {
-      router.push('/sign-in');
-      cookie.remove('userEmail');
-    }).catch((error: RtkError) => {
-      if (error.data.code === 'Forbidden') {
-        setError('password', { message: t('no-update-access-error') });
-      }
+  const onSubmit = useCallback(
+    async (values: ResetPasswordFormData) => {
+      resetPassword({ ...values, email: userEmail as string })
+        .unwrap()
+        .then(() => {
+          router.push("/sign-in");
+          cookie.remove("userEmail");
+        })
+        .catch((error: RtkError) => {
+          if (error.data.code === "Forbidden") {
+            setError("password", { message: t("no-update-access-error") });
+          }
 
-      if (error.data.code === 'password-mismatch') {
-        setError('root', { message: 'Passwords missmatch' });
-      }
-    })
-  }), [resetPassword])
+          if (error.data.code === "password-mismatch") {
+            setError("root", { message: "Passwords missmatch" });
+          }
+        });
+    },
+    [resetPassword]
+  );
 
-  const { passwordInputType, confirmPasswordInputType, togglePasswordVisibility, toggleConfirmPasswordVisibility } = usePasswordVisibility();
+  const {
+    passwordInputType,
+    confirmPasswordInputType,
+    togglePasswordVisibility,
+    toggleConfirmPasswordVisibility,
+  } = usePasswordVisibility();
 
   if (isResetPasswordLoading || isLoading || isSuccess) {
-    return <Loader className="absolute top-0 left-0" />
+    return <Loader className="absolute top-0 left-0" />;
   }
 
   if (user && user.canResetPassword === false) {
-    router.push('/');
+    router.push("/");
     return null;
   } else if (userEmail === null) {
-    router.push('/sign-in');
+    router.push("/sign-in");
   }
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-2">
@@ -68,9 +85,9 @@ export const ResetPasswordForm = () => {
       <div className="relative">
         <Input
           type={passwordInputType}
-          color={errors.root ? 'danger' : 'default'}
-          placeholder={t('new-password-placeholder')}
-          {...register('password')}
+          color={errors.root ? "danger" : "default"}
+          placeholder={t("new-password-placeholder")}
+          {...register("password")}
         />
         <AuthIconButton
           firstIcon={<EyeIcon className="icon-eye" />}
@@ -82,9 +99,9 @@ export const ResetPasswordForm = () => {
       <div className="relative">
         <Input
           type={confirmPasswordInputType}
-          color={errors.root ? 'danger' : 'default'}
-          placeholder={t('confirm-new-password-placeholder')}
-          {...register('confirmPassword')}
+          color={errors.root ? "danger" : "default"}
+          placeholder={t("confirm-new-password-placeholder")}
+          {...register("confirmPassword")}
         />
         <AuthIconButton
           firstIcon={<EyeIcon className="icon-eye" />}
@@ -95,9 +112,9 @@ export const ResetPasswordForm = () => {
       </div>
       <Button
         state={isValid ? "default" : "disabled"}
-        text={t('title-change')}
+        text={t("title-change")}
         className="mt-3"
       />
     </form>
-  )
-}
+  );
+};

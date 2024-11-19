@@ -1,16 +1,20 @@
-import { useDigitInput } from '@/hooks/useDigitInput';
-import React             from 'react';
+import { useDigitInput } from "@/hooks/useDigitInput";
+import React from "react";
 
 interface IInputOTP {
-  length  : number;
+  length: number;
   onChange: (value: string) => void;
 }
 
-export const InputOTP: React.FunctionComponent<IInputOTP> = ({ length, onChange }) => {
-  const { digits, inputRefs, handleChange, handleKeyDown } = useDigitInput(length);
+export const InputOTP: React.FunctionComponent<IInputOTP> = ({
+  length,
+  onChange,
+}) => {
+  const { digits, inputRefs, handleChange, handleKeyDown } =
+    useDigitInput(length);
 
   React.useEffect(() => {
-    onChange(digits.join(''));
+    onChange(digits.join(""));
   }, [digits, onChange]);
 
   return (

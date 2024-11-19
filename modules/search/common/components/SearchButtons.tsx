@@ -1,5 +1,5 @@
 import { useTranslation } from "next-i18next";
-import Link from "next/link"
+import Link from "next/link";
 import { useRouter } from "next/router";
 
 export const SearchButtons = ({ className }: { className?: string }) => {
@@ -13,8 +13,20 @@ export const SearchButtons = ({ className }: { className?: string }) => {
 
   return (
     <div className={`flex ${className}`}>
-      <Link href={`/search/recipes`} className={`search-button mr-2 ${isActiveRecipesSearch ? "link-text" : ""}`}>{t('recipes-button')}</Link>
-      <Link href={`/search/users`} className={`search-button ${isActiveUsersSearch ? "link-text" : ""}`}>{t('users-button')}</Link>
+      <Link
+        href={`/search/recipes`}
+        className={`search-button mr-2 ${
+          isActiveRecipesSearch ? "link-text" : ""
+        }`}
+      >
+        {t("recipes-button")}
+      </Link>
+      <Link
+        href={`/search/users`}
+        className={`search-button ${isActiveUsersSearch ? "link-text" : ""}`}
+      >
+        {t("users-button")}
+      </Link>
     </div>
-  )
-}
+  );
+};

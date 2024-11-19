@@ -1,11 +1,8 @@
 import {
   ChangePasswordFormData,
-  changePasswordSchema
+  changePasswordSchema,
 } from "./schemas/changePasswordSchema";
-import {
-  AuthIconButton,
-  usePasswordVisibility
-} from "../common";
+import { AuthIconButton, usePasswordVisibility } from "../common";
 import { useChangePasswordMutation } from "@/lib/api/authApi";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
@@ -21,31 +18,45 @@ export const ChangePasswordForm = () => {
   const { t } = useTranslation("common");
   const router = useRouter();
 
-  const [changePassword, { isLoading: isLoadingChangingPassword, isSuccess }] = useChangePasswordMutation();
+  const [changePassword, { isLoading: isLoadingChangingPassword, isSuccess }] =
+    useChangePasswordMutation();
 
-  const { passwordInputType, confirmPasswordInputType, togglePasswordVisibility, toggleConfirmPasswordVisibility } = usePasswordVisibility();
+  const {
+    passwordInputType,
+    confirmPasswordInputType,
+    togglePasswordVisibility,
+    toggleConfirmPasswordVisibility,
+  } = usePasswordVisibility();
 
-  const { handleSubmit, register, setError, formState: { errors, isValid } } = useForm<ChangePasswordFormData>({
+  const {
+    handleSubmit,
+    register,
+    setError,
+    formState: { errors, isValid },
+  } = useForm<ChangePasswordFormData>({
     defaultValues: {
-      oldPassword: '',
-      newPassword: '',
-      confirmNewPassword: '',
+      oldPassword: "",
+      newPassword: "",
+      confirmNewPassword: "",
     },
-    resolver: zodResolver(changePasswordSchema)
+    resolver: zodResolver(changePasswordSchema),
   });
 
   const onSubmit = useCallback((values: ChangePasswordFormData) => {
-    changePassword(values).unwrap().then(() => {
-      router.push('/');
-    }).catch((error: RtkError) => {
-      if (error.data.code === 'old-password-mismatch') {
-        setError('oldPassword', { message: t('incorrect-old-password') });
-      }
+    changePassword(values)
+      .unwrap()
+      .then(() => {
+        router.push("/");
+      })
+      .catch((error: RtkError) => {
+        if (error.data.code === "old-password-mismatch") {
+          setError("oldPassword", { message: t("incorrect-old-password") });
+        }
 
-      if (error.data.code === 'passwords-missmatch') {
-        setError('confirmNewPassword', { message: t('passwords-missmatch') });
-      }
-    })
+        if (error.data.code === "passwords-missmatch") {
+          setError("confirmNewPassword", { message: t("passwords-missmatch") });
+        }
+      });
   }, []);
 
   if (isLoadingChangingPassword || isSuccess) {
@@ -57,16 +68,18 @@ export const ChangePasswordForm = () => {
       <Input
         type={"text"}
         color={errors.oldPassword ? "danger" : "default"}
-        placeholder={t('old-password-placeholder')}
-        {...register('oldPassword')}
+        placeholder={t("old-password-placeholder")}
+        {...register("oldPassword")}
       />
-      <p className={`text-red-500 text-sm ${!errors.newPassword && 'hidden'}`}>{errors.newPassword?.message}</p>
+      <p className={`text-red-500 text-sm ${!errors.newPassword && "hidden"}`}>
+        {errors.newPassword?.message}
+      </p>
       <div className="relative">
         <Input
           type={passwordInputType}
           color={errors.newPassword ? "danger" : "default"}
-          placeholder={t('new-password-placeholder')}
-          {...register('newPassword')}
+          placeholder={t("new-password-placeholder")}
+          {...register("newPassword")}
         />
         <AuthIconButton
           firstIcon={<EyeIcon className="icon-eye" />}
@@ -75,13 +88,15 @@ export const ChangePasswordForm = () => {
           inputType={passwordInputType}
         />
       </div>
-      <p className={`text-red-500 text-sm ${!errors.newPassword && 'hidden'}`}>{errors.confirmNewPassword?.message}</p>
+      <p className={`text-red-500 text-sm ${!errors.newPassword && "hidden"}`}>
+        {errors.confirmNewPassword?.message}
+      </p>
       <div className="relative">
         <Input
           type={confirmPasswordInputType}
           color={errors.confirmNewPassword ? "danger" : "default"}
-          placeholder={t('confirm-new-password-placeholder')}
-          {...register('confirmNewPassword')}
+          placeholder={t("confirm-new-password-placeholder")}
+          {...register("confirmNewPassword")}
         />
         <AuthIconButton
           firstIcon={<EyeIcon className="icon-eye" />}
@@ -91,10 +106,16 @@ export const ChangePasswordForm = () => {
         />
       </div>
       <Button
-        state={isLoadingChangingPassword ? "loading" : isValid ? "default" : "disabled"}
-        text={t('change-button')}
+        state={
+          isLoadingChangingPassword
+            ? "loading"
+            : isValid
+            ? "default"
+            : "disabled"
+        }
+        text={t("change-button")}
         className="mt-3"
       />
     </form>
-  )
-}
+  );
+};

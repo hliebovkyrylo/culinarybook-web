@@ -5,7 +5,7 @@ import {
   UserIcon,
   FileIcon,
   HeartSolidIcon,
-  Bookmark
+  Bookmark,
 } from "@/icons";
 
 export const sidebarLinks = [
@@ -47,4 +47,4 @@ export const profileLinks = [
     route: "/profile/liked",
     label: "liked-button",
   },
-]
+];

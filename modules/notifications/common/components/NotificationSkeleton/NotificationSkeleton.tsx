@@ -16,5 +16,5 @@ export const NotificationSkeleton = () => {
         </div>
       </div>
     </article>
-  )
-}
+  );
+};

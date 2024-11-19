@@ -7,15 +7,15 @@ import {
   MedalIcon,
   PenToSquare,
   StarIcon,
-  UntesilsIcon
+  UntesilsIcon,
 } from "@/icons";
 import {
   useCreateLikeMutation,
-  useRemoveLikeMutation
+  useRemoveLikeMutation,
 } from "@/lib/api/likeApi";
 import {
   useCreateSaveMutation,
-  useRemoveSaveMutation
+  useRemoveSaveMutation,
 } from "@/lib/api/saveApi";
 import Image from "next/image";
 import { foodTypeImages } from "./constants";
@@ -30,8 +30,8 @@ interface IRecipeData {
   isAuth: boolean;
   averageGrade: number;
   likeState: any;
-  saveState: any
-  likes: any
+  saveState: any;
+  likes: any;
   isOwner: boolean;
 }
 
@@ -42,7 +42,7 @@ export const RecipeData = ({
   likes,
   likeState,
   saveState,
-  isOwner
+  isOwner,
 }: IRecipeData) => {
   const { t } = useTranslation("common");
   const router = useRouter();
@@ -58,19 +58,19 @@ export const RecipeData = ({
 
   useEffect(() => {
     setIsLiked(!!likeState?.isLiked);
-  }, [likeState])
+  }, [likeState]);
 
   useEffect(() => {
     setLikesCount(likes?.length || 0);
-  }, [likes])
+  }, [likes]);
 
   useEffect(() => {
     setIsSaved(!!saveState?.isSaved);
-  }, [saveState])
+  }, [saveState]);
 
   const handleLikeClick = async () => {
     if (!isAuth) {
-      router.push('/sign-in');
+      router.push("/sign-in");
     } else {
       if (!isLiked) {
         setIsLiked(true);
@@ -88,7 +88,7 @@ export const RecipeData = ({
 
   const handleSaveClick = async () => {
     if (!isAuth) {
-      router.push('/sign-in');
+      router.push("/sign-in");
     } else {
       if (!isSaved) {
         setIsSaved(true);
@@ -101,26 +101,42 @@ export const RecipeData = ({
       }
     }
   };
-  let defaultBgImage = foodTypeImages[data?.typeOfFood || ''] || '/assets/meat.jpg';
+  let defaultBgImage =
+    foodTypeImages[data?.typeOfFood || ""] || "/assets/meat.jpg";
   return (
     <>
       <div className="flex max-xl:flex-col">
-        <Image src={data?.image || defaultBgImage} alt="Recipe photo" width={608} height={330} className="object-cover w-full max-w-[608px] max-h-[330px] rounded-xl max-md:max-w-[100%]" />
+        <Image
+          src={data?.image || defaultBgImage}
+          alt="Recipe photo"
+          width={608}
+          height={330}
+          className="object-cover w-full max-w-[608px] max-h-[330px] rounded-xl max-md:max-w-[100%]"
+        />
         <div className="ml-12 w-full max-md:ml-0 max-md:mt-6">
           <div className="flex justify-between items-center">
             <div className="flex items-center max-md:justify-between">
-              <h1 className="text-3xl font-semibold text-ellipsis overflow-hidden whitespace-nowrap max-w-[680px] max-2xl:max-w-[60vw]">{data?.title}</h1>
+              <h1 className="text-3xl font-semibold text-ellipsis overflow-hidden whitespace-nowrap max-w-[680px] max-2xl:max-w-[60vw]">
+                {data?.title}
+              </h1>
               <div className="flex items-center">
-                <button onClick={handleLikeClick} className="ml-7 mr-3 max-md:mr-1 max-md:ml-4">{
-                  isLiked
-                    ? <HeartSolidIcon className="fill-red-600 h-8 w-8 hover:fill-red-500 transition-all" />
-                    : <HeartRegularIcon className="h-8 w-8 max-md:h-6 fill-[#666] hover:fill-[#818181] transition-all" />
-                }</button>
-                <button onClick={handleSaveClick}>{
-                  isSaved
-                    ? <BookmarkSolidicon className=" fill-amber-400 h-8 w-6 hover:fill-amber-300 transition-all" />
-                    : <Bookmark className="h-8 w-6 max-md:h-6 fill-[#666] hover:fill-[#818181] transition-all" />
-                }</button>
+                <button
+                  onClick={handleLikeClick}
+                  className="ml-7 mr-3 max-md:mr-1 max-md:ml-4"
+                >
+                  {isLiked ? (
+                    <HeartSolidIcon className="fill-red-600 h-8 w-8 hover:fill-red-500 transition-all" />
+                  ) : (
+                    <HeartRegularIcon className="h-8 w-8 max-md:h-6 fill-[#666] hover:fill-[#818181] transition-all" />
+                  )}
+                </button>
+                <button onClick={handleSaveClick}>
+                  {isSaved ? (
+                    <BookmarkSolidicon className=" fill-amber-400 h-8 w-6 hover:fill-amber-300 transition-all" />
+                  ) : (
+                    <Bookmark className="h-8 w-6 max-md:h-6 fill-[#666] hover:fill-[#818181] transition-all" />
+                  )}
+                </button>
               </div>
             </div>
             {isOwner && (
@@ -130,16 +146,33 @@ export const RecipeData = ({
             )}
           </div>
           <ul className="mt-6">
-            <li className="flex items-center text-[#666] mb-2"><ClockIcon className="fill-[#666] w-5 mr-2" />{data?.coockingTime}</li>
-            <li className="flex items-center text-[#666] mb-2"><MedalIcon className="fill-[#666] w-5 mr-2" />{data?.complexity}</li>
-            <li className="flex items-center text-[#666] mb-2"><UntesilsIcon className="fill-[#666] w-5 mr-2" />{data?.typeOfFood}</li>
-            <li className="flex items-center text-[#666] mb-2"><HeartSolidIcon className="fill-[#666] w-5 mr-2" />{likesCount}</li>
-            <li className="flex items-center text-[#666] mb-2"><StarIcon className="fill-[#666] w-5 mr-2" />{averageGrade}</li>
+            <li className="flex items-center text-[#666] mb-2">
+              <ClockIcon className="fill-[#666] w-5 mr-2" />
+              {data?.coockingTime}
+            </li>
+            <li className="flex items-center text-[#666] mb-2">
+              <MedalIcon className="fill-[#666] w-5 mr-2" />
+              {data?.complexity}
+            </li>
+            <li className="flex items-center text-[#666] mb-2">
+              <UntesilsIcon className="fill-[#666] w-5 mr-2" />
+              {data?.typeOfFood}
+            </li>
+            <li className="flex items-center text-[#666] mb-2">
+              <HeartSolidIcon className="fill-[#666] w-5 mr-2" />
+              {likesCount}
+            </li>
+            <li className="flex items-center text-[#666] mb-2">
+              <StarIcon className="fill-[#666] w-5 mr-2" />
+              {averageGrade}
+            </li>
           </ul>
         </div>
       </div>
-      <h3 className="link-text font-semibold my-5">{t('title-ingradients')}</h3>
-      <pre className="font-montserrat text-base bg-[#cccccc4b] dark:bg-[#41414159] break-words p-3 rounded-xl max-w-[364px] min-h-[170px]">{data?.ingradients}</pre>
+      <h3 className="link-text font-semibold my-5">{t("title-ingradients")}</h3>
+      <pre className="font-montserrat text-base bg-[#cccccc4b] dark:bg-[#41414159] break-words p-3 rounded-xl max-w-[364px] min-h-[170px]">
+        {data?.ingradients}
+      </pre>
     </>
-  )
+  );
 };

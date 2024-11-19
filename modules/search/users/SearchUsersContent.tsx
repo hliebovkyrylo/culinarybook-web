@@ -17,30 +17,36 @@ export const SearchUsersContent = ({
       {isLoading ? (
         <>
           {[...Array(20)].map((_, index) => (
-            <CreatorCardSkeleton key={index} className="mb-2 !w-[186px] max-lg:!w-[98%]" />
+            <CreatorCardSkeleton
+              key={index}
+              className="mb-2 !w-[186px] max-lg:!w-[98%]"
+            />
           ))}
         </>
       ) : (
         <>
-          {data && data.map((user) => (
-            <CreatorCard
-              key={user.id}
-              id={user.id}
-              userImage={user.image}
-              name={user.name}
-              followers={user.followerCount}
-              recipes={user.recipeCount}
-              className="mb-2 !w-[186px] max-lg:!w-[98%]"
-              userBanner={user.backgroundImage}
-            />
-          ))}
+          {data &&
+            data.map((user) => (
+              <CreatorCard
+                key={user.id}
+                id={user.id}
+                userImage={user.image}
+                name={user.name}
+                followers={user.followerCount}
+                recipes={user.recipeCount}
+                className="mb-2 !w-[186px] max-lg:!w-[98%]"
+                userBanner={user.backgroundImage}
+              />
+            ))}
         </>
       )}
       {isLoadingMore && (
-        <div className={`absolute left-[calc(50%-24px)] -bottom-4 flex justify-center items-center z-50 dark:bg-bg-c bg-bg-c-7`}>
+        <div
+          className={`absolute left-[calc(50%-24px)] -bottom-4 flex justify-center items-center z-50 dark:bg-bg-c bg-bg-c-7`}
+        >
           <div className=" dark:border-[#222222] border-neutral-300 h-6 w-6 animate-spin rounded-full border-4 dark:border-t-[#DDDF72] border-t-[#C77D0A]" />
         </div>
       )}
     </div>
-  )
-}
+  );
+};

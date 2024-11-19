@@ -7,16 +7,19 @@ export const notificationApi = api.injectEndpoints({
   endpoints: (builder) => ({
     getMyAllNotifications: builder.query<NotificationsResponse, void>({
       query: () => ({
-        url: '/notification/get/my/all',
+        url: "/notification/get/my/all",
       }),
-      keepUnusedDataFor: 1
+      keepUnusedDataFor: 1,
     }),
     getMyAllUnreadedNotifications: builder.query<NotificationsResponse, void>({
       query: () => ({
-        url: '/notification/get/my/all/unreaded'
-      })
-    })
-  })
-})
+        url: "/notification/get/my/all/unreaded",
+      }),
+    }),
+  }),
+});
 
-export const { useGetMyAllNotificationsQuery, useGetMyAllUnreadedNotificationsQuery } = notificationApi;
+export const {
+  useGetMyAllNotificationsQuery,
+  useGetMyAllUnreadedNotificationsQuery,
+} = notificationApi;

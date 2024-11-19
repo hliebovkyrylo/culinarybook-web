@@ -6,13 +6,10 @@ import {
   CommentsContent,
   CreateCommentForm,
   RecipeData,
-  StepsData
+  StepsData,
 } from "@/modules/recipe";
 import { recipeApi } from "@/lib/api/recipeApi";
-import {
-  GetServerSidePropsContext,
-  InferGetServerSidePropsType
-} from "next";
+import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
 import { useGetSaveStateQuery } from "@/lib/api/saveApi";
 import { useGetCommentsQuery } from "@/lib/api/commentApi";
 import Image from "next/image";
@@ -32,49 +29,74 @@ export const getServerSideProps = wrapper.getServerSideProps(
     const recipeId = ctx.params?.recipeId as string;
     const locale = ctx.locale;
 
-    const recipePromise = store.dispatch(recipeApi.endpoints.getRecipe.initiate(recipeId));
-    const stepsPromise = store.dispatch(recipeApi.endpoints.getSteps.initiate(recipeId));
+    const recipePromise = store.dispatch(
+      recipeApi.endpoints.getRecipe.initiate(recipeId)
+    );
+    const stepsPromise = store.dispatch(
+      recipeApi.endpoints.getSteps.initiate(recipeId)
+    );
 
     await Promise.all([recipePromise, stepsPromise]);
 
-    const recipe = recipeApi.endpoints.getRecipe.select(recipeId)(store.getState() as any);
-    const steps = recipeApi.endpoints.getSteps.select(recipeId)(store.getState() as any);
-  
+    const recipe = recipeApi.endpoints.getRecipe.select(recipeId)(
+      store.getState() as any
+    );
+    const steps = recipeApi.endpoints.getSteps.select(recipeId)(
+      store.getState() as any
+    );
+
     return {
       props: {
-        ...await serverSideTranslations(locale as string, ['common']),
+        ...(await serverSideTranslations(locale as string, ["common"])),
         recipeId,
         recipe: recipe.data,
         steps: steps.data,
         metaTags: {
-          title: recipe.data?.title || 'Recipe',
-          description: steps.data?.map(step => step.stepDescription).join(' ')
-        }
+          title: recipe.data?.title || "Recipe",
+          description: steps.data
+            ?.map((step) => step.stepDescription)
+            .join(" "),
+        },
       },
     };
   }
-)
+);
 
-const Recipe = ({ metaTags, recipeId, recipe, steps }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  const { t } = useTranslation('common');
+const Recipe = ({
+  metaTags,
+  recipeId,
+  recipe,
+  steps,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+  const { t } = useTranslation("common");
 
-  const { data: comments, isLoading: isLoadingComments, isFetching } = useGetCommentsQuery(recipeId);
-  const { data: likes, isLoading: isLoadingLikes } = useGetRecipeLikesQuery(recipeId);
-  const { data: notifications, isLoading: isLoadingNotifications } = useGetMyAllUnreadedNotificationsQuery(undefined, {
-    refetchOnMountOrArgChange: true,
-    refetchOnReconnect: true,
-    refetchOnFocus: true
-  });
+  const {
+    data: comments,
+    isLoading: isLoadingComments,
+    isFetching,
+  } = useGetCommentsQuery(recipeId);
+  const { data: likes, isLoading: isLoadingLikes } =
+    useGetRecipeLikesQuery(recipeId);
+  const { data: notifications, isLoading: isLoadingNotifications } =
+    useGetMyAllUnreadedNotificationsQuery(undefined, {
+      refetchOnMountOrArgChange: true,
+      refetchOnReconnect: true,
+      refetchOnFocus: true,
+    });
   const { data: user, isLoading: isLoadingUser } = useGetMeQuery(undefined, {
     refetchOnMountOrArgChange: true,
     refetchOnReconnect: true,
-    refetchOnFocus: true
+    refetchOnFocus: true,
   });
 
-  const { data: likeState, isLoading: isLoadingLikeState } = useGetLikeStateQuery(recipeId);
-  const { data: saveState, isLoading: isLoadingSaveState } = useGetSaveStateQuery(recipeId);
+  const { data: likeState, isLoading: isLoadingLikeState } =
+    useGetLikeStateQuery(recipeId);
+  const { data: saveState, isLoading: isLoadingSaveState } =
+    useGetSaveStateQuery(recipeId);
 
-  const [isRecipeOwner, setIsRecipeOwner] = useState(user ? user.id === recipe?.ownerId : false);
+  const [isRecipeOwner, setIsRecipeOwner] = useState(
+    user ? user.id === recipe?.ownerId : false
+  );
 
   useEffect(() => {
     setIsRecipeOwner(user?.id === recipe?.ownerId);
@@ -82,19 +104,25 @@ const Recipe = ({ metaTags, recipeId, recipe, steps }: InferGetServerSidePropsTy
 
   const isBackgroundApplied = recipe?.applyBackground;
 
-  if (isLoadingLikes || isLoadingLikeState || isLoadingSaveState || isLoadingUser || isLoadingNotifications) {
-    return <Loader className="absolute top-0 left-0" />
+  if (
+    isLoadingLikes ||
+    isLoadingLikeState ||
+    isLoadingSaveState ||
+    isLoadingUser ||
+    isLoadingNotifications
+  ) {
+    return <Loader className="absolute top-0 left-0" />;
   }
 
   const isLoadingAllComments = isLoadingComments || isFetching;
 
   if (!recipe?.isPublic) {
-    return <PrivateRecipe />
+    return <PrivateRecipe />;
   }
 
   return (
     <>
-      <NextSeo 
+      <NextSeo
         title={metaTags.title}
         description={metaTags.description}
         canonical={`https://www.culinarybook.website/${recipeId}`}
@@ -103,22 +131,35 @@ const Recipe = ({ metaTags, recipeId, recipe, steps }: InferGetServerSidePropsTy
           title: metaTags.title,
           description: metaTags.description,
           images: [
-            { url: `/api/og?title=${metaTags.title}&description=${metaTags.description}` },
+            {
+              url: `/api/og?title=${metaTags.title}&description=${metaTags.description}`,
+            },
           ],
         }}
       />
       <MainLayout
-        pageTitle={''}
+        pageTitle={""}
         containerSize="full"
         user={user}
         notifications={notifications}
       >
         {isBackgroundApplied && (
-          <Image src={recipe.image} alt="Background image" width={1000} height={1000} className=" absolute top-0 left-0 w-full h-full object-cover -z-10 blur-sm opacity-10" />
+          <Image
+            src={recipe.image}
+            alt="Background image"
+            width={1000}
+            height={1000}
+            className=" absolute top-0 left-0 w-full h-full object-cover -z-10 blur-sm opacity-10"
+          />
         )}
         <RecipeData
           data={recipe}
-          averageGrade={comments && comments?.length > 0 ? comments.reduce((sum, comment) => sum + comment.grade, 0) / comments.length : 0}
+          averageGrade={
+            comments && comments?.length > 0
+              ? comments.reduce((sum, comment) => sum + comment.grade, 0) /
+                comments.length
+              : 0
+          }
           isOwner={isRecipeOwner}
           isAuth={!!user}
           likes={likes}
@@ -127,7 +168,7 @@ const Recipe = ({ metaTags, recipeId, recipe, steps }: InferGetServerSidePropsTy
         />
         <StepsData data={steps} />
         <div className="mt-12">
-          <h3 className="link-text font-semibold my-5">{t('title-comment')}</h3>
+          <h3 className="link-text font-semibold my-5">{t("title-comment")}</h3>
           <CreateCommentForm averageRating={4} />
           <CommentsContent
             data={comments}
@@ -137,7 +178,7 @@ const Recipe = ({ metaTags, recipeId, recipe, steps }: InferGetServerSidePropsTy
         </div>
       </MainLayout>
     </>
-  )
-}
+  );
+};
 
 export default Recipe;

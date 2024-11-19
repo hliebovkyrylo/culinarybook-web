@@ -2,7 +2,7 @@ import {
   SearchButtons,
   SearchInput,
   SearchUsersContent,
-  useUsers
+  useUsers,
 } from "@/modules/search";
 import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
 import { GlassIcon } from "@/icons";
@@ -19,34 +19,38 @@ import { InferGetServerSidePropsType } from "next";
 import { NextSeo } from "next-seo";
 
 export const getServerSideProps = async ({ locale }: { locale: string }) => {
-  const translations = await serverSideTranslations(locale, ['common']);
-  
-  const commonTranslations = translations._nextI18Next?.initialI18nStore[locale || 'en'].common;
-  
+  const translations = await serverSideTranslations(locale, ["common"]);
+
+  const commonTranslations =
+    translations._nextI18Next?.initialI18nStore[locale || "en"].common;
+
   return {
     props: {
-      ...await serverSideTranslations(locale, ['common']),
+      ...(await serverSideTranslations(locale, ["common"])),
       metaTags: {
-        title: commonTranslations['title-search'] || 'Culinarybook',
-        description: commonTranslations['search-user-meta-description'] || '',
-      }
+        title: commonTranslations["title-search"] || "Culinarybook",
+        description: commonTranslations["search-user-meta-description"] || "",
+      },
     },
-  }
-}
+  };
+};
 
-const SearchUsers = ({ metaTags }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const SearchUsers = ({
+  metaTags,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const { t } = useTranslation("common");
   const router = useRouter();
 
-  const { data: notifications, isLoading: isLoadingNotifications } = useGetMyAllUnreadedNotificationsQuery(undefined, {
-    refetchOnMountOrArgChange: true,
-    refetchOnReconnect: true,
-    refetchOnFocus: true
-  });
+  const { data: notifications, isLoading: isLoadingNotifications } =
+    useGetMyAllUnreadedNotificationsQuery(undefined, {
+      refetchOnMountOrArgChange: true,
+      refetchOnReconnect: true,
+      refetchOnFocus: true,
+    });
   const { data: user, isLoading: isLoadingUser } = useGetMeQuery(undefined, {
     refetchOnMountOrArgChange: true,
     refetchOnReconnect: true,
-    refetchOnFocus: true
+    refetchOnFocus: true,
   });
 
   const searchParams = router.query.username;
@@ -62,40 +66,50 @@ const SearchUsers = ({ metaTags }: InferGetServerSidePropsType<typeof getServerS
     if (searchParams && newUsers) {
       setFindedUsers([]);
       setPage(1);
-      setFindedUsers(prevUsers => [...prevUsers, ...newUsers]);
+      setFindedUsers((prevUsers) => [...prevUsers, ...newUsers]);
     }
   }, [newUsers, searchParams]);
 
-  useInfiniteScroll(newUsers, searchParams ? setFindedUsers : setUses, 25, setPage, setIsLoadingMore);
+  useInfiniteScroll(
+    newUsers,
+    searchParams ? setFindedUsers : setUses,
+    25,
+    setPage,
+    setIsLoadingMore
+  );
 
   if (isLoadingUser || isLoadingNotifications) {
-    return <Loader className="absolute top-0 left-0" />
+    return <Loader className="absolute top-0 left-0" />;
   }
 
   return (
     <>
-      <NextSeo 
+      <NextSeo
         title={metaTags.title}
         description={metaTags.description}
         canonical="https://www.culinarybook.website/search/users"
         openGraph={{
-          url: 'https://www.culinarybook.website/search/users',
+          url: "https://www.culinarybook.website/search/users",
           title: metaTags.title,
           description: metaTags.description,
           images: [
-            { url: `/api/og?title=${metaTags.title}&description=${metaTags.description}` },
+            {
+              url: `/api/og?title=${metaTags.title}&description=${metaTags.description}`,
+            },
           ],
         }}
       />
       <MainLayout
-        pageTitle={t('title-search')}
+        pageTitle={t("title-search")}
         containerSize="small"
         user={user}
         notifications={notifications}
       >
         <SearchInput
-          placeholder={t('input-username-placeholder')}
-          leftIcon={<GlassIcon className="absolute top-1.5 left-3 fill-[#666]" />}
+          placeholder={t("input-username-placeholder")}
+          leftIcon={
+            <GlassIcon className="absolute top-1.5 left-3 fill-[#666]" />
+          }
           routeType={"users"}
           searchType={"username"}
         />
@@ -107,7 +121,7 @@ const SearchUsers = ({ metaTags }: InferGetServerSidePropsType<typeof getServerS
         />
       </MainLayout>
     </>
-  )
-}
+  );
+};
 
 export default SearchUsers;

@@ -4,4 +4,6 @@ export const createCommentReplySchema = z.object({
   commentText: z.string().min(1),
 });
 
-export type CreateCommentReplyFormData = z.infer<typeof createCommentReplySchema>;
+export type CreateCommentReplyFormData = z.infer<
+  typeof createCommentReplySchema
+>;

@@ -7,23 +7,26 @@ import { InferGetServerSidePropsType } from "next";
 import { NextSeo } from "next-seo";
 
 export const getServerSideProps = async ({ locale }: { locale: string }) => {
-  const translations = await serverSideTranslations(locale, ['common']);
+  const translations = await serverSideTranslations(locale, ["common"]);
 
-  const commonTranslations = translations._nextI18Next?.initialI18nStore[locale || 'en'].common;
+  const commonTranslations =
+    translations._nextI18Next?.initialI18nStore[locale || "en"].common;
 
   return {
     props: {
-      ...await serverSideTranslations(locale, ['common']),
+      ...(await serverSideTranslations(locale, ["common"])),
       metaTags: {
-        title: commonTranslations['signUp-link'] || 'Culinarybook',
-        description: commonTranslations['meta-sign-in-description'] || '',
-      }
+        title: commonTranslations["signUp-link"] || "Culinarybook",
+        description: commonTranslations["meta-sign-in-description"] || "",
+      },
     },
-  }
-}
+  };
+};
 
-const SignIn = ({ metaTags }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  const { t } = useTranslation('common');
+const SignIn = ({
+  metaTags,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+  const { t } = useTranslation("common");
   return (
     <>
       <NextSeo
@@ -31,22 +34,21 @@ const SignIn = ({ metaTags }: InferGetServerSidePropsType<typeof getServerSidePr
         description={metaTags.description}
         canonical="https://www.culinarybook.website/sign-in"
         openGraph={{
-          url: 'https://www.culinarybook.website/sign-in',
+          url: "https://www.culinarybook.website/sign-in",
           title: metaTags.title,
           description: metaTags.description,
           images: [
-            { url: `/api/og?title=${metaTags.title}&description=${metaTags.description}` },
+            {
+              url: `/api/og?title=${metaTags.title}&description=${metaTags.description}`,
+            },
           ],
         }}
       />
-      <AuthorizationLayout
-        pageTitle={t('signUp-link')}
-        applyHomeButton={true}
-      >
+      <AuthorizationLayout pageTitle={t("signUp-link")} applyHomeButton={true}>
         <SignInForm />
       </AuthorizationLayout>
     </>
-  )
+  );
 };
 
 export default RequireGuest(SignIn);

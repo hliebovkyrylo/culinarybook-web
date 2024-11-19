@@ -6,13 +6,13 @@ export interface ICreateCommentRequest {
   commentText: string;
   grade: number;
   recipeId: string;
-};
+}
 
 export interface ICreateCommentReplyRequest {
   commentText: string;
   commentId: string;
   userId: string;
-};
+}
 
 export type ICommentResponse = IComment;
 export type ICommentReplyResponse = ICommentReply;
@@ -27,44 +27,47 @@ export interface IGetCommentsResponse {
 }
 
 export const commentApi = api.injectEndpoints({
-  endpoints: builder => ({
+  endpoints: (builder) => ({
     createComment: builder.mutation<ICommentResponse, ICreateCommentRequest>({
       query: ({ recipeId, ...rest }) => ({
-        method: 'POST',
+        method: "POST",
         url: `/comment/create/${recipeId}`,
-        body: rest
+        body: rest,
       }),
-      invalidatesTags: ['user', 'recipe']
+      invalidatesTags: ["user", "recipe"],
     }),
-    createCommentReply: builder.mutation<ICommentReplyResponse, ICreateCommentReplyRequest>({
+    createCommentReply: builder.mutation<
+      ICommentReplyResponse,
+      ICreateCommentReplyRequest
+    >({
       query: ({ commentId, userId, ...rest }) => ({
-        method: 'POST',
+        method: "POST",
         url: `/comment/${commentId}/reply/to/user/${userId}`,
-        body: rest
+        body: rest,
       }),
-      invalidatesTags: ['user', 'recipe']
+      invalidatesTags: ["user", "recipe"],
     }),
     getComments: builder.query<IGetCommentsResponse[], string>({
       query: (recipeId) => ({
-        url: `/comment/getComments/${recipeId}`
+        url: `/comment/getComments/${recipeId}`,
       }),
-      providesTags: ['user', 'recipe']
+      providesTags: ["user", "recipe"],
     }),
     deleteComment: builder.mutation<void, string>({
       query: (commentId) => ({
-        method: 'DELETE',
-        url: `/comment/${commentId}/delete`
+        method: "DELETE",
+        url: `/comment/${commentId}/delete`,
       }),
-      invalidatesTags: ['user', 'recipe']
+      invalidatesTags: ["user", "recipe"],
     }),
     deleteCommentReply: builder.mutation<void, string>({
       query: (commentReplyId) => ({
-        method: 'DELETE',
-        url: `/comment/reply/${commentReplyId}/delete`
+        method: "DELETE",
+        url: `/comment/reply/${commentReplyId}/delete`,
       }),
-      invalidatesTags: ['user', 'recipe']
+      invalidatesTags: ["user", "recipe"],
     }),
-  })
+  }),
 });
 
 export const {
@@ -72,5 +75,5 @@ export const {
   useCreateCommentReplyMutation,
   useDeleteCommentMutation,
   useDeleteCommentReplyMutation,
-  useGetCommentsQuery
+  useGetCommentsQuery,
 } = commentApi;

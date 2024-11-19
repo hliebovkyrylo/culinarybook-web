@@ -2,8 +2,8 @@ interface IAuthIconButton {
   firstIcon: React.ReactNode;
   secondIcon: React.ReactNode;
   inputType: string;
-  onClick: () => void
-};
+  onClick: () => void;
+}
 
 export const AuthIconButton = ({
   firstIcon,
@@ -13,11 +13,7 @@ export const AuthIconButton = ({
 }: IAuthIconButton) => {
   return (
     <button className="absolute right-4 top-4" type="button" onClick={onClick}>
-      {inputType === "password" ? (
-        firstIcon
-      ) : (
-        secondIcon
-      )}
+      {inputType === "password" ? firstIcon : secondIcon}
     </button>
-  )
+  );
 };

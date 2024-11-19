@@ -3,61 +3,69 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { MainLayout } from "@/modules/layouts";
 import { NotificationsContent } from "@/modules/notifications";
 import { RequireAuth } from "@/hocs/requireAuth";
-import { useGetMyAllNotificationsQuery, useGetMyAllUnreadedNotificationsQuery } from "@/lib/api/notificationApi";
+import {
+  useGetMyAllNotificationsQuery,
+  useGetMyAllUnreadedNotificationsQuery,
+} from "@/lib/api/notificationApi";
 import { useGetMeQuery } from "@/lib/api/userApi";
 import { Loader } from "@/components/Loader";
 import { InferGetServerSidePropsType } from "next";
 import { NextSeo } from "next-seo";
 
 export const getServerSideProps = async ({ locale }: { locale: string }) => {
-  const translations = await serverSideTranslations(locale, ['common']);
-  
-  const commonTranslations = translations._nextI18Next?.initialI18nStore[locale || 'en'].common;
-  
+  const translations = await serverSideTranslations(locale, ["common"]);
+
+  const commonTranslations =
+    translations._nextI18Next?.initialI18nStore[locale || "en"].common;
+
   return {
     props: {
-      ...await serverSideTranslations(locale, ['common']),
+      ...(await serverSideTranslations(locale, ["common"])),
       metaTags: {
-        title: commonTranslations['title-notifications'] || 'Culinarybook',
-      }
+        title: commonTranslations["title-notifications"] || "Culinarybook",
+      },
     },
-  }
-}
+  };
+};
 
-const Notifications = ({ metaTags }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  const { t } = useTranslation('common');
+const Notifications = ({
+  metaTags,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+  const { t } = useTranslation("common");
 
-  const { data: unreadedNotifications, isLoading: isLoadingUnreadedNotifications } = useGetMyAllUnreadedNotificationsQuery(undefined, {
+  const {
+    data: unreadedNotifications,
+    isLoading: isLoadingUnreadedNotifications,
+  } = useGetMyAllUnreadedNotificationsQuery(undefined, {
     refetchOnMountOrArgChange: true,
     refetchOnReconnect: true,
-    refetchOnFocus: true
+    refetchOnFocus: true,
   });
   const { data: user, isLoading: isLoadingUser } = useGetMeQuery(undefined, {
     refetchOnMountOrArgChange: true,
     refetchOnReconnect: true,
-    refetchOnFocus: true
+    refetchOnFocus: true,
   });
-  const { data: notifications, isLoading: isLoadingNotifications } = useGetMyAllNotificationsQuery();
+  const { data: notifications, isLoading: isLoadingNotifications } =
+    useGetMyAllNotificationsQuery();
 
   if (isLoadingUser || isLoadingUnreadedNotifications) {
-    return <Loader className="absolute top-0 left-0" />
+    return <Loader className="absolute top-0 left-0" />;
   }
 
   return (
     <>
-      <NextSeo 
+      <NextSeo
         title={metaTags.title}
         canonical="https://www.culinarybook.website/notifications"
         openGraph={{
-          url: 'https://www.culinarybook.website/notifications',
+          url: "https://www.culinarybook.website/notifications",
           title: metaTags.title,
-          images: [
-            { url: `/api/og?title=${metaTags.title}` },
-          ],
+          images: [{ url: `/api/og?title=${metaTags.title}` }],
         }}
       />
       <MainLayout
-        pageTitle={t('title-notifications')}
+        pageTitle={t("title-notifications")}
         containerSize="small"
         user={user}
         notifications={unreadedNotifications}
@@ -70,7 +78,7 @@ const Notifications = ({ metaTags }: InferGetServerSidePropsType<typeof getServe
         </section>
       </MainLayout>
     </>
-  )
-}
+  );
+};
 
 export default RequireAuth(Notifications);

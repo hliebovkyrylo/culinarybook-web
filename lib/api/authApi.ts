@@ -6,39 +6,39 @@ export interface ISignUpRequest {
   name: string;
   password: string;
   image: string;
-};
+}
 
 export interface IAuthResponse {
   access_token: string;
-};
+}
 
 export interface IVerifyAccountRequest {
   code: string;
-};
+}
 
 export interface ISignInRequest {
   email: string;
   password: string;
-};
+}
 
 export interface ISignOutResponse {
   access_token: null;
-};
+}
 
 export interface IForgotPasswordRequest {
   email: string;
-};
+}
 
 export interface ICanResetPasswordRequest {
   email: string;
   code: string;
-};
+}
 
 export interface IResetPasswordRequest {
   password: string;
   confirmPassword: string;
   email: string;
-};
+}
 
 export interface IChangePasswordRequest {
   oldPassword: string;
@@ -47,82 +47,82 @@ export interface IChangePasswordRequest {
 }
 
 export const authApi = api.injectEndpoints({
-  endpoints: builder => ({
+  endpoints: (builder) => ({
     signUp: builder.mutation<IAuthResponse, ISignUpRequest>({
       query: (body) => ({
-        method: 'POST',
-        url: '/auth/sign-up',
-        body
+        method: "POST",
+        url: "/auth/sign-up",
+        body,
       }),
-      invalidatesTags: ['user', 'recipe']
+      invalidatesTags: ["user", "recipe"],
     }),
     sendCode: builder.mutation<string, void>({
       query: () => ({
-        method: 'POST',
-        url: '/auth/send-code'
+        method: "POST",
+        url: "/auth/send-code",
       }),
-      invalidatesTags: ['user', 'recipe']
+      invalidatesTags: ["user", "recipe"],
     }),
     verifyAccount: builder.mutation<void, IVerifyAccountRequest>({
       query: (body) => ({
-        method: 'POST',
-        url: '/auth/verify-email',
-        body
+        method: "POST",
+        url: "/auth/verify-email",
+        body,
       }),
-      invalidatesTags: ['user', 'recipe']
+      invalidatesTags: ["user", "recipe"],
     }),
     signIn: builder.mutation<IAuthResponse, ISignInRequest>({
       query: (body) => ({
-        method: 'POST',
-        url: '/auth/sign-in',
-        body
+        method: "POST",
+        url: "/auth/sign-in",
+        body,
       }),
-      invalidatesTags: ['user', 'recipe']
+      invalidatesTags: ["user", "recipe"],
     }),
     forgotPassword: builder.mutation<void, IForgotPasswordRequest>({
       query: (body) => ({
-        method: 'POST',
-        url: '/auth/forgot-password',
-        body
+        method: "POST",
+        url: "/auth/forgot-password",
+        body,
       }),
-      invalidatesTags: ['user', 'recipe']
+      invalidatesTags: ["user", "recipe"],
     }),
     canResetPassword: builder.mutation<void, ICanResetPasswordRequest>({
       query: ({ email, code }) => ({
-        method: 'PATCH',
+        method: "PATCH",
         url: `/auth/canReset-password/${email}`,
         body: {
           code,
-        }
+        },
       }),
-      invalidatesTags: ['user', 'recipe']
+      invalidatesTags: ["user", "recipe"],
     }),
     resetPassword: builder.mutation<void, IResetPasswordRequest>({
       query: ({ password, confirmPassword, email }) => ({
-        method: 'PATCH',
+        method: "PATCH",
         url: `/auth/reset-password/${email}`,
         body: {
           password,
-          confirmPassword
-        }
+          confirmPassword,
+        },
       }),
-      invalidatesTags: ['user', 'recipe']
+      invalidatesTags: ["user", "recipe"],
     }),
     changePassword: builder.mutation<void, IChangePasswordRequest>({
       query: (body) => ({
-        method: 'PATCH',
-        url: '/auth/change-password',
-        body
-      })
+        method: "PATCH",
+        url: "/auth/change-password",
+        body,
+      }),
     }),
     signOut: builder.mutation<void, void>({
       query: () => ({
-        method: 'POST',
-        url: '/auth/signOut'
+        method: "POST",
+        url: "/auth/signOut",
       }),
-      invalidatesTags: ['user', 'recipe']
-    })
-  })
+      invalidatesTags: ["user", "recipe"],
+    }),
+  }),
 });
 
 export const {

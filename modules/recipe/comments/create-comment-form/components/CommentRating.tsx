@@ -28,7 +28,11 @@ export const CommentRating = ({
               hidden
             />
             <StarIcon
-              className={`w-10 h-10 transition-all ${ratingValue <= (hover || rating) ? "star-icon" : "star-icon-active"}`}
+              className={`w-10 h-10 transition-all ${
+                ratingValue <= (hover || rating)
+                  ? "star-icon"
+                  : "star-icon-active"
+              }`}
               onMouseEnter={() => setHover(ratingValue)}
               onMouseLeave={() => setHover(0)}
             />

@@ -14,83 +14,99 @@ import { NextSeo } from "next-seo";
 import { useEffect, useState } from "react";
 
 export const getServerSideProps = async ({ locale }: { locale: string }) => {
-  const translations = await serverSideTranslations(locale, ['common']);
-  
-  const commonTranslations = translations._nextI18Next?.initialI18nStore[locale || 'en'].common;
-  
+  const translations = await serverSideTranslations(locale, ["common"]);
+
+  const commonTranslations =
+    translations._nextI18Next?.initialI18nStore[locale || "en"].common;
+
   return {
     props: {
-      ...await serverSideTranslations(locale, ['common']),
+      ...(await serverSideTranslations(locale, ["common"])),
       metaTags: {
-        title: commonTranslations['title-notifications'] || 'Culinarybook',
-        description: commonTranslations['history-meta-description'] || '',
-      }
+        title: commonTranslations["title-notifications"] || "Culinarybook",
+        description: commonTranslations["history-meta-description"] || "",
+      },
     },
-  }
-}
+  };
+};
 
-const History = ({ metaTags }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  const { t } = useTranslation('common');
+const History = ({
+  metaTags,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+  const { t } = useTranslation("common");
 
   const [page, setPage] = useState<number>(1);
   const [visitedRecipes, setVisitedRecipes] = useState<IRecipePreview[]>([]);
   const [isLoadingMore, setIsLoadingMore] = useState<boolean>(false);
 
-  const { data: notifications, isLoading: isLoadingNotifications } = useGetMyAllUnreadedNotificationsQuery(undefined, {
-    refetchOnMountOrArgChange: true,
-    refetchOnReconnect: true,
-    refetchOnFocus: true
-  });
+  const { data: notifications, isLoading: isLoadingNotifications } =
+    useGetMyAllUnreadedNotificationsQuery(undefined, {
+      refetchOnMountOrArgChange: true,
+      refetchOnReconnect: true,
+      refetchOnFocus: true,
+    });
   const { data: user, isLoading: isLoadingUser } = useGetMeQuery(undefined, {
     refetchOnMountOrArgChange: true,
     refetchOnReconnect: true,
-    refetchOnFocus: true
+    refetchOnFocus: true,
   });
 
-  const { data: newVisitedRecipes, isLoading: isLoadingRecipes } = useGetMyVisitedQuery({ page: page, limit: 10 });
+  const { data: newVisitedRecipes, isLoading: isLoadingRecipes } =
+    useGetMyVisitedQuery({ page: page, limit: 10 });
 
   if (isLoadingUser || isLoadingNotifications) {
-    return <Loader className="absolute top-0 left-0" />
+    return <Loader className="absolute top-0 left-0" />;
   }
 
   useEffect(() => {
     if (newVisitedRecipes) {
       setVisitedRecipes([]);
       setPage(1);
-      setVisitedRecipes(prevRecipes => [...prevRecipes, ...newVisitedRecipes]);
+      setVisitedRecipes((prevRecipes) => [
+        ...prevRecipes,
+        ...newVisitedRecipes,
+      ]);
     }
-  }, [newVisitedRecipes])
+  }, [newVisitedRecipes]);
 
-  useInfiniteScroll(newVisitedRecipes, setVisitedRecipes, 12, setPage, setIsLoadingMore);
+  useInfiniteScroll(
+    newVisitedRecipes,
+    setVisitedRecipes,
+    12,
+    setPage,
+    setIsLoadingMore
+  );
   return (
     <>
-      <NextSeo 
+      <NextSeo
         title={metaTags.title}
         description={metaTags.description}
         canonical="https://www.culinarybook.website/history"
         openGraph={{
-          url: 'https://www.culinarybook.website/history',
+          url: "https://www.culinarybook.website/history",
           title: metaTags.title,
           description: metaTags.description,
           images: [
-            { url: `/api/og?title=${metaTags.title}&description=${metaTags.description}` },
+            {
+              url: `/api/og?title=${metaTags.title}&description=${metaTags.description}`,
+            },
           ],
         }}
       />
       <MainLayout
-      pageTitle={t('title-history')}
-      containerSize="small"
-      user={user}
-      notifications={notifications}
-    >
-      <HistoryRecipesContent
-        data={visitedRecipes}
-        isLoading={isLoadingRecipes}
-        isLoadingMore={isLoadingMore}
-      />
-    </MainLayout>
+        pageTitle={t("title-history")}
+        containerSize="small"
+        user={user}
+        notifications={notifications}
+      >
+        <HistoryRecipesContent
+          data={visitedRecipes}
+          isLoading={isLoadingRecipes}
+          isLoadingMore={isLoadingMore}
+        />
+      </MainLayout>
     </>
-  )
-}
+  );
+};
 
 export default RequireAuth(History);

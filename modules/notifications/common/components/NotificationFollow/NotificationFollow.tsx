@@ -16,7 +16,7 @@ export const NotificationFollow = ({
   userId,
   createdAt,
 }: INotificationFollow) => {
-  const { t } = useTranslation('common');
+  const { t } = useTranslation("common");
 
   const formatDaysAgo = useFormatDaysAgo();
 
@@ -25,20 +25,30 @@ export const NotificationFollow = ({
       <div className="flex justify-between w-full">
         <div className="flex justify-between">
           <Link className="mr-3" href={`/profile/${userId}`}>
-            <Image src={userImage || '/assets/defaulUserImage.jpg'} className="object-cover rounded-full w-12 h-12" alt="User image" width={48} height={48} />
+            <Image
+              src={userImage || "/assets/defaulUserImage.jpg"}
+              className="object-cover rounded-full w-12 h-12"
+              alt="User image"
+              width={48}
+              height={48}
+            />
           </Link>
           <div>
             <div>
-              <Link className="text-sm" href={`/profile/${userId}`}><b>{username}</b></Link>
-              <span className="text-sm"> {t('comment-type-following')}</span>
+              <Link className="text-sm" href={`/profile/${userId}`}>
+                <b>{username}</b>
+              </Link>
+              <span className="text-sm"> {t("comment-type-following")}</span>
             </div>
             <div className="flex items-center">
               <span className="block w-1 h-1 bg-[#959595] rounded-full mr-1" />
-              <p className="text-[#959595] text-sm">{formatDaysAgo(createdAt)}</p>
+              <p className="text-[#959595] text-sm">
+                {formatDaysAgo(createdAt)}
+              </p>
             </div>
           </div>
         </div>
       </div>
     </article>
-  )
-}
+  );
+};

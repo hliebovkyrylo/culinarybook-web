@@ -32,7 +32,7 @@ const MyApp: React.FunctionComponent<AppProps> = ({ Component, ...rest }) => {
           `}
         </Script>
         <DefaultSeo {...SEO} />
-        <NextNProgress color="#DDDF72" startPosition={0.3} stopDelayMs={200} height={3} showOnShallow={true} />
+        <NextNProgress color="#DB8961" startPosition={0.3} stopDelayMs={200} height={3} showOnShallow={true} />
         <Component {...props.pageProps} />
       </ThemeProvider>
     </Provider>

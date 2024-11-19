@@ -2,19 +2,15 @@ import { useTranslation } from "next-i18next";
 import { useFieldArray, useForm } from "react-hook-form";
 import {
   CreateRecipeAndStepFormData,
-  createRecipeAndStepSchema
+  createRecipeAndStepSchema,
 } from "./schemas/createRecipeSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/router";
 import {
   useCreateRecipeMutation,
-  useCreateStepsMutation
+  useCreateStepsMutation,
 } from "@/lib/api/recipeApi";
-import {
-  useCallback,
-  useRef,
-  useState
-} from "react";
+import { useCallback, useRef, useState } from "react";
 import { RtkError } from "@/typings/error";
 import { useUploadImageMutation } from "@/lib/api/uploadImageApi";
 import {
@@ -23,7 +19,7 @@ import {
   RecipeBgImageApplySelect,
   RecipeComplexitySelect,
   RecipeCreateCover,
-  RecipeTypeSelect
+  RecipeTypeSelect,
 } from "./components";
 import {
   ClockIcon,
@@ -32,45 +28,60 @@ import {
   LockIcon,
   SecondMedalIcon,
   TrashIcon,
-  UntesilsIcon
+  UntesilsIcon,
 } from "@/icons";
 import { Button, Input, Textarea } from "@/components/ui";
 import { Loader } from "@/components/Loader";
 
 export const CreateRecipeForm = () => {
-  const { t } = useTranslation('common');
+  const { t } = useTranslation("common");
 
   const router = useRouter();
 
   const inputFileRef = useRef<HTMLInputElement | null>(null);
 
-  const [createRecipe, { isLoading: isCreatingRecipe, isSuccess }] = useCreateRecipeMutation();
-  const [createSteps, { isLoading: isCreatingSteps }] = useCreateStepsMutation();
-  const [uploadImage, { isLoading: isLoadingUploadingImage }] = useUploadImageMutation();
+  const [createRecipe, { isLoading: isCreatingRecipe, isSuccess }] =
+    useCreateRecipeMutation();
+  const [createSteps, { isLoading: isCreatingSteps }] =
+    useCreateStepsMutation();
+  const [uploadImage, { isLoading: isLoadingUploadingImage }] =
+    useUploadImageMutation();
 
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
 
-  const { handleSubmit, register, setError, formState: { errors, isValid }, setValue, control } = useForm<CreateRecipeAndStepFormData>({
+  const {
+    handleSubmit,
+    register,
+    setError,
+    formState: { errors, isValid },
+    setValue,
+    control,
+  } = useForm<CreateRecipeAndStepFormData>({
     defaultValues: {
-      title: '',
-      image: '',
-      coockingTime: '',
-      complexity: '',
-      typeOfFood: '',
-      ingradients: '',
+      title: "",
+      image: "",
+      coockingTime: "",
+      complexity: "",
+      typeOfFood: "",
+      ingradients: "",
       isPublic: true,
       applyBackground: true,
-      steps: [{
-        stepNumber: 1,
-        stepDescription: ''
-      }]
+      steps: [
+        {
+          stepNumber: 1,
+          stepDescription: "",
+        },
+      ],
     },
-    resolver: zodResolver(createRecipeAndStepSchema)
+    resolver: zodResolver(createRecipeAndStepSchema),
   });
 
-  const { fields, append, remove } = useFieldArray<CreateRecipeAndStepFormData, "steps">({
+  const { fields, append, remove } = useFieldArray<
+    CreateRecipeAndStepFormData,
+    "steps"
+  >({
     control,
-    name: "steps"
+    name: "steps",
   });
 
   const handleRemoveStep = (index: number) => {
@@ -89,39 +100,66 @@ export const CreateRecipeForm = () => {
     }
   };
 
-  const onSubmit = useCallback(async (values: CreateRecipeAndStepFormData) => {
-    if (isValid) {
-      let imageUrl = '';
-      if (selectedImage) {
-        const formData = new FormData();
-        formData.append('image', selectedImage);
-        const response = await uploadImage(formData).unwrap();
-        imageUrl = response.imageUrl;
-      }
-
-      values.image = imageUrl;
-
-      createRecipe(values).unwrap().then((recipe) => {
-        const recipeId = recipe.id;
-
-        createSteps({ recipeId: recipeId, steps: values.steps }).unwrap().then(() => {
-          router.push(`/recipe/${recipeId}`);
-          return null;
-        })
-      }).catch((error: RtkError) => {
-        if (error.data.code === 'too-large-image') {
-          setError('image', { message: t('too-large-error') });
+  const onSubmit = useCallback(
+    async (values: CreateRecipeAndStepFormData) => {
+      if (isValid) {
+        let imageUrl = "";
+        if (selectedImage) {
+          const formData = new FormData();
+          formData.append("image", selectedImage);
+          const response = await uploadImage(formData).unwrap();
+          imageUrl = response.imageUrl;
         }
-      });
-    }
-  }, [createRecipe, selectedImage, createSteps, fields, isValid, selectedImage, uploadImage]);
 
-  if (isCreatingRecipe || isCreatingSteps || isLoadingUploadingImage || isSuccess) {
+        values.image = imageUrl;
+
+        createRecipe(values)
+          .unwrap()
+          .then((recipe) => {
+            const recipeId = recipe.id;
+
+            createSteps({ recipeId: recipeId, steps: values.steps })
+              .unwrap()
+              .then(() => {
+                router.push(`/recipe/${recipeId}`);
+                return null;
+              });
+          })
+          .catch((error: RtkError) => {
+            if (error.data.code === "too-large-image") {
+              setError("image", { message: t("too-large-error") });
+            }
+          });
+      }
+    },
+    [
+      createRecipe,
+      selectedImage,
+      createSteps,
+      fields,
+      isValid,
+      selectedImage,
+      uploadImage,
+    ]
+  );
+
+  if (
+    isCreatingRecipe ||
+    isCreatingSteps ||
+    isLoadingUploadingImage ||
+    isSuccess
+  ) {
     return <Loader className="absolute top-0 left-0" />;
   }
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="my-7">
-      <input ref={inputFileRef} onChange={handleImageChange} type="file" accept="image/*" hidden />
+      <input
+        ref={inputFileRef}
+        onChange={handleImageChange}
+        type="file"
+        accept="image/*"
+        hidden
+      />
       <div className="flex gap-12 max-md:flex-col">
         <RecipeCreateCover
           recipeImage={selectedImage ? URL.createObjectURL(selectedImage) : ""}
@@ -130,29 +168,41 @@ export const CreateRecipeForm = () => {
           errorMessage={errors.image?.message}
         />
         <div className="flex flex-col gap-3 max-md:mt-6">
-          <p className={`text-red-500 text-sm ${!errors.title && 'hidden'}`}>{errors.title?.message}</p>
-          <div className={'flex items-center gap-3'}>
+          <p className={`text-red-500 text-sm ${!errors.title && "hidden"}`}>
+            {errors.title?.message}
+          </p>
+          <div className={"flex items-center gap-3"}>
             <FileIcon className="w-5 h-5" />
             <Input
-              placeholder={t('recipe-title-placeholder')}
+              placeholder={t("recipe-title-placeholder")}
               type="text"
-              {...register('title')}
+              {...register("title")}
               color="default"
               className="h-6 max-w-[224px] rounded-md"
             />
           </div>
-          <p className={`text-red-500 text-sm ${!errors.coockingTime && 'hidden'}`}>{errors.coockingTime?.message}</p>
-          <div className={'flex items-center gap-3'}>
+          <p
+            className={`text-red-500 text-sm ${
+              !errors.coockingTime && "hidden"
+            }`}
+          >
+            {errors.coockingTime?.message}
+          </p>
+          <div className={"flex items-center gap-3"}>
             <ClockIcon className="w-5 h-5" />
             <Input
-              placeholder={t('cooking-time-placeholder')}
+              placeholder={t("cooking-time-placeholder")}
               type="text"
-              {...register('coockingTime')}
+              {...register("coockingTime")}
               color="default"
               className="h-6 max-w-[224px] rounded-md"
             />
           </div>
-          <p className={`text-red-500 text-sm ${!errors.complexity && 'hidden'}`}>{errors.complexity?.message}</p>
+          <p
+            className={`text-red-500 text-sm ${!errors.complexity && "hidden"}`}
+          >
+            {errors.complexity?.message}
+          </p>
           <div className="flex items-center gap-3">
             <SecondMedalIcon className="w-5 h-5" />
             <div className="relative">
@@ -181,17 +231,27 @@ export const CreateRecipeForm = () => {
           )}
         </div>
       </div>
-      <h3 className="link-text font-semibold my-5">{t('title-ingradients')}</h3>
+      <h3 className="link-text font-semibold my-5">{t("title-ingradients")}</h3>
       <p className="text-red-500 text-sm">{errors.ingradients?.message}</p>
-      <Textarea {...register('ingradients')} placeholder={t('placeholder-ingradients')} className="w-full max-w-sm min-h-[170px]" />
-      <h3 className="link-text font-semibold my-5">{t('title-instructions')}</h3>
+      <Textarea
+        {...register("ingradients")}
+        placeholder={t("placeholder-ingradients")}
+        className="w-full max-w-sm min-h-[170px]"
+      />
+      <h3 className="link-text font-semibold my-5">
+        {t("title-instructions")}
+      </h3>
       <>
         {fields.map((_, index) => (
           <div key={index}>
-            <p className="text-red-500 text-sm">{errors.steps?.[index]?.stepDescription?.message}</p>
+            <p className="text-red-500 text-sm">
+              {errors.steps?.[index]?.stepDescription?.message}
+            </p>
             <div className="relative max-w-[300px]">
               <div className="flex justify-between items-center">
-                <span className="link-text font-semibold z-50">{`${t('step')} ${index + 1}`}</span>
+                <span className="link-text font-semibold z-50">{`${t("step")} ${
+                  index + 1
+                }`}</span>
                 {index !== 0 && (
                   <button
                     className="w-4"
@@ -203,7 +263,7 @@ export const CreateRecipeForm = () => {
                 )}
               </div>
               <Textarea
-                placeholder={t('step-placeholder')}
+                placeholder={t("step-placeholder")}
                 className="min-h-[128px] w-full max-w-[300px]"
                 {...register(`steps.${index}.stepDescription`)}
               />
@@ -212,11 +272,17 @@ export const CreateRecipeForm = () => {
         ))}
         <div className="w-full max-w-[300px] flex justify-center">
           <RecipeAddStepButton
-            buttonClick={() => append({ stepNumber: fields.length + 1, stepDescription: '' })}
+            buttonClick={() =>
+              append({ stepNumber: fields.length + 1, stepDescription: "" })
+            }
           />
         </div>
       </>
-      <Button text={t('create-button')} className="mt-12 max-w-[234px] max-md:mb-14" state={isValid ? "default" : "disabled"} />
+      <Button
+        text={t("create-button")}
+        className="mt-12 max-w-[234px] max-md:mb-14"
+        state={isValid ? "default" : "disabled"}
+      />
     </form>
-  )
-}
+  );
+};

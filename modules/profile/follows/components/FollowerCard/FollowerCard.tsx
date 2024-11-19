@@ -21,15 +21,23 @@ export const FollowerCard = ({
   userImage,
   onClick,
   className,
-  userId
+  userId,
 }: IFollowerCard) => {
   const { t } = useTranslation();
   const { data: user } = useGetMeQuery();
   return (
-    <article className={`flex justify-between items-center rounded-md px-3 py-2 follower-card-bg ${className}`}>
+    <article
+      className={`flex justify-between items-center rounded-md px-3 py-2 follower-card-bg ${className}`}
+    >
       <div className="flex">
         <Link href={`/profile/${userId}`}>
-          <Image src={userImage === '' ? '/assets/testuserimage.jpg' : userImage} alt="User image" width={48} height={48} className="w-12 h-12 object-cover rounded-full mr-2" />
+          <Image
+            src={userImage === "" ? "/assets/testuserimage.jpg" : userImage}
+            alt="User image"
+            width={48}
+            height={48}
+            className="w-12 h-12 object-cover rounded-full mr-2"
+          />
         </Link>
         <div>
           <Link href={`/profile/${userId}`}>{username}</Link>
@@ -37,8 +45,16 @@ export const FollowerCard = ({
         </div>
       </div>
       {userId !== user?.id && (
-        <Button text={!isFollowed ? t('follow-button') : t('follow-button-already')} state="default" onClick={onClick} className={`!w-36 h-8 flex opacity-70 items-center justify-center ml-4 ${isFollowed && "dark:!bg-[#363638] !bg-[#939396] !text-white font-normal"}`} />
+        <Button
+          text={!isFollowed ? t("follow-button") : t("follow-button-already")}
+          state="default"
+          onClick={onClick}
+          className={`!w-36 h-8 flex opacity-70 items-center justify-center ml-4 ${
+            isFollowed &&
+            "dark:!bg-[#363638] !bg-[#939396] !text-white font-normal"
+          }`}
+        />
       )}
     </article>
-  )
-}
+  );
+};

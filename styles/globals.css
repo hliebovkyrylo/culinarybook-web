@@ -5,7 +5,7 @@
 @import 'swiper/css';
 
 body {
-  @apply bg-bg-c-7 dark:bg-bg-c h-full
+  @apply bg-[#F6F6F6] dark:bg-[#141414] h-full
 }
 
 ::-webkit-scrollbar-track {
@@ -48,24 +48,16 @@ body {
   @apply text-black dark:text-white font-medium
 }
 
-.topbar {
-  @apply w-full h-12 z-40 flex items-center justify-end px-16 fixed dark:bg-bg-c-2 bg-white max-lg:px-5 drop-shadow-xl
-}
-
-.leftsidebar__text {
-  @apply dark:text-color-custom-yellow text-color-orange text-lg font-medium
-}
-
 .link-button {
   @apply flex pl-14 items-center w-full h-12 hover:bg-bg-c-6 max-2xl:pr-14 hover:dark:bg-bg-c-3 transition-colors
 }
 
 .link-button-active {
-  @apply bg-bg-c-6 dark:bg-bg-c-3
+  @apply bg-[#ddd] dark:bg-bg-c-3
 }
 
 .link-text {
-  @apply dark:text-color-custom-yellow text-color-orange
+  @apply text-color-orange
 }
 
 .bottombar {
@@ -89,7 +81,7 @@ body {
 }
 
 .icon-color {
-  @apply fill-fill-orange dark:fill-fill-yellow
+  @apply fill-fill-orange
 }
 
 .icon-eye {

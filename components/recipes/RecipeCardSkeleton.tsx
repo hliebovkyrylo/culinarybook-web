@@ -1,9 +1,13 @@
 export const RecipeCardSkeleton = ({ className }: { className?: string }) => {
   return (
-    <article className={`recipecard overflow-hidden h-[297px] animate-pulse ${className}`}>
+    <article
+      className={`recipecard overflow-hidden h-[297px] animate-pulse ${className}`}
+    >
       <div className="overflow-hidden">
         <div
-          className={'rounded-tl-xl h-[125px] bg-[#a5a5a518] object-cover rounded-tr-xl transition-all w-full'}
+          className={
+            "rounded-tl-xl h-[125px] bg-[#a5a5a518] object-cover rounded-tr-xl transition-all w-full"
+          }
         />
       </div>
       <div className="flex flex-col px-4 pt-3 pb-6">
@@ -15,5 +19,5 @@ export const RecipeCardSkeleton = ({ className }: { className?: string }) => {
         </div>
       </div>
     </article>
-  )
-}
+  );
+};

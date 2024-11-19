@@ -11,61 +11,61 @@ export interface IUpdateUserRequest {
   image: string;
   backgroundImage: string;
   isPrivate: boolean;
-};
+}
 
 export interface IGetUsersRequest {
   page: number;
   limit: number;
   username?: string;
-};
+}
 
 export interface IGetUsersByUsernameRequest {
   username: string;
   page: number;
   limit: number;
-};
+}
 
 export const userApi = api.injectEndpoints({
-  endpoints: builder => ({
+  endpoints: (builder) => ({
     getMe: builder.query<IUserMeResponse, void>({
       query: () => ({
-        url: '/user/me'
+        url: "/user/me",
       }),
-      keepUnusedDataFor: 1
+      keepUnusedDataFor: 1,
     }),
     getUser: builder.query<IUserResponse, string>({
       query: (userId) => ({
-        url: `/user/${userId}`
+        url: `/user/${userId}`,
       }),
-      providesTags: ['user']
+      providesTags: ["user"],
     }),
     updateUser: builder.mutation<IUserMeResponse, IUpdateUserRequest>({
       query: (body) => ({
-        url: '/user/update',
-        method: 'PATCH',
-        body
+        url: "/user/update",
+        method: "PATCH",
+        body,
       }),
-      invalidatesTags: ['user']
+      invalidatesTags: ["user"],
     }),
     getRecommendedUsers: builder.query<IUsersResponse, IGetUsersRequest>({
       query: (body) => ({
-        url: `/user/recommended/users?page=${body.page}&limit=${body.limit}&username=${body.username}`
+        url: `/user/recommended/users?page=${body.page}&limit=${body.limit}&username=${body.username}`,
       }),
-      providesTags: ['user']
+      providesTags: ["user"],
     }),
     getPopularUsers: builder.query<IUsersResponse, IGetUsersRequest>({
       query: (body) => ({
-        url: `/user/popular/users?page=${body.page}&limit=${body.limit}&username=${body.username}`
+        url: `/user/popular/users?page=${body.page}&limit=${body.limit}&username=${body.username}`,
       }),
-      providesTags: ['user']
+      providesTags: ["user"],
     }),
     changeAccountType: builder.mutation<void, void>({
       query: () => ({
-        url: '/user/changeType'
+        url: "/user/changeType",
       }),
-      invalidatesTags: ['user']
-    })
-  })
+      invalidatesTags: ["user"],
+    }),
+  }),
 });
 
 export const {
@@ -74,5 +74,5 @@ export const {
   useGetRecommendedUsersQuery,
   useGetPopularUsersQuery,
   useChangeAccountTypeMutation,
-  useUpdateUserMutation
+  useUpdateUserMutation,
 } = userApi;

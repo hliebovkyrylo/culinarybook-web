@@ -21,13 +21,18 @@ export const SearchInput = ({
     if (search) {
       router.push(`/search/${routeType}?${searchType}=` + search);
     } else {
-      router.push(`/search/${routeType}`)
+      router.push(`/search/${routeType}`);
     }
   }, [search, routeType]);
   return (
     <div className="relative my-3">
       {leftIcon}
-      <input onChange={(e) => setSearch(e.target.value)} type="text" className="search-field" placeholder={placeholder} />
+      <input
+        onChange={(e) => setSearch(e.target.value)}
+        type="text"
+        className="search-field"
+        placeholder={placeholder}
+      />
     </div>
-  )
-}
+  );
+};

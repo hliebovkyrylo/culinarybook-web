@@ -7,14 +7,14 @@ export type IUserFollowerResponse = IUserFollower[];
 export interface IGetUsersRequest {
   page: number;
   limit: number;
-};
+}
 
 export interface IGetUsersRequestById {
   userId: string;
   page?: number;
   limit?: number;
   username?: string;
-};
+}
 
 export interface IGetFollowStateResponse {
   isFollowed: boolean;
@@ -30,54 +30,63 @@ export interface IFollowRequestAnsqwear {
 }
 
 export const followApi = api.injectEndpoints({
-  endpoints: builder => ({
+  endpoints: (builder) => ({
     follow: builder.mutation<void, string>({
       query: (userId) => ({
-        method: 'POST',
-        url: `/follow/${userId}`
+        method: "POST",
+        url: `/follow/${userId}`,
       }),
     }),
     followRequestAnswear: builder.mutation<void, IFollowRequestAnsqwear>({
       query: ({ userId, ...rest }) => ({
-        method: 'POST',
+        method: "POST",
         url: `/follow/${userId}/follow-request`,
-        body: rest
+        body: rest,
       }),
     }),
     unfollow: builder.mutation<void, string>({
       query: (userId) => ({
-        method: 'DELETE',
-        url: `/follow/${userId}/unfollow`
+        method: "DELETE",
+        url: `/follow/${userId}/unfollow`,
       }),
     }),
     cancelFollowRequest: builder.mutation<void, string>({
       query: (userId) => ({
-        method: 'DELETE',
-        url: `/follow/${userId}/cancel-request`
+        method: "DELETE",
+        url: `/follow/${userId}/cancel-request`,
       }),
     }),
-    getUserFollowers: builder.query<IUserFollowerResponse, IGetUsersRequestById>({
+    getUserFollowers: builder.query<
+      IUserFollowerResponse,
+      IGetUsersRequestById
+    >({
       query: (body) => ({
-        url: `/follow/${body.userId}/followers?username=${body.username}&page=${body.page}&limit=${body.limit}`
+        url: `/follow/${body.userId}/followers?username=${body.username}&page=${body.page}&limit=${body.limit}`,
       }),
     }),
-    getUserFollowings: builder.query<IUserFollowerResponse, IGetUsersRequestById>({
+    getUserFollowings: builder.query<
+      IUserFollowerResponse,
+      IGetUsersRequestById
+    >({
       query: (body) => ({
-        url: `/follow/${body.userId}/followings?username=${body.username}&page=${body.page}&limit=${body.limit}`
+        url: `/follow/${body.userId}/followings?username=${body.username}&page=${body.page}&limit=${body.limit}`,
       }),
     }),
     getFollowState: builder.query<IGetFollowStateResponse, string>({
       query: (userId) => ({
-        url: `/follow/user/${userId}/state`
+        url: `/follow/user/${userId}/state`,
       }),
-      providesTags: ['user']
+      providesTags: ["user"],
     }),
-    getFollowRequestState: builder.query<IGetFollowRequestStateResponse, string>({
+    getFollowRequestState: builder.query<
+      IGetFollowRequestStateResponse,
+      string
+    >({
       query: (userId) => ({
-        url: `/follow/user/${userId}/follow-request-state`
+        url: `/follow/user/${userId}/follow-request-state`,
       }),
-    })
-  })
+    }),
+  }),
 });
 
 export const {

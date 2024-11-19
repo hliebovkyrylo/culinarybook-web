@@ -1,5 +1,5 @@
 import Link from "next/link";
-import useFormatDaysAgo from '@/hooks/useFormatDaysAgo';
+import useFormatDaysAgo from "@/hooks/useFormatDaysAgo";
 import Image from "next/image";
 import { useTranslation } from "next-i18next";
 
@@ -22,7 +22,7 @@ export const NotificationComment = ({
   userId,
   createdAt,
 }: INotificationComment) => {
-  const { t } = useTranslation('common');
+  const { t } = useTranslation("common");
 
   const formatDaysAgo = useFormatDaysAgo();
 
@@ -31,26 +31,45 @@ export const NotificationComment = ({
       <div className="flex justify-between w-full">
         <div className="flex justify-between">
           <Link className="mr-3 w-12 h-12" href={`/profile/${userId}`}>
-            <Image src={userImage || '/assets/defaulUserImage.jpg'} className="object-cover rounded-full w-12 h-12" alt="User image" width={48} height={48} />
+            <Image
+              src={userImage || "/assets/defaulUserImage.jpg"}
+              className="object-cover rounded-full w-12 h-12"
+              alt="User image"
+              width={48}
+              height={48}
+            />
           </Link>
           <div>
             <div className="max-[516px]:!w-28">
-              <Link className="text-sm" href={`/profile/${userId}`}><b>{username}</b></Link>
-              <span className="text-[#959595] text-sm"> {t('comment-type-comment')}</span>
+              <Link className="text-sm" href={`/profile/${userId}`}>
+                <b>{username}</b>
+              </Link>
+              <span className="text-[#959595] text-sm">
+                {" "}
+                {t("comment-type-comment")}
+              </span>
             </div>
             <p className="max-w-xs break-words text-sm overflow-hidden max-h-48 line-clamp-6">
               {commentText}
             </p>
             <div className="flex items-center">
               <span className="block w-1 h-1 bg-[#959595] rounded-full mr-1" />
-              <p className="text-[#959595] text-sm">{formatDaysAgo(createdAt)}</p>
+              <p className="text-[#959595] text-sm">
+                {formatDaysAgo(createdAt)}
+              </p>
             </div>
           </div>
         </div>
         <Link className="w-12 h-12" href={`/recipe/${recipeId}`}>
-          <Image src={recipeImage || '/assets/no-image.png'} className="object-cover rounded-md w-12 h-12" alt="Recipe image" width={48} height={48} />
+          <Image
+            src={recipeImage || "/assets/no-image.png"}
+            className="object-cover rounded-md w-12 h-12"
+            alt="Recipe image"
+            width={48}
+            height={48}
+          />
         </Link>
       </div>
     </article>
-  )
-}
+  );
+};

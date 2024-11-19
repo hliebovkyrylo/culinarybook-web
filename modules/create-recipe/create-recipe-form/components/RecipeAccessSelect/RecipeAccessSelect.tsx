@@ -4,9 +4,9 @@ import {
   SelectGroup,
   SelectItem,
   SelectTrigger,
-  SelectValue
-} from "@/components/ui/select"
-import { useTranslation } from "next-i18next"
+  SelectValue,
+} from "@/components/ui/select";
+import { useTranslation } from "next-i18next";
 import { Control, Controller } from "react-hook-form";
 
 type RecipeAccessSelectProps = {
@@ -20,18 +20,24 @@ export const RecipeAccessSelect = ({ control }: RecipeAccessSelectProps) => {
       control={control}
       name="isPublic"
       render={({ field: { onChange, value, ...field } }) => (
-        <Select {...field} value={String(value)} onValueChange={(val) => onChange(val === 'true')}>
+        <Select
+          {...field}
+          value={String(value)}
+          onValueChange={(val) => onChange(val === "true")}
+        >
           <SelectTrigger>
-            <SelectValue placeholder={t('recipe-access')} />
+            <SelectValue placeholder={t("recipe-access")} />
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
-              <SelectItem value={String(true)}>🌐{t('avaible-everyone')}</SelectItem>
-              <SelectItem value={String(false)}>🔒{t('avaible-me')}</SelectItem>
+              <SelectItem value={String(true)}>
+                🌐{t("avaible-everyone")}
+              </SelectItem>
+              <SelectItem value={String(false)}>🔒{t("avaible-me")}</SelectItem>
             </SelectGroup>
           </SelectContent>
         </Select>
       )}
     />
-  )
-}
+  );
+};

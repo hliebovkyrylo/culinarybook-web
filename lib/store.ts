@@ -1,9 +1,12 @@
-import { createWrapper, HYDRATE } from 'next-redux-wrapper';
-import { configureStore, combineReducers, PayloadAction } from '@reduxjs/toolkit';
-import { api } from './api/index';
-import { authSlice } from './slices/authSlice';
+import { createWrapper, HYDRATE } from "next-redux-wrapper";
+import {
+  configureStore,
+  combineReducers,
+  PayloadAction,
+} from "@reduxjs/toolkit";
+import { api } from "./api/index";
+import { authSlice } from "./slices/authSlice";
 
-// Определите RootState
 export type RootState = ReturnType<typeof combinedReducer>;
 
 const combinedReducer = combineReducers({
@@ -27,7 +30,7 @@ const reducer = (state: RootState | undefined, action: PayloadAction<any>) => {
   }
 };
 
-export const makeStore = () => 
+export const makeStore = () =>
   configureStore({
     reducer,
     middleware: (getDefaultMiddleware) =>
@@ -37,6 +40,6 @@ export const makeStore = () =>
   });
 
 export type AppStore = ReturnType<typeof makeStore>;
-export type AppDispatch = AppStore['dispatch'];
+export type AppDispatch = AppStore["dispatch"];
 
 export const wrapper = createWrapper<AppStore>(makeStore, { debug: false });

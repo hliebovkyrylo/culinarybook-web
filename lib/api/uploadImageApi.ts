@@ -5,11 +5,11 @@ interface IUploadImageResponse {
 }
 
 export const uploadImageApi = api.injectEndpoints({
-  endpoints: builder => ({
+  endpoints: (builder) => ({
     uploadImage: builder.mutation<IUploadImageResponse, FormData>({
       query: (body) => ({
-        method: 'POST',
-        url: '/upload/image',
+        method: "POST",
+        url: "/upload/image",
         body,
       }),
     }),
